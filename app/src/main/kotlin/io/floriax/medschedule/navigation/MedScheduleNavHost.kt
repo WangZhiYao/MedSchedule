@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import io.floriax.medschedule.ui.home.HomeScreen
+import io.floriax.medschedule.ui.medication.MedicationListScreen
 
 /**
  *
@@ -28,9 +29,13 @@ fun MedScheduleNavHost(
 
         composable<Route.Home> {
             HomeScreen(
-                onMedicationClick = {},
+                onMedicationClick = { navController.navigate(Route.MedicationList) },
                 onAddMedicationRecordClick = {}
             )
+        }
+
+        composable<Route.MedicationList> {
+            MedicationListScreen()
         }
 
     }
