@@ -1,4 +1,4 @@
-package io.floriax.medschedule
+package io.floriax.medschedule.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-
+                MedScheduleApp()
             }
         }
     }
@@ -32,6 +32,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainPreview() {
     AppTheme {
-
+        MedScheduleApp()
     }
 }

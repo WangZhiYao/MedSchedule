@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MedSchedule</string>
+
+    <string name="home_add_medication_record">Add medication record</string>
+    <string name="home_medication">Medication</string>
+
 </resources>
