@@ -2,6 +2,27 @@
     <string name="app_name">MedSchedule</string>
 
     <string name="home_add_medication_record">Add medication record</string>
-    <string name="home_medication">Medication</string>
+    <string name="home_medication_list">Medication List</string>
+
+    <string name="medication_list_title">Medication List</string>
+    <string name="medication_list_add_medication">Add Medication</string>
+
+    <string name="medication_name_dose_unit" translatable="false">%s (%s)</string>
+
+    <string name="no_remark">No remark</string>
+
+    <string name="back">Back</string>
+    <string name="more_action">More Action</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="dialog_delete_medication_title">Delete Medication</string>
+    <string name="dialog_delete_medication_content">Do you want to delete %s?\nIf you delete this medication, all medication records related to this will also be deleted. This operation cannot be undone.</string>
+
+    <string name="medication_deleted">Medication deleted</string>
+
+    <string name="error_medication_delete_failed">Medication delete failed</string>
 
 </resources>

@@ -13,4 +13,6 @@ interface MedicationRepository {
 
     fun observeAll(): Flow<List<Medication>>
 
+    suspend fun delete(medication: Medication): Boolean
+
 }

@@ -18,3 +18,12 @@ fun MedicationEntity.toModel(): Medication =
         remark = remark,
         createdAt = Instant.ofEpochMilli(createdAt)
     )
+
+fun Medication.toEntity(): MedicationEntity =
+    MedicationEntity(
+        id = id,
+        name = name,
+        doseUnit = doseUnit,
+        remark = remark,
+        createdAt = createdAt.toEpochMilli()
+    )

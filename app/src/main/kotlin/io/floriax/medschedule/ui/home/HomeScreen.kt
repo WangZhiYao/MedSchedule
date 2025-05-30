@@ -89,7 +89,7 @@ private fun HomeBottomBar(
             IconButton(onClick = onMedicationClick) {
                 Icon(
                     imageVector = AppIcons.Medication,
-                    contentDescription = stringResource(R.string.home_medication)
+                    contentDescription = stringResource(R.string.home_medication_list)
                 )
             }
         },

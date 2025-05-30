@@ -36,7 +36,11 @@ fun MedScheduleNavHost(
         }
 
         composable<Route.MedicationList> {
-            MedicationListScreen()
+            MedicationListScreen(
+                onBackClick = { navController.popBackStack() },
+                onAddMedicationClick = { },
+                onEditMedicationClick = { medication -> }
+            )
         }
 
         composable<Route.AddMedicationRecord> {

@@ -1,6 +1,7 @@
 package io.floriax.medschedule.data.repository
 
 import io.floriax.medschedule.data.database.dao.MedicationDao
+import io.floriax.medschedule.data.database.mapper.toEntity
 import io.floriax.medschedule.data.database.mapper.toModel
 import io.floriax.medschedule.domain.model.Medication
 import io.floriax.medschedule.domain.repository.MedicationRepository
@@ -25,4 +26,8 @@ class MedicationRepositoryImpl @Inject constructor(
                     entity.toModel()
                 }
             }
+
+    override suspend fun delete(medication: Medication): Boolean =
+        medicationDao.delete(medication.toEntity()) > 0
+
 }
