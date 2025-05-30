@@ -1,4 +1,4 @@
-package io.floriax.medschedule.ext
+package io.floriax.medschedule.common.ext
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
-import io.floriax.medschedule.base.BaseViewModel
+import io.floriax.medschedule.common.base.BaseViewModel
 
 /**
  *

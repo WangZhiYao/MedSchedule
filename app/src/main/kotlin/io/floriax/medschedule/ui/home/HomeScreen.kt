@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.floriax.medschedule.R
-import io.floriax.medschedule.ext.collectState
+import io.floriax.medschedule.common.ext.collectState
 import io.floriax.medschedule.ui.designsystem.AppIcons
 import io.floriax.medschedule.ui.theme.AppTheme
 

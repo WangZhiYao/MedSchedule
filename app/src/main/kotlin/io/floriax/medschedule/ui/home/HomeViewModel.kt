@@ -1,7 +1,7 @@
 package io.floriax.medschedule.ui.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.floriax.medschedule.base.BaseViewModel
+import io.floriax.medschedule.common.base.BaseViewModel
 import javax.inject.Inject
 
 /**
