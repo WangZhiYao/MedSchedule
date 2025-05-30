@@ -16,4 +16,7 @@ sealed class Route {
     @Serializable
     data object MedicationList : Route()
 
+    @Serializable
+    data object AddMedicationRecord : Route()
+
 }
