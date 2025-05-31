@@ -209,11 +209,15 @@ private fun MedicationItem(
         ListItem(
             headlineContent = {
                 Text(
-                    text = stringResource(
-                        R.string.medication_name_dose_unit,
-                        medication.name,
-                        medication.doseUnit
-                    )
+                    text = if (medication.doseUnit.isNotBlank()) {
+                        stringResource(
+                            R.string.medication_name_dose_unit,
+                            medication.name,
+                            medication.doseUnit
+                        )
+                    } else {
+                        medication.name
+                    }
                 )
             },
             modifier = modifier,
@@ -240,8 +244,14 @@ private fun MedicationItem(
                     MedicationMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false },
-                        onEditClick = onEditClick,
-                        onDeleteClick = onDeleteClick
+                        onEditClick = {
+                            showMenu = false
+                            onEditClick()
+                        },
+                        onDeleteClick = {
+                            showMenu = false
+                            onDeleteClick()
+                        }
                     )
                 }
             }
