@@ -128,7 +128,7 @@ private fun MedicationListScreen(
                 onBackClick = onBackClick
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButton = {
             AnimatedVisibility(
                 visible = fabVisible,

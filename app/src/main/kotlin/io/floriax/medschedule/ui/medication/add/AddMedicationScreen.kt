@@ -90,7 +90,7 @@ private fun AddMedicationScreen(
         topBar = {
             AddMedicationTopBar(onBackClick = onBackClick)
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(onClick = onSaveMedicationClick) {
                 Icon(

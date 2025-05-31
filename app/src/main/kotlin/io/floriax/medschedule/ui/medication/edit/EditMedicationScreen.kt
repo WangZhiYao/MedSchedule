@@ -88,7 +88,7 @@ private fun EditMedicationScreen(
         topBar = {
             EditMedicationTopBar(onBackClick = onBackClick)
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(onClick = onSaveMedicationClick) {
                 Icon(
