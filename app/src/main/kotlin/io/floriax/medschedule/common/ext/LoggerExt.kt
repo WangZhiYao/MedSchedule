@@ -15,5 +15,5 @@ inline fun <reified T> logger(
 ): ReadOnlyProperty<Any?, Logger> =
     object : ReadOnlyProperty<Any?, Logger> {
         override fun getValue(thisRef: Any?, property: KProperty<*>): Logger =
-            Logger.Companion.create(tag)
+            Logger.create(tag)
     }
