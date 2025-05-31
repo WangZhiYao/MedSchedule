@@ -109,7 +109,7 @@ private fun EditMedicationScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.edit_medication_name)) },
                 trailingIcon = {
-                    if (state.name.isNotBlank()) {
+                    if (state.name.isNotEmpty()) {
                         IconButton(onClick = { onNameChange("") }) {
                             Icon(
                                 imageVector = AppIcons.Clear,
@@ -132,7 +132,7 @@ private fun EditMedicationScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.edit_medication_dose_unit)) },
                 trailingIcon = {
-                    if (state.doseUnit.isNotBlank()) {
+                    if (state.doseUnit.isNotEmpty()) {
                         IconButton(onClick = { onDoseUnitChange("") }) {
                             Icon(
                                 imageVector = AppIcons.Clear,
@@ -152,7 +152,7 @@ private fun EditMedicationScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.edit_medication_remark)) },
                 trailingIcon = {
-                    if (state.remark.isNotBlank()) {
+                    if (state.remark.isNotEmpty()) {
                         IconButton(onClick = { onRemarkChange("") }) {
                             Icon(
                                 imageVector = AppIcons.Clear,
