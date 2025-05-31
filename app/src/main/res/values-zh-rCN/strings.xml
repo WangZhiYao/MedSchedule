@@ -7,6 +7,11 @@
     <string name="medication_list_title">药品列表</string>
     <string name="medication_list_add_medication">添加药品</string>
 
+    <string name="add_medication_title">添加药品</string>
+    <string name="add_medication_name">药品名称</string>
+    <string name="add_medication_dose_unit">剂量单位</string>
+    <string name="add_medication_remark">备注</string>
+
     <string name="no_remark">暂无备注</string>
 
     <string name="back">返回</string>
@@ -15,6 +20,8 @@
     <string name="delete">删除</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="clear">清空</string>
 
     <string name="dialog_delete_medication_title">删除药品</string>
     <string name="dialog_delete_medication_content">是否要删除%s？\n如果删除该药品，所有关于该药品的用药记录将同时被删除，该操作不能被撤销</string>
@@ -22,5 +29,7 @@
     <string name="medication_deleted">药品已删除</string>
 
     <string name="error_medication_delete_failed">删除药品失败</string>
+    <string name="error_medication_name_empty">药品名称不能为空</string>
+    <string name="error_medication_add_failed">添加药品失败</string>
 
 </resources>

@@ -7,6 +7,11 @@
     <string name="medication_list_title">Medication List</string>
     <string name="medication_list_add_medication">Add Medication</string>
 
+    <string name="add_medication_title">Add Medication</string>
+    <string name="add_medication_name">Medication Name</string>
+    <string name="add_medication_dose_unit">Dose Unit</string>
+    <string name="add_medication_remark">Remark</string>
+
     <string name="medication_name_dose_unit" translatable="false">%s (%s)</string>
 
     <string name="no_remark">No remark</string>
@@ -17,6 +22,8 @@
     <string name="delete">Delete</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="clear">Clear</string>
 
     <string name="dialog_delete_medication_title">Delete Medication</string>
     <string name="dialog_delete_medication_content">Do you want to delete %s?\nIf you delete this medication, all medication records related to this will also be deleted. This operation cannot be undone.</string>
@@ -24,5 +31,7 @@
     <string name="medication_deleted">Medication deleted</string>
 
     <string name="error_medication_delete_failed">Medication delete failed</string>
+    <string name="error_medication_name_empty">Medication name cannot be empty</string>
+    <string name="error_medication_add_failed">Medication add failed</string>
 
 </resources>

@@ -30,4 +30,10 @@ class MedicationRepositoryImpl @Inject constructor(
     override suspend fun delete(medication: Medication): Boolean =
         medicationDao.delete(medication.toEntity()) > 0
 
+    override suspend fun add(medication: Medication): Medication =
+        medicationDao.insert(medication.toEntity())
+            .let { id ->
+                medication.copy(id = id)
+            }
+
 }

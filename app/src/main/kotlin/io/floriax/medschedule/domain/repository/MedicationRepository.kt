@@ -15,4 +15,6 @@ interface MedicationRepository {
 
     suspend fun delete(medication: Medication): Boolean
 
+    suspend fun add(medication: Medication): Medication
+
 }
