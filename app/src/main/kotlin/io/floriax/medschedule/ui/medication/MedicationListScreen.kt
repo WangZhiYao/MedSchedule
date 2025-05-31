@@ -73,7 +73,7 @@ fun MedicationListScreen(
                 snackbarHostState.showSnackbar(context.getString(R.string.medication_deleted))
             }
 
-            DeleteMedicationFailure -> {
+            DeleteMedicationFailed -> {
                 medicationToDelete = null
                 snackbarHostState.showSnackbar(context.getString(R.string.error_medication_delete_failed))
             }

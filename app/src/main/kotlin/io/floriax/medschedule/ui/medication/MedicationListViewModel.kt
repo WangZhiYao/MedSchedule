@@ -62,7 +62,7 @@ class MedicationListViewModel @Inject constructor(
                     if (success) {
                         postSideEffect(DeleteMedicationSuccess)
                     } else {
-                        postSideEffect(DeleteMedicationFailure)
+                        postSideEffect(DeleteMedicationFailed)
                     }
                 }
         }

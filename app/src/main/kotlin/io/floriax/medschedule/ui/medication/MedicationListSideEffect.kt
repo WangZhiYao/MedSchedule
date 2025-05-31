@@ -10,4 +10,4 @@ sealed class MedicationListSideEffect
 
 data object DeleteMedicationSuccess : MedicationListSideEffect()
 
-data object DeleteMedicationFailure : MedicationListSideEffect()
+data object DeleteMedicationFailed : MedicationListSideEffect()
