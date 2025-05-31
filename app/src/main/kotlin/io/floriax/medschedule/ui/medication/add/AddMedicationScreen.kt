@@ -121,9 +121,7 @@ private fun AddMedicationScreen(
                     }
                 },
                 supportingText = {
-                    if (state.nameError) {
-                        Text(text = stringResource(R.string.error_medication_name_empty))
-                    }
+                    Text(text = if (state.nameError) stringResource(R.string.error_medication_name_empty) else "")
                 },
                 isError = state.nameError,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -145,7 +143,7 @@ private fun AddMedicationScreen(
                         }
                     }
                 },
-                supportingText = {},
+                supportingText = { Text(text = "") },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 singleLine = true
             )
@@ -165,7 +163,6 @@ private fun AddMedicationScreen(
                         }
                     }
                 },
-                supportingText = {},
                 maxLines = 3,
                 minLines = 3
             )
