@@ -12,6 +12,11 @@
     <string name="add_medication_dose_unit">剂量单位</string>
     <string name="add_medication_remark">备注</string>
 
+    <string name="edit_medication_title">编辑药品</string>
+    <string name="edit_medication_name">药品名称</string>
+    <string name="edit_medication_dose_unit">剂量单位</string>
+    <string name="edit_medication_remark">备注</string>
+
     <string name="no_remark">暂无备注</string>
 
     <string name="back">返回</string>
@@ -31,5 +36,6 @@
     <string name="error_medication_delete_failed">删除药品失败</string>
     <string name="error_medication_name_empty">药品名称不能为空</string>
     <string name="error_medication_add_failed">添加药品失败</string>
+    <string name="error_medication_update_failed">更新药品失败</string>
 
 </resources>

@@ -36,4 +36,13 @@ class MedicationRepositoryImpl @Inject constructor(
                 medication.copy(id = id)
             }
 
+    override suspend fun getById(id: Long): Medication? =
+        medicationDao.getById(id)?.toModel()
+
+    override suspend fun update(medication: Medication): Medication =
+        medicationDao.update(medication.toEntity())
+            .let {
+                medication
+            }
+
 }

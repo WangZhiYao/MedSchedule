@@ -12,6 +12,11 @@
     <string name="add_medication_dose_unit">Dose Unit</string>
     <string name="add_medication_remark">Remark</string>
 
+    <string name="edit_medication_title">Edit Medication</string>
+    <string name="edit_medication_name">Medication Name</string>
+    <string name="edit_medication_dose_unit">Dose Unit</string>
+    <string name="edit_medication_remark">Remark</string>
+
     <string name="medication_name_dose_unit" translatable="false">%s (%s)</string>
 
     <string name="no_remark">No remark</string>
@@ -33,5 +38,6 @@
     <string name="error_medication_delete_failed">Medication delete failed</string>
     <string name="error_medication_name_empty">Medication name cannot be empty</string>
     <string name="error_medication_add_failed">Medication add failed</string>
+    <string name="error_medication_update_failed">Medication update failed</string>
 
 </resources>

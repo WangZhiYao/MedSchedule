@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import io.floriax.medschedule.ui.home.HomeScreen
 import io.floriax.medschedule.ui.medication.MedicationListScreen
 import io.floriax.medschedule.ui.medication.add.AddMedicationScreen
+import io.floriax.medschedule.ui.medication.edit.EditMedicationScreen
 import io.floriax.medschedule.ui.medication.record.add.AddMedicationRecordScreen
 
 /**
@@ -40,7 +41,9 @@ fun MedScheduleNavHost(
             MedicationListScreen(
                 onBackClick = { navController.popBackStack() },
                 onAddMedicationClick = { navController.navigate(Route.AddMedication) },
-                onEditMedicationClick = { medication -> }
+                onEditMedicationClick = { medication ->
+                    navController.navigate(Route.EditMedication(medication.id))
+                },
             )
         }
 
@@ -48,6 +51,18 @@ fun MedScheduleNavHost(
             AddMedicationScreen(
                 onBackClick = { navController.popBackStack() },
                 onMedicationAdded = {
+                    navController.navigate(Route.MedicationList) {
+                        popUpTo(Route.Home) { inclusive = false }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        composable<Route.EditMedication> {
+            EditMedicationScreen(
+                onBackClick = { navController.popBackStack() },
+                onMedicationUpdated = {
                     navController.navigate(Route.MedicationList) {
                         popUpTo(Route.Home) { inclusive = false }
                         launchSingleTop = true

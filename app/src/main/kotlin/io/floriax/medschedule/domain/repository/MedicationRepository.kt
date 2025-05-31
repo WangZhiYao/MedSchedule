@@ -17,4 +17,8 @@ interface MedicationRepository {
 
     suspend fun add(medication: Medication): Medication
 
+    suspend fun getById(id: Long): Medication?
+
+    suspend fun update(medication: Medication): Medication
+
 }

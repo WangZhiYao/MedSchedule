@@ -17,4 +17,7 @@ interface MedicationDao : IDao<MedicationEntity> {
     @Query("SELECT * FROM medication")
     fun observeAll(): Flow<List<MedicationEntity>>
 
+    @Query("SELECT * FROM medication WHERE id = :id")
+    suspend fun getById(id: Long): MedicationEntity?
+
 }

@@ -20,6 +20,9 @@ sealed class Route {
     data object AddMedication : Route()
 
     @Serializable
+    data class EditMedication(val id: Long) : Route()
+
+    @Serializable
     data object AddMedicationRecord : Route()
 
 }
