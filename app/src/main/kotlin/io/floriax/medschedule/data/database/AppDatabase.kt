@@ -3,7 +3,9 @@ package io.floriax.medschedule.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import io.floriax.medschedule.data.database.dao.MedicationDao
+import io.floriax.medschedule.data.database.dao.MedicationRecordDao
 import io.floriax.medschedule.data.database.entity.MedicationEntity
+import io.floriax.medschedule.data.database.entity.MedicationRecordEntity
 
 /**
  *
@@ -13,12 +15,15 @@ import io.floriax.medschedule.data.database.entity.MedicationEntity
  */
 @Database(
     entities = [
-        MedicationEntity::class
+        MedicationEntity::class,
+        MedicationRecordEntity::class
     ],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun medicationDao(): MedicationDao
+
+    abstract fun medicationRecordDao(): MedicationRecordDao
 
 }
