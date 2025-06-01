@@ -55,6 +55,9 @@ class AddMedicationRecordViewModel @Inject constructor(
                             selectedMedication = medicationList.firstOrNull()
                         )
                     }
+                    if (medicationList.isEmpty()) {
+                        postSideEffect(EmptyMedication)
+                    }
                 }
         }
     }

@@ -50,12 +50,7 @@ fun MedScheduleNavHost(
         composable<Route.AddMedication> {
             AddMedicationScreen(
                 onBackClick = { navController.popBackStack() },
-                onMedicationAdded = {
-                    navController.navigate(Route.MedicationList) {
-                        popUpTo(Route.Home) { inclusive = false }
-                        launchSingleTop = true
-                    }
-                }
+                onMedicationAdded = { navController.popBackStack() }
             )
         }
 
@@ -74,6 +69,7 @@ fun MedScheduleNavHost(
         composable<Route.AddMedicationRecord> {
             AddMedicationRecordScreen(
                 onBackClick = { navController.popBackStack() },
+                onAddMedicationClick = { navController.navigate(Route.AddMedication) },
                 onMedicationRecordAdded = {
                     navController.navigate(Route.Home) {
                         popUpTo(Route.Home) { inclusive = false }

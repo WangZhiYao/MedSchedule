@@ -8,6 +8,8 @@ package io.floriax.medschedule.ui.medication.record.add
  */
 sealed class AddMedicationRecordSideEffect
 
+data object EmptyMedication : AddMedicationRecordSideEffect()
+
 data object AddMedicationRecordSuccess : AddMedicationRecordSideEffect()
 
 data object AddMedicationRecordFailed : AddMedicationRecordSideEffect()

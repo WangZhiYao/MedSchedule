@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
@@ -72,6 +73,7 @@ import java.time.LocalTime
 @Composable
 fun AddMedicationRecordScreen(
     onBackClick: () -> Unit,
+    onAddMedicationClick: () -> Unit,
     onMedicationRecordAdded: () -> Unit,
     viewModel: AddMedicationRecordViewModel = hiltViewModel(),
 ) {
@@ -81,8 +83,14 @@ fun AddMedicationRecordScreen(
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
+    var showAddMedicationDialog by remember { mutableStateOf(false) }
+
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
+            EmptyMedication -> {
+                showAddMedicationDialog = true
+            }
+
             AddMedicationRecordSuccess -> {
                 onMedicationRecordAdded()
             }
@@ -91,6 +99,16 @@ fun AddMedicationRecordScreen(
                 snackbarHostState.showSnackbar(context.getString(R.string.error_add_medication_record_failed))
             }
         }
+    }
+
+    if (showAddMedicationDialog) {
+        AddMedicationDialog(
+            onDismissRequest = { showAddMedicationDialog = false },
+            onAddMedicationClick = {
+                showAddMedicationDialog = false
+                onAddMedicationClick()
+            }
+        )
     }
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -337,6 +355,32 @@ private fun MedicationDropdownMenu(
     }
 }
 
+@Composable
+private fun AddMedicationDialog(
+    onDismissRequest: () -> Unit,
+    onAddMedicationClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = onAddMedicationClick) {
+                Text(text = stringResource(R.string.dialog_add_medication_confirm))
+            }
+        },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(text = stringResource(R.string.cancel))
+            }
+        },
+        title = { Text(text = stringResource(R.string.dialog_add_medication_title)) },
+        text = {
+            Text(text = stringResource(R.string.dialog_add_medication_content))
+        }
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MedicationRecordDatePickerDialog(
@@ -451,6 +495,17 @@ private fun AddMedicationRecordScreenPreview() {
             onDoseStringChange = {},
             onRemarkChange = {},
             onAddMedicationRecordClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun AddMedicationDialogPreview() {
+    AppTheme {
+        AddMedicationDialog(
+            onDismissRequest = {},
+            onAddMedicationClick = {}
         )
     }
 }

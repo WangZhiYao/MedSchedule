@@ -38,6 +38,10 @@
     <string name="dialog_delete_medication_title">删除药品</string>
     <string name="dialog_delete_medication_content">是否要删除%s？\n如果删除该药品，所有关于该药品的用药记录将同时被删除，该操作不能被撤销</string>
 
+    <string name="dialog_add_medication_title">添加药品</string>
+    <string name="dialog_add_medication_content">在添加用药记录之前请先添加一个药品</string>
+    <string name="dialog_add_medication_confirm">去添加药品</string>
+
     <string name="dialog_time_picker_title">选择时间</string>
 
     <string name="medication_deleted">药品已删除</string>
