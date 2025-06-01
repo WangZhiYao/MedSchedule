@@ -103,7 +103,7 @@ private fun AddMedicationScreen(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             OutlinedTextField(
                 value = state.name,
