@@ -72,7 +72,15 @@ fun MedScheduleNavHost(
         }
 
         composable<Route.AddMedicationRecord> {
-            AddMedicationRecordScreen()
+            AddMedicationRecordScreen(
+                onBackClick = { navController.popBackStack() },
+                onMedicationRecordAdded = {
+                    navController.navigate(Route.Home) {
+                        popUpTo(Route.Home) { inclusive = false }
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
     }
 }
