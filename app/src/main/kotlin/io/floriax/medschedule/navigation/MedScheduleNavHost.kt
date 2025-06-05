@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import io.floriax.medschedule.ui.home.HomeScreen
-import io.floriax.medschedule.ui.medication.MedicationListScreen
-import io.floriax.medschedule.ui.medication.add.AddMedicationScreen
-import io.floriax.medschedule.ui.medication.edit.EditMedicationScreen
-import io.floriax.medschedule.ui.medication.record.add.AddMedicationRecordScreen
+import io.floriax.medschedule.ui.home.HomeRoute
+import io.floriax.medschedule.ui.medication.MedicationListRoute
+import io.floriax.medschedule.ui.medication.add.AddMedicationRoute
+import io.floriax.medschedule.ui.medication.edit.EditMedicationRoute
+import io.floriax.medschedule.ui.medication.record.add.AddMedicationRecordRoute
 
 /**
  *
@@ -31,14 +31,14 @@ fun MedScheduleNavHost(
     ) {
 
         composable<Route.Home> {
-            HomeScreen(
+            HomeRoute(
                 onMedicationClick = { navController.navigate(Route.MedicationList) },
                 onAddMedicationRecordClick = { navController.navigate(Route.AddMedicationRecord) }
             )
         }
 
         composable<Route.MedicationList> {
-            MedicationListScreen(
+            MedicationListRoute(
                 onBackClick = { navController.popBackStack() },
                 onAddMedicationClick = { navController.navigate(Route.AddMedication) },
                 onEditMedicationClick = { medication ->
@@ -48,14 +48,14 @@ fun MedScheduleNavHost(
         }
 
         composable<Route.AddMedication> {
-            AddMedicationScreen(
+            AddMedicationRoute(
                 onBackClick = { navController.popBackStack() },
                 onMedicationAdded = { navController.popBackStack() }
             )
         }
 
         composable<Route.EditMedication> {
-            EditMedicationScreen(
+            EditMedicationRoute(
                 onBackClick = { navController.popBackStack() },
                 onMedicationUpdated = {
                     navController.navigate(Route.MedicationList) {
@@ -67,7 +67,7 @@ fun MedScheduleNavHost(
         }
 
         composable<Route.AddMedicationRecord> {
-            AddMedicationRecordScreen(
+            AddMedicationRecordRoute(
                 onBackClick = { navController.popBackStack() },
                 onAddMedicationClick = { navController.navigate(Route.AddMedication) },
                 onMedicationRecordAdded = {

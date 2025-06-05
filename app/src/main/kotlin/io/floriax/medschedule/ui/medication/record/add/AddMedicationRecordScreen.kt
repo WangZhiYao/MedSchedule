@@ -71,7 +71,7 @@ import java.time.LocalTime
  * @since 2025/5/30
  */
 @Composable
-fun AddMedicationRecordScreen(
+fun AddMedicationRecordRoute(
     onBackClick: () -> Unit,
     onAddMedicationClick: () -> Unit,
     onMedicationRecordAdded: () -> Unit,

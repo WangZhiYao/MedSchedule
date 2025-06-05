@@ -38,7 +38,7 @@ import io.floriax.medschedule.ui.theme.AppTheme
  * @since 2025/5/31
  */
 @Composable
-fun EditMedicationScreen(
+fun EditMedicationRoute(
     onBackClick: () -> Unit,
     onMedicationUpdated: () -> Unit,
     viewModel: EditMedicationViewModel = hiltViewModel(),

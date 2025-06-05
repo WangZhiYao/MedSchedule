@@ -33,7 +33,7 @@ import io.floriax.medschedule.ui.theme.AppTheme
  * @since 2025/5/30
  */
 @Composable
-fun HomeScreen(
+fun HomeRoute(
     onMedicationClick: () -> Unit,
     onAddMedicationRecordClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()

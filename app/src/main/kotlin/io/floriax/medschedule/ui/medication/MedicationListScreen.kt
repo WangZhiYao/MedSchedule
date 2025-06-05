@@ -52,7 +52,7 @@ import io.floriax.medschedule.ui.designsystem.AppIcons
  * @since 2025/5/30
  */
 @Composable
-fun MedicationListScreen(
+fun MedicationListRoute(
     onBackClick: () -> Unit,
     onAddMedicationClick: () -> Unit,
     onEditMedicationClick: (Medication) -> Unit,
