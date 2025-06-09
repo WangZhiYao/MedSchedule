@@ -1,6 +1,8 @@
 package io.floriax.medschedule.domain.usecase
 
+import io.floriax.medschedule.domain.model.Medication
 import io.floriax.medschedule.domain.repository.MedicationRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
@@ -13,6 +15,7 @@ class ObserveMedicationsUseCase @Inject constructor(
     private val medicationRepository: MedicationRepository
 ) {
 
-    operator fun invoke() = medicationRepository.observeAll()
+    operator fun invoke(): Flow<List<Medication>> =
+        medicationRepository.observeAll()
 
 }
