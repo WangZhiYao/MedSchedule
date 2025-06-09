@@ -144,7 +144,7 @@ private fun MedicationListScreen(
             state = listState
         ) {
             items(
-                items = state.medicationList,
+                items = state.medications,
                 key = { medication -> medication.id }
             ) { medication ->
                 MedicationItem(
