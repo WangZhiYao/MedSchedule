@@ -11,7 +11,7 @@ import io.floriax.medschedule.domain.enums.MedicationState
 import io.floriax.medschedule.domain.model.Medication
 import io.floriax.medschedule.domain.model.MedicationRecord
 import io.floriax.medschedule.domain.usecase.AddMedicationRecordUseCase
-import io.floriax.medschedule.domain.usecase.ObserveMedicationListUseCase
+import io.floriax.medschedule.domain.usecase.ObserveMedicationsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -31,7 +31,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AddMedicationRecordViewModel @Inject constructor(
-    private val observeMedicationListUseCase: ObserveMedicationListUseCase,
+    private val observeMedicationsUseCase: ObserveMedicationsUseCase,
     private val addMedicationRecordUseCase: AddMedicationRecordUseCase,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : BaseViewModel<AddMedicationRecordViewState, AddMedicationRecordSideEffect>() {
@@ -43,7 +43,7 @@ class AddMedicationRecordViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            observeMedicationListUseCase()
+            observeMedicationsUseCase()
                 .flowOn(ioDispatcher)
                 .catch { ex ->
                     logger.e("Error observing medication list", ex)
@@ -51,7 +51,7 @@ class AddMedicationRecordViewModel @Inject constructor(
                 .collect { medicationList ->
                     reduce {
                         copy(
-                            medicationList = medicationList,
+                            medications = medicationList,
                             selectedMedication = medicationList.firstOrNull()
                         )
                     }

@@ -179,7 +179,7 @@ private fun AddMedicationRecordScreen(
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             MedicationDropdownMenu(
-                medicationList = state.medicationList,
+                medications = state.medications,
                 selectedMedication = state.selectedMedication,
                 medicationError = state.medicationError,
                 onMedicationSelect = onMedicationSelect
@@ -300,7 +300,7 @@ private fun AddMedicationRecordTopBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MedicationDropdownMenu(
-    medicationList: List<Medication>,
+    medications: List<Medication>,
     selectedMedication: Medication?,
     medicationError: Boolean,
     onMedicationSelect: (Medication) -> Unit,
@@ -310,7 +310,7 @@ private fun MedicationDropdownMenu(
 
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = { value -> if (medicationList.isNotEmpty()) expanded = value },
+        onExpandedChange = { value -> if (medications.isNotEmpty()) expanded = value },
         modifier = modifier
     ) {
         OutlinedTextField(
@@ -334,7 +334,7 @@ private fun MedicationDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            medicationList.forEach { medication ->
+            medications.forEach { medication ->
                 DropdownMenuItem(
                     text = {
                         Text(

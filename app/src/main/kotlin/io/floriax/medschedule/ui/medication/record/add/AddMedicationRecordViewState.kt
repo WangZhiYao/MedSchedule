@@ -11,7 +11,7 @@ import java.time.LocalTime
  * @since 2025/5/31
  */
 data class AddMedicationRecordViewState(
-    val medicationList: List<Medication> = emptyList(),
+    val medications: List<Medication> = emptyList(),
     val selectedMedication: Medication? = null,
     val medicationError: Boolean = false,
     val date: LocalDate = LocalDate.now(),

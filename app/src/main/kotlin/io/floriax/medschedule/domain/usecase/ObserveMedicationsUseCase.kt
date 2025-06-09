@@ -9,7 +9,7 @@ import javax.inject.Inject
  * @author WangZhiYao
  * @since 2025/5/30
  */
-class ObserveMedicationListUseCase @Inject constructor(
+class ObserveMedicationsUseCase @Inject constructor(
     private val medicationRepository: MedicationRepository
 ) {
 
