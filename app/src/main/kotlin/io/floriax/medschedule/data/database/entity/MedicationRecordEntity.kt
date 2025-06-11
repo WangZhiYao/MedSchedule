@@ -16,11 +16,11 @@ data class MedicationRecordEntity(
     val id: Long = 0,
     @ColumnInfo(name = "medication_time")
     val medicationTime: Long,
-    val remark: String,
     val state: Int,
     val type: Int,
     @ColumnInfo(name = "timezone")
     val timeZone: String,
+    val remark: String?,
     @ColumnInfo(name = "created_at")
     val createdAt: Long,
 )

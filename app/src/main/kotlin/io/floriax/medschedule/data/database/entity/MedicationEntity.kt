@@ -17,7 +17,7 @@ data class MedicationEntity(
     val name: String,
     @ColumnInfo(name = "dose_unit")
     val doseUnit: String,
-    val remark: String,
+    val remark: String?,
     @ColumnInfo(name = "created_at")
     val createdAt: Long
 )

@@ -1,5 +1,6 @@
 package io.floriax.medschedule.data.database.mapper
 
+import io.floriax.medschedule.common.ext.nullIfBlank
 import io.floriax.medschedule.data.database.entity.MedicationEntity
 import io.floriax.medschedule.domain.model.Medication
 import java.time.Instant
@@ -15,7 +16,7 @@ fun MedicationEntity.toModel(): Medication =
         id = id,
         name = name,
         doseUnit = doseUnit,
-        remark = remark,
+        remark = remark.orEmpty(),
         createdAt = Instant.ofEpochMilli(createdAt)
     )
 
@@ -24,6 +25,6 @@ fun Medication.toEntity(): MedicationEntity =
         id = id,
         name = name,
         doseUnit = doseUnit,
-        remark = remark,
+        remark = remark.nullIfBlank(),
         createdAt = createdAt.toEpochMilli()
     )

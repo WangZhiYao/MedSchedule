@@ -13,3 +13,6 @@ fun String.isValidDose(): Boolean {
     val value = toFloatOrNull() ?: return false
     return value > 0
 }
+
+fun String.nullIfBlank(): String? =
+    takeIf { str -> str.isNotBlank() }

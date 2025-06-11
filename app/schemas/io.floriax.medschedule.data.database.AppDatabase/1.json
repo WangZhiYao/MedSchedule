@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e5a5abefae68dcb96f95d6ba11394b69",
+    "identityHash": "84d0d8f4a8df7604b4d3d1fb14ef6775",
     "entities": [
       {
         "tableName": "medication",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `dose_unit` TEXT NOT NULL, `remark` TEXT NOT NULL, `created_at` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `dose_unit` TEXT NOT NULL, `remark` TEXT, `created_at` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -29,8 +29,7 @@
           {
             "fieldPath": "remark",
             "columnName": "remark",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "createdAt",
@@ -48,7 +47,7 @@
       },
       {
         "tableName": "medication_record",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `medication_time` INTEGER NOT NULL, `remark` TEXT NOT NULL, `state` INTEGER NOT NULL, `type` INTEGER NOT NULL, `timezone` TEXT NOT NULL, `created_at` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `medication_time` INTEGER NOT NULL, `state` INTEGER NOT NULL, `type` INTEGER NOT NULL, `timezone` TEXT NOT NULL, `remark` TEXT, `created_at` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -60,12 +59,6 @@
             "fieldPath": "medicationTime",
             "columnName": "medication_time",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "remark",
-            "columnName": "remark",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -85,6 +78,11 @@
             "columnName": "timezone",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "remark",
+            "columnName": "remark",
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "createdAt",
@@ -189,7 +187,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e5a5abefae68dcb96f95d6ba11394b69')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '84d0d8f4a8df7604b4d3d1fb14ef6775')"
     ]
   }
 }
