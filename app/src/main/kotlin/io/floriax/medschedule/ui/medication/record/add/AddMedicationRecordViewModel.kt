@@ -49,7 +49,7 @@ class AddMedicationRecordViewModel @Inject constructor(
             observeMedicationsUseCase()
                 .flowOn(ioDispatcher)
                 .catch { ex ->
-                    logger.e("Error observing medication list", ex)
+                    logger.e(ex, "Error observing medication list")
                 }
                 .collect { medications ->
                     reduce {
@@ -145,7 +145,7 @@ class AddMedicationRecordViewModel @Inject constructor(
                 }
                 .flowOn(ioDispatcher)
                 .catch { ex ->
-                    logger.e("Error adding medication record", ex)
+                    logger.e(ex, "Error adding medication record")
                     postSideEffect(AddMedicationRecordFailed)
                 }
                 .collect { medicationRecord ->

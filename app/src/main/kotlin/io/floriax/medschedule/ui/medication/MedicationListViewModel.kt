@@ -38,7 +38,7 @@ class MedicationListViewModel @Inject constructor(
             observeMedicationsUseCase()
                 .flowOn(ioDispatcher)
                 .catch { ex ->
-                    logger.e("Error observing medication list", ex)
+                    logger.e(ex, "Error observing medication list")
                 }
                 .collect { medicationList ->
                     reduce {
@@ -55,7 +55,7 @@ class MedicationListViewModel @Inject constructor(
             }
                 .flowOn(ioDispatcher)
                 .catch { ex ->
-                    logger.e("Error deleting medication", ex)
+                    logger.e(ex, "Error deleting medication")
                     emit(false)
                 }
                 .collect { success ->

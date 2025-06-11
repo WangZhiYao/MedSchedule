@@ -46,7 +46,7 @@ class EditMedicationViewModel @Inject constructor(
                 .map(getMedicationByIdUseCase::invoke)
                 .flowOn(ioDispatcher)
                 .catch { ex ->
-                    logger.e("Error getting medication by id", ex)
+                    logger.e(ex, "Error getting medication by id")
                     reduce {
                         copy(error = true)
                     }
@@ -113,7 +113,7 @@ class EditMedicationViewModel @Inject constructor(
             }
                 .flowOn(ioDispatcher)
                 .catch { ex ->
-                    logger.e("Error updating medication", ex)
+                    logger.e(ex, "Error updating medication")
                     postSideEffect(EditMedicationFailed)
                 }
                 .collect { medication ->

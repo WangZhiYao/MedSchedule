@@ -68,7 +68,7 @@ class AddMedicationViewModel @Inject constructor(
             }
                 .flowOn(ioDispatcher)
                 .catch { ex ->
-                    logger.e("Error adding medication", ex)
+                    logger.e(ex, "Error adding medication")
                     postSideEffect(AddMedicationFailed)
                 }
                 .collect { medication ->
