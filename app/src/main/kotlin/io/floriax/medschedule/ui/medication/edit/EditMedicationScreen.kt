@@ -159,7 +159,7 @@ private fun EditMedicationTopBar(
                 onClick = onSaveClick
             ) {
                 Icon(
-                    imageVector = AppIcons.Check,
+                    imageVector = AppIcons.Save,
                     contentDescription = stringResource(R.string.save)
                 )
             }

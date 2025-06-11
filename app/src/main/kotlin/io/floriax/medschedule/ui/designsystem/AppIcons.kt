@@ -10,6 +10,7 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Medication
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Save
 import androidx.compose.material.icons.rounded.Schedule
 
 /**
@@ -32,5 +33,6 @@ object AppIcons {
     val Delete = Icons.Rounded.Delete
     val Check = Icons.Rounded.Check
     val Clear = Icons.Outlined.Cancel
+    val Save = Icons.Rounded.Save
 
 }
