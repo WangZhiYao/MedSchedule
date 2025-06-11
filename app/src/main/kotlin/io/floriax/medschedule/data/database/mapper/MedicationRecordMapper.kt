@@ -21,10 +21,10 @@ fun MedicationRecordEntity.toModel(): MedicationRecord =
     MedicationRecord(
         id = id,
         medicationTime = Instant.ofEpochMilli(medicationTime),
-        remark = remark.orEmpty(),
         state = MedicationState.fromValue(state),
         type = MedicationRecordType.fromValue(type),
         timeZone = ZoneId.of(timeZone),
+        remark = remark.orEmpty(),
         createAt = Instant.ofEpochMilli(createdAt)
     )
 
@@ -32,10 +32,10 @@ fun MedicationRecord.toEntity(): MedicationRecordEntity =
     MedicationRecordEntity(
         id = id,
         medicationTime = medicationTime.toEpochMilli(),
-        remark = remark.nullIfBlank(),
         state = state.value,
         type = type.value,
         timeZone = timeZone.id,
+        remark = remark.nullIfBlank(),
         createdAt = createAt.toEpochMilli()
     )
 
