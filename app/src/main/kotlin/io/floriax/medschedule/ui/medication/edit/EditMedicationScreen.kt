@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -86,7 +85,10 @@ private fun EditMedicationScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            EditMedicationTopBar(onBackClick = onBackClick)
+            EditMedicationTopBar(
+                onBackClick = onBackClick,
+                onSaveClick = onSaveMedicationClick
+            )
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
@@ -126,15 +128,6 @@ private fun EditMedicationScreen(
                 maxLines = 3,
                 minLines = 3
             )
-
-            Button(
-                onClick = onSaveMedicationClick,
-                modifier = Modifier
-                    .padding(top = 24.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(text = stringResource(R.string.save))
-            }
         }
     }
 }
@@ -143,6 +136,7 @@ private fun EditMedicationScreen(
 @Composable
 private fun EditMedicationTopBar(
     onBackClick: () -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -157,6 +151,16 @@ private fun EditMedicationTopBar(
                 Icon(
                     imageVector = AppIcons.ArrowBack,
                     contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        actions = {
+            IconButton(
+                onClick = onSaveClick
+            ) {
+                Icon(
+                    imageVector = AppIcons.Check,
+                    contentDescription = stringResource(R.string.save)
                 )
             }
         }
