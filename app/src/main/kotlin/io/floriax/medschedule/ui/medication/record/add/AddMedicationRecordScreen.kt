@@ -17,15 +17,15 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -172,7 +172,17 @@ private fun AddMedicationRecordScreen(
         topBar = {
             AddMedicationRecordTopBar(onBackClick = onBackClick)
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onAddMedicationRecordClick,
+            ) {
+                Icon(
+                    imageVector = AppIcons.Check,
+                    contentDescription = stringResource(R.string.save)
+                )
+            }
+        }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -216,7 +226,7 @@ private fun AddMedicationRecordScreen(
 
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                ElevatedButton(
+                FilledTonalButton(
                     onClick = onAddTakenMedicationItemClick,
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -243,17 +253,6 @@ private fun AddMedicationRecordScreen(
                     maxLines = 3,
                     minLines = 3
                 )
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(24.dp))
-                Button(
-                    onClick = onAddMedicationRecordClick,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = stringResource(R.string.save))
-                }
-                Spacer(modifier = Modifier.height(80.dp))
             }
         }
     }
