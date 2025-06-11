@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -90,19 +90,12 @@ private fun AddMedicationScreen(
         topBar = {
             AddMedicationTopBar(onBackClick = onBackClick)
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        floatingActionButton = {
-            FloatingActionButton(onClick = onSaveMedicationClick) {
-                Icon(
-                    imageVector = AppIcons.Check,
-                    contentDescription = stringResource(R.string.save)
-                )
-            }
-        }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
+                .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             OutlinedTextField(
@@ -110,16 +103,6 @@ private fun AddMedicationScreen(
                 onValueChange = onNameChange,
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.add_medication_name)) },
-                trailingIcon = {
-                    if (state.name.isNotEmpty()) {
-                        IconButton(onClick = { onNameChange("") }) {
-                            Icon(
-                                imageVector = AppIcons.Clear,
-                                contentDescription = stringResource(R.string.clear)
-                            )
-                        }
-                    }
-                },
                 supportingText = {
                     Text(text = if (state.nameError) stringResource(R.string.error_medication_name_empty) else "")
                 },
@@ -133,16 +116,6 @@ private fun AddMedicationScreen(
                 onValueChange = onDoseUnitChange,
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.add_medication_dose_unit)) },
-                trailingIcon = {
-                    if (state.doseUnit.isNotEmpty()) {
-                        IconButton(onClick = { onDoseUnitChange("") }) {
-                            Icon(
-                                imageVector = AppIcons.Clear,
-                                contentDescription = stringResource(R.string.clear)
-                            )
-                        }
-                    }
-                },
                 supportingText = { Text(text = "") },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 singleLine = true
@@ -153,19 +126,18 @@ private fun AddMedicationScreen(
                 onValueChange = onRemarkChange,
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = stringResource(R.string.add_medication_remark)) },
-                trailingIcon = {
-                    if (state.remark.isNotEmpty()) {
-                        IconButton(onClick = { onRemarkChange("") }) {
-                            Icon(
-                                imageVector = AppIcons.Clear,
-                                contentDescription = stringResource(R.string.clear)
-                            )
-                        }
-                    }
-                },
                 maxLines = 3,
                 minLines = 3
             )
+
+            Button(
+                onClick = onSaveMedicationClick,
+                modifier = Modifier
+                    .padding(top = 24.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(text = stringResource(R.string.save))
+            }
         }
     }
 }
