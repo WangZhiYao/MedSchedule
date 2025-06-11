@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -90,7 +90,15 @@ private fun AddMedicationScreen(
         topBar = {
             AddMedicationTopBar(onBackClick = onBackClick)
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onSaveMedicationClick) {
+                Icon(
+                    imageVector = AppIcons.Check,
+                    contentDescription = stringResource(R.string.save)
+                )
+            }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -129,15 +137,6 @@ private fun AddMedicationScreen(
                 maxLines = 3,
                 minLines = 3
             )
-
-            Button(
-                onClick = onSaveMedicationClick,
-                modifier = Modifier
-                    .padding(top = 24.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(text = stringResource(R.string.save))
-            }
         }
     }
 }
