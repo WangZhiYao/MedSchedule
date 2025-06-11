@@ -5,9 +5,14 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,12 +20,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -34,16 +38,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.floriax.medschedule.R
 import io.floriax.medschedule.common.ext.collectSideEffect
 import io.floriax.medschedule.common.ext.collectState
 import io.floriax.medschedule.domain.model.Medication
 import io.floriax.medschedule.ui.designsystem.AppIcons
+import io.floriax.medschedule.ui.theme.AppTheme
 
 /**
  *
@@ -113,11 +121,7 @@ private fun MedicationListScreen(
     val listState = rememberLazyListState()
     val fabVisible by remember {
         derivedStateOf {
-            when {
-                listState.firstVisibleItemIndex > 0 -> false
-                listState.firstVisibleItemScrollOffset > 0 -> false
-                else -> true
-            }
+            listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0
         }
     }
 
@@ -140,17 +144,21 @@ private fun MedicationListScreen(
         }
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.padding(paddingValues),
-            state = listState
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize(),
+            state = listState,
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(
                 items = state.medications,
                 key = { medication -> medication.id }
             ) { medication ->
-                MedicationItem(
+                MedicationCard(
                     medication = medication,
                     onEditClick = { onEditClick(medication) },
-                    onDeleteClick = { onDeleteClick(medication) }
+                    onDeleteClick = { onDeleteClick(medication) },
                 )
             }
         }
@@ -196,67 +204,71 @@ private fun AddMedicationFab(
 }
 
 @Composable
-private fun MedicationItem(
+private fun MedicationCard(
     medication: Medication,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val (showMenu, setShowMenu) = remember { mutableStateOf(false) }
 
-    var showMenu by remember { mutableStateOf(false) }
+    ElevatedCard(modifier = modifier) {
+        Column(modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                val displayName = if (medication.doseUnit.isNotBlank()) {
+                    stringResource(
+                        R.string.medication_name_dose_unit,
+                        medication.name,
+                        medication.doseUnit
+                    )
+                } else {
+                    medication.name
+                }
 
-    Column {
-        ListItem(
-            headlineContent = {
                 Text(
-                    text = if (medication.doseUnit.isNotBlank()) {
-                        stringResource(
-                            R.string.medication_name_dose_unit,
-                            medication.name,
-                            medication.doseUnit
-                        )
-                    } else {
-                        medication.name
-                    }
+                    text = displayName,
+                    modifier = Modifier.basicMarquee(),
+                    style = MaterialTheme.typography.titleMedium,
                 )
-            },
-            modifier = modifier,
-            supportingContent = {
-                Text(
-                    text = if (medication.remark.isNotBlank()) {
-                        medication.remark
-                    } else {
-                        stringResource(R.string.no_remark)
-                    },
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            },
-            trailingContent = {
+
                 Box {
-                    IconButton(onClick = { showMenu = !showMenu }) {
+                    IconButton(onClick = { setShowMenu(!showMenu) }) {
                         Icon(
                             imageVector = AppIcons.More,
                             contentDescription = stringResource(R.string.more_action),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     MedicationMenu(
                         expanded = showMenu,
-                        onDismissRequest = { showMenu = false },
+                        onDismissRequest = { setShowMenu(false) },
                         onEditClick = {
-                            showMenu = false
+                            setShowMenu(false)
                             onEditClick()
                         },
                         onDeleteClick = {
-                            showMenu = false
+                            setShowMenu(false)
                             onDeleteClick()
                         }
                     )
                 }
             }
-        )
-        HorizontalDivider()
+
+            val displayRemark = medication.remark.ifBlank { stringResource(R.string.no_remark) }
+
+            Text(
+                text = displayRemark,
+                modifier = Modifier.padding(end = 16.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
     }
 }
 
@@ -332,4 +344,21 @@ private fun DeleteMedicationConfirmationDialog(
             )
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MedicationCardPreview() {
+    AppTheme {
+        MedicationCard(
+            medication = Medication(
+                id = 0,
+                name = "Paracetamol",
+                remark = "For fever",
+                doseUnit = "mg"
+            ),
+            onEditClick = {},
+            onDeleteClick = {}
+        )
+    }
 }
