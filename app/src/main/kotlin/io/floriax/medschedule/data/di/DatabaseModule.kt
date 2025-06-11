@@ -1,6 +1,7 @@
 package io.floriax.medschedule.data.di
 
 import android.content.Context
+import androidx.paging.PagingConfig
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -29,6 +30,15 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideDatabasePagingConfig(): PagingConfig =
+        PagingConfig(
+            pageSize = 20,
+            prefetchDistance = 5,
+            enablePlaceholders = false
+        )
+
+    @Provides
+    @Singleton
     fun provideAppDatabase(
         @ApplicationContext applicationContext: Context,
         @IODispatcher ioDispatcher: CoroutineDispatcher
@@ -47,5 +57,9 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideMedicationRecordDao(appDatabase: AppDatabase) = appDatabase.medicationRecordDao()
+
+    @Provides
+    @Singleton
+    fun provideTakenMedicationDao(appDatabase: AppDatabase) = appDatabase.takenMedicationDao()
 
 }

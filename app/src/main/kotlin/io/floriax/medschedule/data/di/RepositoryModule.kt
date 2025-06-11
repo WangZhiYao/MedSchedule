@@ -6,8 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.floriax.medschedule.data.repository.MedicationRecordRepositoryImpl
 import io.floriax.medschedule.data.repository.MedicationRepositoryImpl
+import io.floriax.medschedule.data.repository.TakenMedicationRepositoryImpl
 import io.floriax.medschedule.domain.repository.MedicationRecordRepository
 import io.floriax.medschedule.domain.repository.MedicationRepository
+import io.floriax.medschedule.domain.repository.TakenMedicationRepository
 import javax.inject.Singleton
 
 /**
@@ -27,5 +29,9 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindMedicationRecordRepository(impl: MedicationRecordRepositoryImpl): MedicationRecordRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTakenMedicationRepository(impl: TakenMedicationRepositoryImpl): TakenMedicationRepository
 
 }

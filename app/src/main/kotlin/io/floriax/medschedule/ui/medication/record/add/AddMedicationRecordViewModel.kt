@@ -6,19 +6,21 @@ import io.floriax.medschedule.common.base.BaseViewModel
 import io.floriax.medschedule.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.common.ext.isValidDose
 import io.floriax.medschedule.common.ext.logger
+import io.floriax.medschedule.common.ext.removeAt
+import io.floriax.medschedule.common.ext.replaceAt
 import io.floriax.medschedule.domain.enums.MedicationRecordType
 import io.floriax.medschedule.domain.enums.MedicationState
-import io.floriax.medschedule.domain.model.Medication
 import io.floriax.medschedule.domain.model.MedicationRecord
 import io.floriax.medschedule.domain.usecase.AddMedicationRecordUseCase
+import io.floriax.medschedule.domain.usecase.AddTakenMedicationBatchUseCase
 import io.floriax.medschedule.domain.usecase.ObserveMedicationsUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 import javax.inject.Inject
@@ -33,6 +35,7 @@ import javax.inject.Inject
 class AddMedicationRecordViewModel @Inject constructor(
     private val observeMedicationsUseCase: ObserveMedicationsUseCase,
     private val addMedicationRecordUseCase: AddMedicationRecordUseCase,
+    private val addTakenMedicationBatchUseCase: AddTakenMedicationBatchUseCase,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : BaseViewModel<AddMedicationRecordViewState, AddMedicationRecordSideEffect>() {
 
@@ -48,23 +51,14 @@ class AddMedicationRecordViewModel @Inject constructor(
                 .catch { ex ->
                     logger.e("Error observing medication list", ex)
                 }
-                .collect { medicationList ->
+                .collect { medications ->
                     reduce {
-                        copy(
-                            medications = medicationList,
-                            selectedMedication = medicationList.firstOrNull()
-                        )
+                        copy(medications = medications)
                     }
-                    if (medicationList.isEmpty()) {
+                    if (medications.isEmpty()) {
                         postSideEffect(EmptyMedication)
                     }
                 }
-        }
-    }
-
-    fun onMedicationSelect(medication: Medication) {
-        reduce {
-            copy(selectedMedication = medication)
         }
     }
 
@@ -80,12 +74,25 @@ class AddMedicationRecordViewModel @Inject constructor(
         }
     }
 
-    fun onDoseChange(doseString: String) {
+    fun onDeleteTakenMedicationClick(index: Int) {
         reduce {
-            copy(
-                doseString = doseString,
-                doseError = if (doseString.isNotEmpty()) !doseString.isValidDose() else false
-            )
+            val newList = takenMedications.removeAt(index)
+            val validatedList = getValidatedTakenMedications(true, newList)
+            copy(takenMedications = validatedList)
+        }
+    }
+
+    fun onAddTakenMedicationClick() {
+        reduce {
+            copy(takenMedications = takenMedications + TakenMedicationItem())
+        }
+    }
+
+    fun onTakenMedicationItemContentChange(index: Int, takenMedicationItem: TakenMedicationItem) {
+        reduce {
+            val newList = takenMedications.replaceAt(index, takenMedicationItem)
+            val validatedList = getValidatedTakenMedications(true, newList)
+            copy(takenMedications = validatedList)
         }
     }
 
@@ -96,26 +103,21 @@ class AddMedicationRecordViewModel @Inject constructor(
     }
 
     fun attemptAddMedicationRecord() {
-        val medication = currentState.selectedMedication
-        if (medication == null) {
-            reduce { copy(medicationError = true) }
+        val validatedList = getValidatedTakenMedications(false, currentState.takenMedications)
+        if (validatedList.any { item -> item.hasError }) {
+            reduce {
+                copy(takenMedications = validatedList)
+            }
             return
         }
 
         val date = currentState.date
         val time = currentState.time
-
         val timeZone = ZoneOffset.systemDefault()
 
-        val medicationTime = LocalDateTime.of(date, time)
+        val medicationTime = date.atTime(time)
             .atZone(timeZone)
             .toInstant()
-
-        val doseString = currentState.doseString
-        if (!doseString.isValidDose()) {
-            reduce { copy(doseError = true) }
-            return
-        }
 
         val remark = currentState.remark
 
@@ -124,9 +126,7 @@ class AddMedicationRecordViewModel @Inject constructor(
                 emit(
                     addMedicationRecordUseCase(
                         MedicationRecord(
-                            medicationId = medication.id,
                             medicationTime = medicationTime,
-                            dose = doseString.toFloat(),
                             remark = remark,
                             state = MedicationState.TAKEN,
                             type = MedicationRecordType.MANUAL,
@@ -135,6 +135,14 @@ class AddMedicationRecordViewModel @Inject constructor(
                     )
                 )
             }
+                .map { medicationRecord ->
+                    addTakenMedicationBatchUseCase(
+                        validatedList.map { item ->
+                            item.toTakenMedication(medicationRecord.id)
+                        }
+                    )
+                    medicationRecord
+                }
                 .flowOn(ioDispatcher)
                 .catch { ex ->
                     logger.e("Error adding medication record", ex)
@@ -143,6 +151,35 @@ class AddMedicationRecordViewModel @Inject constructor(
                 .collect { medicationRecord ->
                     postSideEffect(AddMedicationRecordSuccess)
                 }
+        }
+    }
+
+    private fun getValidatedTakenMedications(
+        editing: Boolean,
+        takenMedicationItems: List<TakenMedicationItem>
+    ): List<TakenMedicationItem> {
+        val duplicateMedications = takenMedicationItems
+            .mapNotNull { item -> item.selectedMedication }
+            .groupingBy { medication -> medication }
+            .eachCount()
+            .filter { it.value > 1 }
+            .keys
+
+        return takenMedicationItems.map { item ->
+            val medication = item.selectedMedication
+
+            val medicationError = when (medication) {
+                null -> if (editing) null else NotSelected
+                in duplicateMedications -> Duplicated
+                else -> null
+            }
+
+            val doseError = when {
+                editing && item.doseString.isBlank() -> false
+                else -> !item.doseString.isValidDose()
+            }
+
+            item.copy(medicationError = medicationError, doseError = doseError)
         }
     }
 }

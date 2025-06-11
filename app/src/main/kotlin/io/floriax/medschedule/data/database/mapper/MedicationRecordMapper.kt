@@ -1,9 +1,12 @@
 package io.floriax.medschedule.data.database.mapper
 
 import io.floriax.medschedule.data.database.entity.MedicationRecordEntity
+import io.floriax.medschedule.data.database.relation.MedicationRecordWithTakenMedications
+import io.floriax.medschedule.data.database.relation.TakenMedicationWithMedication
 import io.floriax.medschedule.domain.enums.MedicationRecordType
 import io.floriax.medschedule.domain.enums.MedicationState
 import io.floriax.medschedule.domain.model.MedicationRecord
+import io.floriax.medschedule.domain.model.MedicationRecordDetail
 import java.time.Instant
 import java.time.ZoneId
 
@@ -16,9 +19,7 @@ import java.time.ZoneId
 fun MedicationRecordEntity.toModel(): MedicationRecord =
     MedicationRecord(
         id = id,
-        medicationId = medicationId,
         medicationTime = Instant.ofEpochMilli(medicationTime),
-        dose = dose,
         remark = remark,
         state = MedicationState.fromValue(state),
         type = MedicationRecordType.fromValue(type),
@@ -29,12 +30,16 @@ fun MedicationRecordEntity.toModel(): MedicationRecord =
 fun MedicationRecord.toEntity(): MedicationRecordEntity =
     MedicationRecordEntity(
         id = id,
-        medicationId = medicationId,
         medicationTime = medicationTime.toEpochMilli(),
-        dose = dose,
         remark = remark,
         state = state.value,
         type = type.value,
         timeZone = timeZone.id,
         createdAt = createAt.toEpochMilli()
+    )
+
+fun MedicationRecordWithTakenMedications.toDetail(): MedicationRecordDetail =
+    MedicationRecordDetail(
+        record = medicationRecord.toModel(),
+        takenMedications = takenMedications.map(TakenMedicationWithMedication::toDetail)
     )

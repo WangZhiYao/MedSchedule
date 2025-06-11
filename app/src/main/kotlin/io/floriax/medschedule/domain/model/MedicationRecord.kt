@@ -13,9 +13,7 @@ import java.time.ZoneId
  */
 data class MedicationRecord(
     val id: Long = 0,
-    val medicationId: Long,
     val medicationTime: Instant,
-    val dose: Float,
     val remark: String,
     val state: MedicationState,
     val type: MedicationRecordType,

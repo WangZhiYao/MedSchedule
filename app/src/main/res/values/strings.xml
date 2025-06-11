@@ -18,9 +18,12 @@
     <string name="edit_medication_remark">Remark</string>
 
     <string name="add_medication_record_title">Add Medication Record</string>
-    <string name="add_medication_record_medication">Medication</string>
     <string name="add_medication_record_date">Date</string>
     <string name="add_medication_record_time">Time</string>
+    <string name="add_medication_record_medication_and_dose">Medication and dose</string>
+    <string name="add_medication_record_add_medication_and_dose">Add medication and dose</string>
+    <string name="add_medication_record_medication_index">Medication: %d</string>
+    <string name="add_medication_record_medication">Medication</string>
     <string name="add_medication_record_dose">Dose</string>
     <string name="add_medication_record_remark">Remark</string>
 
@@ -53,6 +56,7 @@
     <string name="error_medication_add_failed">Medication add failed</string>
     <string name="error_medication_update_failed">Medication update failed</string>
     <string name="error_medication_not_selected">Medication not selected</string>
+    <string name="error_medication_duplicated">Medication not selected</string>
     <string name="error_medication_dose_invalid">Please enter a valid dose (up to 2 decimal places)</string>
     <string name="error_add_medication_record_failed">Medication record add failed</string>
 
