@@ -239,7 +239,7 @@ private fun MedicationCard(
                     IconButton(onClick = { setShowMenu(!showMenu) }) {
                         Icon(
                             imageVector = AppIcons.More,
-                            contentDescription = stringResource(R.string.more_action),
+                            contentDescription = stringResource(R.string.more),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }

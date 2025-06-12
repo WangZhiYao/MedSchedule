@@ -9,7 +9,7 @@
     <string name="confirm">Confirm</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
-    <string name="more_action">More</string>
+    <string name="more">More</string>
     <string name="save">Save</string>
 
     <string name="medication_name_dose_unit" translatable="false">%s (%s)</string>
