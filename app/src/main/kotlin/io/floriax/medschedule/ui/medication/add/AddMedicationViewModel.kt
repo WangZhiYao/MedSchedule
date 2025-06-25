@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddMedicationViewModel @Inject constructor(
     private val addMedicationUseCase: AddMedicationUseCase,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher
+    @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel<AddMedicationViewState, AddMedicationSideEffect>() {
 
     private val logger by logger<AddMedicationViewModel>()

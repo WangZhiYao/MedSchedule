@@ -25,7 +25,7 @@ import javax.inject.Inject
 class MedicationListViewModel @Inject constructor(
     private val observeMedicationsUseCase: ObserveMedicationsUseCase,
     private val deleteMedicationUseCase: DeleteMedicationUseCase,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher
+    @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel<MedicationListViewState, MedicationListSideEffect>() {
 
     private val logger by logger<MedicationListViewModel>()

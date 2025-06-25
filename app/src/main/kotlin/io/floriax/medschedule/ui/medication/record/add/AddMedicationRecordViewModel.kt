@@ -36,7 +36,7 @@ class AddMedicationRecordViewModel @Inject constructor(
     private val observeMedicationsUseCase: ObserveMedicationsUseCase,
     private val addMedicationRecordUseCase: AddMedicationRecordUseCase,
     private val addTakenMedicationBatchUseCase: AddTakenMedicationBatchUseCase,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    @param:IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : BaseViewModel<AddMedicationRecordViewState, AddMedicationRecordSideEffect>() {
 
     private val logger by logger<AddMedicationRecordViewModel>()

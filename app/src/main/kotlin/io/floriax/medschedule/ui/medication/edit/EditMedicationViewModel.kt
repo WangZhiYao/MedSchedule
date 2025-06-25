@@ -30,7 +30,7 @@ class EditMedicationViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val getMedicationByIdUseCase: GetMedicationByIdUseCase,
     private val updateMedicationUseCase: UpdateMedicationUseCase,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher
+    @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel<EditMedicationViewState, EditMedicationSideEffect>() {
 
     private val logger by logger<EditMedicationViewModel>()
