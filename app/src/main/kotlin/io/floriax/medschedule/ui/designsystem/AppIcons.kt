@@ -2,7 +2,6 @@ package io.floriax.medschedule.ui.designsystem
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.CalendarToday
 import androidx.compose.material.icons.rounded.Check
@@ -32,7 +31,6 @@ object AppIcons {
     val Edit = Icons.Rounded.Edit
     val Delete = Icons.Rounded.Delete
     val Check = Icons.Rounded.Check
-    val Clear = Icons.Outlined.Cancel
     val Save = Icons.Rounded.Save
 
 }

@@ -240,16 +240,6 @@ private fun AddMedicationRecordScreen(
                     onValueChange = onRemarkChange,
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(text = stringResource(R.string.edit_medication_remark)) },
-                    trailingIcon = {
-                        if (state.remark.isNotEmpty()) {
-                            IconButton(onClick = { onRemarkChange("") }) {
-                                Icon(
-                                    imageVector = AppIcons.Clear,
-                                    contentDescription = stringResource(R.string.clear)
-                                )
-                            }
-                        }
-                    },
                     maxLines = 3,
                     minLines = 3
                 )
