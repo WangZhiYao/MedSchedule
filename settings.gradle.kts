@@ -29,6 +29,6 @@ include(":core:ui")
 include(":core:common")
 
 include(":feature:home")
+include(":feature:medication-plan")
 include(":feature:medication")
-include(":feature:schedule")
-include(":feature:record")
+include(":feature:medication-record")

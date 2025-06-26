@@ -14,8 +14,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import io.floriax.medschedule.feature.home.navigation.navigateToHome
 import io.floriax.medschedule.feature.medication.navigation.navigateToMedicineCabinet
-import io.floriax.medschedule.feature.record.navigation.navigateToMedicationRecord
-import io.floriax.medschedule.feature.schedule.navigation.navigateToMedicationSchedule
+import io.floriax.medschedule.feature.medicationplan.navigation.navigateToMedicationPlan
+import io.floriax.medschedule.feature.medicationrecord.navigation.navigateToMedicationRecord
 import io.floriax.medschedule.navigation.main.MainDestination
 
 /**
@@ -71,10 +71,10 @@ data class MainScreenState(
 
             when (destination) {
                 MainDestination.HOME -> navController.navigateToHome(navOptions)
-                MainDestination.MEDICATION_SCHEDULE ->
-                    navController.navigateToMedicationSchedule(navOptions)
+                MainDestination.MEDICATION_PLAN ->
+                    navController.navigateToMedicationPlan(navOptions)
 
-                MainDestination.MEDICINE_CABINET ->
+                MainDestination.MEDICATION ->
                     navController.navigateToMedicineCabinet(navOptions)
 
                 MainDestination.MEDICATION_RECORD ->

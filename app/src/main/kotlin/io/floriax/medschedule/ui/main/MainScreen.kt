@@ -14,8 +14,8 @@ import io.floriax.medschedule.ext.isRouteInHierarchy
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.home.navigation.homeScreen
 import io.floriax.medschedule.feature.medication.navigation.medicineCabinetScreen
-import io.floriax.medschedule.feature.record.navigation.medicationRecordScreen
-import io.floriax.medschedule.feature.schedule.navigation.medicationScheduleScreen
+import io.floriax.medschedule.feature.medicationplan.navigation.medicationPlanScreen
+import io.floriax.medschedule.feature.medicationrecord.navigation.medicationRecordScreen
 import io.floriax.medschedule.navigation.main.MainDestination
 
 /**
@@ -82,7 +82,7 @@ private fun MainNavHost(
         modifier = modifier
     ) {
         homeScreen()
-        medicationScheduleScreen()
+        medicationPlanScreen()
         medicineCabinetScreen()
         medicationRecordScreen()
     }

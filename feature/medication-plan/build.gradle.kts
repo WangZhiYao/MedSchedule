@@ -1,27 +1,23 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.plugin.compose)
     alias(libs.plugins.kotlin.plugin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.room)
 }
 
 android {
-    namespace = "io.floriax.medschedule"
+    namespace = "io.floriax.medschedule.feature.medicationplan"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "io.floriax.medschedule"
         minSdk = 28
-        targetSdk = 36
-        versionCode = 1
-        versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -39,17 +35,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
-
     buildFeatures {
         compose = true
-        buildConfig = true
-    }
-
-    ksp {
-        arg("room.generateKotlin", "true")
     }
 }
 
@@ -68,18 +55,15 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    debugImplementation(libs.leakcanary.android)
 
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
-    implementation(project(":core:common"))
-    implementation(project(":core:data"))
-    implementation(project(":core:ui"))
+    // KotlinX Serialization
+    implementation(libs.kotlinx.serialization.json)
 
-    implementation(project(":feature:home"))
-    implementation(project(":feature:medication-plan"))
-    implementation(project(":feature:medication"))
-    implementation(project(":feature:medication-record"))
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
+    implementation(project(":core:domain"))
 }

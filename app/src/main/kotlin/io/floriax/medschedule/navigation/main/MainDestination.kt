@@ -6,14 +6,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import io.floriax.medschedule.core.ui.icon.AppIcons
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.medication.navigation.MedicineCabinetRoute
-import io.floriax.medschedule.feature.record.navigation.MedicationRecordRoute
-import io.floriax.medschedule.feature.schedule.navigation.MedicationScheduleRoute
+import io.floriax.medschedule.feature.medicationplan.navigation.MedicationPlanRoute
+import io.floriax.medschedule.feature.medicationrecord.navigation.MedicationRecordRoute
 import kotlin.reflect.KClass
 import io.floriax.medschedule.feature.home.R as homeR
 import io.floriax.medschedule.feature.medication.R as medicationR
-import io.floriax.medschedule.feature.record.R as recordR
-import io.floriax.medschedule.feature.schedule.R as scheduleR
-
+import io.floriax.medschedule.feature.medicationplan.R as medicationPlanR
+import io.floriax.medschedule.feature.medicationrecord.R as medicationRecordR
 
 /**
  *
@@ -31,34 +30,34 @@ enum class MainDestination(
         route = HomeRoute::class
     ),
 
-    MEDICATION_SCHEDULE(
-        titleRes = scheduleR.string.feature_medication_schedule_title,
-        route = MedicationScheduleRoute::class
+    MEDICATION_PLAN(
+        titleRes = medicationPlanR.string.feature_medication_plan_title,
+        route = MedicationPlanRoute::class
     ),
 
-    MEDICINE_CABINET(
-        titleRes = medicationR.string.feature_medicine_cabinet_title,
+    MEDICATION(
+        titleRes = medicationR.string.feature_medication_title,
         route = MedicineCabinetRoute::class
     ),
 
     MEDICATION_RECORD(
-        titleRes = recordR.string.feature_medication_record_title,
+        titleRes = medicationRecordR.string.feature_medication_record_title,
         route = MedicationRecordRoute::class
     );
 
     val selectedIcon: ImageVector
         @Composable get() = when (this) {
             HOME -> AppIcons.Home
-            MEDICATION_SCHEDULE -> AppIcons.CalendarClock
-            MEDICINE_CABINET -> AppIcons.MedicalServices
+            MEDICATION_PLAN -> AppIcons.CalendarClock
+            MEDICATION -> AppIcons.MedicalServices
             MEDICATION_RECORD -> AppIcons.History
         }
 
     val unselectedIcon: ImageVector
         @Composable get() = when (this) {
             HOME -> AppIcons.HomeBorder
-            MEDICATION_SCHEDULE -> AppIcons.CalendarClockBorder
-            MEDICINE_CABINET -> AppIcons.MedicalServicesBorder
+            MEDICATION_PLAN -> AppIcons.CalendarClockBorder
+            MEDICATION -> AppIcons.MedicalServicesBorder
             MEDICATION_RECORD -> AppIcons.HistoryBorder
         }
 }
