@@ -2,8 +2,6 @@ package io.floriax.medschedule
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import io.floriax.meds.common.logging.LogLevel
-import io.floriax.meds.common.logging.Logger
 
 /**
  *
@@ -12,14 +10,4 @@ import io.floriax.meds.common.logging.Logger
  * @since 2025/5/30
  */
 @HiltAndroidApp
-class MedScheduleApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        Logger.init(LOG_LEVEL)
-    }
-
-    companion object {
-        val LOG_LEVEL: LogLevel = if (BuildConfig.DEBUG) LogLevel.DEBUG else LogLevel.WARN
-    }
-}
+class MedScheduleApplication : Application()
