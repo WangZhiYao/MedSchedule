@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import io.floriax.medschedule.ui.main.MainRoute
+import io.floriax.medschedule.ui.main.rememberMainScreenState
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,10 +20,9 @@ data object MainRoute
 fun NavController.navigateToMain(navOptions: NavOptions) =
     navigate(route = MainRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.mainScreen(
-    mainScreenState: MainScreenState,
-) {
+fun NavGraphBuilder.mainScreen() {
     composable<MainRoute> {
-        MainRoute(mainScreenState)
+        val mainScreenState = rememberMainScreenState()
+        MainRoute(mainScreenState = mainScreenState)
     }
 }

@@ -1,4 +1,4 @@
-package io.floriax.medschedule.navigation.main
+package io.floriax.medschedule.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -16,6 +16,7 @@ import io.floriax.medschedule.feature.home.navigation.navigateToHome
 import io.floriax.medschedule.feature.medication.navigation.navigateToMedicineCabinet
 import io.floriax.medschedule.feature.record.navigation.navigateToMedicationRecord
 import io.floriax.medschedule.feature.schedule.navigation.navigateToMedicationSchedule
+import io.floriax.medschedule.navigation.main.MainDestination
 
 /**
  *
