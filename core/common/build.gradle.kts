@@ -51,4 +51,6 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     api(libs.bundles.kotlinx)
+
+    implementation(libs.timber)
 }
