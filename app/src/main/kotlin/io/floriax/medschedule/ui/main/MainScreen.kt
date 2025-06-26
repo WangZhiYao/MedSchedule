@@ -17,8 +17,6 @@ import io.floriax.medschedule.feature.medication.navigation.medicineCabinetScree
 import io.floriax.medschedule.feature.record.navigation.medicationRecordScreen
 import io.floriax.medschedule.feature.schedule.navigation.medicationScheduleScreen
 import io.floriax.medschedule.navigation.main.MainDestination
-import io.floriax.medschedule.navigation.main.MainScreenState
-import io.floriax.medschedule.navigation.main.rememberMainScreenState
 
 /**
  *

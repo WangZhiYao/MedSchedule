@@ -71,17 +71,14 @@ data class MainScreenState(
 
             when (destination) {
                 MainDestination.HOME -> navController.navigateToHome(navOptions)
-                MainDestination.MEDICATION_SCHEDULE -> navController.navigateToMedicationSchedule(
-                    navOptions
-                )
+                MainDestination.MEDICATION_SCHEDULE ->
+                    navController.navigateToMedicationSchedule(navOptions)
 
-                MainDestination.MEDICINE_CABINET -> navController.navigateToMedicineCabinet(
-                    navOptions
-                )
+                MainDestination.MEDICINE_CABINET ->
+                    navController.navigateToMedicineCabinet(navOptions)
 
-                MainDestination.MEDICATION_RECORD -> navController.navigateToMedicationRecord(
-                    navOptions
-                )
+                MainDestination.MEDICATION_RECORD ->
+                    navController.navigateToMedicationRecord(navOptions)
             }
         }
     }
