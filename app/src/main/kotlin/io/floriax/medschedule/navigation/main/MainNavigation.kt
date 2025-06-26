@@ -19,8 +19,10 @@ data object MainRoute
 fun NavController.navigateToMain(navOptions: NavOptions) =
     navigate(route = MainRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.mainScreen() {
+fun NavGraphBuilder.mainScreen(
+    mainScreenState: MainScreenState,
+) {
     composable<MainRoute> {
-        MainRoute()
+        MainRoute(mainScreenState)
     }
 }
