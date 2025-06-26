@@ -74,34 +74,6 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
-    // Kotlinx
-    implementation(libs.bundles.kotlinx)
-    // Serialization
-    implementation(libs.kotlinx.serialization.json)
-
-    // Timber
-    implementation(libs.timber)
-
-    // AndroidX UI
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.splashscreen)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.bundles.androidx.compose)
-
-    // DataStore
-    implementation(libs.androidx.datastore.preferences)
-
-    // Room
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
-    ksp(libs.androidx.room.compiler)
-
-    // Paging
-    implementation(libs.bundles.paging)
-
     implementation(project(":core:common"))
     implementation(project(":core:data"))
     implementation(project(":core:ui"))

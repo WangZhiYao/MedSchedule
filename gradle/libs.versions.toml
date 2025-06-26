@@ -61,13 +61,12 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 # Paging
-androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 # Timber
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 [bundles]
-kotlinx = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
+kotlinx-coroutines = ["kotlinx-coroutines-core", "kotlinx-coroutines-android"]
 androidx-compose = [
     "androidx-compose-ui",
     "androidx-compose-ui-graphics",
@@ -76,9 +75,9 @@ androidx-compose = [
     "androidx-compose-material-icons-extended",
     "androidx-compose-material3-adaptive-navigation-suite",
     "androidx-navigation-compose",
-    "androidx-hilt-navigation-compose"
+    "androidx-hilt-navigation-compose",
+    "androidx-paging-compose"
 ]
-paging = ["androidx-paging-runtime", "androidx-paging-compose"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }

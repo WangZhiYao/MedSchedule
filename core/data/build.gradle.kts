@@ -60,6 +60,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
+    // KotlinX Serialization
+    implementation(libs.kotlinx.serialization.json)
+
     // DataStore
     implementation(libs.androidx.datastore.preferences)
 

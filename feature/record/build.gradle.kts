@@ -60,6 +60,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
+    // KotlinX Serialization
+    implementation(libs.kotlinx.serialization.json)
+
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
     implementation(project(":core:domain"))

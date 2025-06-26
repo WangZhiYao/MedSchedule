@@ -1,4 +1,4 @@
-package io.floriax.medschedule.navigation
+package io.floriax.medschedule.navigation.main
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
