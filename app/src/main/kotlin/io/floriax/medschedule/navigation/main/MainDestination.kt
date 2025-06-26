@@ -3,7 +3,7 @@ package io.floriax.medschedule.navigation.main
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.floriax.medschedule.core.ui.icon.AppIcon
+import io.floriax.medschedule.core.ui.icon.AppIcons
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.medication.navigation.MedicineCabinetRoute
 import io.floriax.medschedule.feature.record.navigation.MedicationRecordRoute
@@ -48,17 +48,17 @@ enum class MainDestination(
 
     val selectedIcon: ImageVector
         @Composable get() = when (this) {
-            HOME -> AppIcon.Home
-            MEDICATION_SCHEDULE -> AppIcon.CalendarClock
-            MEDICINE_CABINET -> AppIcon.MedicalServices
-            MEDICATION_RECORD -> AppIcon.History
+            HOME -> AppIcons.Home
+            MEDICATION_SCHEDULE -> AppIcons.CalendarClock
+            MEDICINE_CABINET -> AppIcons.MedicalServices
+            MEDICATION_RECORD -> AppIcons.History
         }
 
     val unselectedIcon: ImageVector
         @Composable get() = when (this) {
-            HOME -> AppIcon.HomeBorder
-            MEDICATION_SCHEDULE -> AppIcon.CalendarClockBorder
-            MEDICINE_CABINET -> AppIcon.MedicalServicesBorder
-            MEDICATION_RECORD -> AppIcon.HistoryBorder
+            HOME -> AppIcons.HomeBorder
+            MEDICATION_SCHEDULE -> AppIcons.CalendarClockBorder
+            MEDICINE_CABINET -> AppIcons.MedicalServicesBorder
+            MEDICATION_RECORD -> AppIcons.HistoryBorder
         }
 }
