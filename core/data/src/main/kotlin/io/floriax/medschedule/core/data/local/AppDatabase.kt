@@ -3,7 +3,7 @@ package io.floriax.medschedule.core.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import io.floriax.medschedule.core.data.local.dao.MedicationDao
-import io.floriax.medschedule.data.database.entity.MedicationEntity
+import io.floriax.medschedule.core.data.local.entity.MedicationEntity
 
 /**
  *

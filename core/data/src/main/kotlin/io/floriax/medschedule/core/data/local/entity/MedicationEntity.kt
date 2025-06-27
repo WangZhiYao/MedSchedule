@@ -1,4 +1,4 @@
-package io.floriax.medschedule.data.database.entity
+package io.floriax.medschedule.core.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
