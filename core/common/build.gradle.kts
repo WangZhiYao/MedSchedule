@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.plugin.compose)
     alias(libs.plugins.kotlin.plugin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
@@ -33,6 +34,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
+
+    buildFeatures {
+        compose = true
+    }
 }
 
 kotlin {
@@ -55,6 +60,8 @@ dependencies {
     api(libs.bundles.kotlinx.coroutines)
     // KotlinX Serialization
     api(libs.kotlinx.serialization.json)
+
+    api(libs.androidx.lifecycle.runtime.compose)
 
     implementation(libs.timber)
 }

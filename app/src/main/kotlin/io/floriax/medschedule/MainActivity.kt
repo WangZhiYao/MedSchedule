@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
-import io.floriax.medschedule.core.ui.theme.AppTheme
+import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 
 /**
  *

@@ -25,8 +25,10 @@ include(":app")
 
 include(":core:data")
 include(":core:domain")
-include(":core:ui")
 include(":core:common")
+
+include(":shared:designsystem")
+include(":shared:ui")
 
 include(":feature:home")
 include(":feature:medication-plan")

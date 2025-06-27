@@ -3,11 +3,11 @@ package io.floriax.medschedule.navigation.main
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.floriax.medschedule.core.ui.icon.AppIcons
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.medication.navigation.MedicineCabinetRoute
 import io.floriax.medschedule.feature.medicationplan.navigation.MedicationPlanRoute
 import io.floriax.medschedule.feature.medicationrecord.navigation.MedicationRecordRoute
+import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import kotlin.reflect.KClass
 import io.floriax.medschedule.feature.home.R as homeR
 import io.floriax.medschedule.feature.medication.R as medicationR

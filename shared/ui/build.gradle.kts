@@ -4,13 +4,10 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.plugin.compose)
-    alias(libs.plugins.kotlin.plugin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt.android)
 }
 
 android {
-    namespace = "io.floriax.medschedule.feature.medication"
+    namespace = "io.floriax.medschedule.shared.ui"
     compileSdk = 36
 
     defaultConfig {
@@ -56,15 +53,12 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // Hilt
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
+    api(project(":shared:designsystem"))
 
-    // KotlinX Serialization
-    implementation(libs.kotlinx.serialization.json)
-
-    implementation(project(":core:common"))
-    implementation(project(":core:domain"))
-
-    implementation(project(":shared:ui"))
+    api(libs.androidx.core.ktx)
+    api(libs.androidx.activity.compose)
+    api(libs.androidx.compose.material3.adaptive.navigation.suite)
+    api(libs.androidx.navigation.compose)
+    api(libs.androidx.hilt.navigation.compose)
+    api(libs.androidx.paging.compose)
 }

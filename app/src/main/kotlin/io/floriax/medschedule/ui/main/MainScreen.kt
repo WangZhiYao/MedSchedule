@@ -9,7 +9,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import io.floriax.medschedule.core.ui.theme.AppTheme
 import io.floriax.medschedule.ext.isRouteInHierarchy
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.home.navigation.homeScreen
@@ -17,6 +16,7 @@ import io.floriax.medschedule.feature.medication.navigation.medicineCabinetScree
 import io.floriax.medschedule.feature.medicationplan.navigation.medicationPlanScreen
 import io.floriax.medschedule.feature.medicationrecord.navigation.medicationRecordScreen
 import io.floriax.medschedule.navigation.main.MainDestination
+import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 
 /**
  *

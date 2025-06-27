@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(project(":core:common"))
-    implementation(project(":core:ui"))
     implementation(project(":core:domain"))
+
+    implementation(project(":shared:ui"))
 }

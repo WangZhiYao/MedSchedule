@@ -15,12 +15,14 @@
             <option value="$PROJECT_DIR$/core/common" />
             <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/domain" />
-            <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/medication" />
             <option value="$PROJECT_DIR$/feature/medication-plan" />
             <option value="$PROJECT_DIR$/feature/medication-record" />
+            <option value="$PROJECT_DIR$/shared" />
+            <option value="$PROJECT_DIR$/shared/designsystem" />
+            <option value="$PROJECT_DIR$/shared/ui" />
           </set>
         </option>
       </GradleProjectSettings>
