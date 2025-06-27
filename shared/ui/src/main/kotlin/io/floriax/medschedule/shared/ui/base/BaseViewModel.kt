@@ -1,4 +1,4 @@
-package io.floriax.medschedule.core.common.base
+package io.floriax.medschedule.shared.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
