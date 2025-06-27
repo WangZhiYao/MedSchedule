@@ -52,6 +52,7 @@ fun AddMedicationRoute(
     val snackbarHostState = remember { SnackbarHostState() }
 
     val nameFocusRequester = remember { FocusRequester() }
+    val doseUnitFocusRequester = remember { FocusRequester() }
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
@@ -66,6 +67,10 @@ fun AddMedicationRoute(
             RequestFocusOnNameField -> {
                 nameFocusRequester.requestFocus()
             }
+
+            RequestFocusOnDoseUnitField -> {
+                doseUnitFocusRequester.requestFocus()
+            }
         }
     }
 
@@ -73,6 +78,7 @@ fun AddMedicationRoute(
         state = state,
         snackbarHostState = snackbarHostState,
         nameFocusRequester = nameFocusRequester,
+        doseUnitFocusRequester = doseUnitFocusRequester,
         onBackClick = onBackClick,
         onMedicationNameChange = viewModel::onMedicationNameChange,
         onDoseUnitChange = viewModel::onDoseUnitChange,
@@ -86,6 +92,7 @@ private fun AddMedicationScreen(
     state: AddMedicationViewState,
     snackbarHostState: SnackbarHostState,
     nameFocusRequester: FocusRequester,
+    doseUnitFocusRequester: FocusRequester,
     onBackClick: () -> Unit,
     onMedicationNameChange: (String) -> Unit,
     onDoseUnitChange: (String) -> Unit,
@@ -105,6 +112,7 @@ private fun AddMedicationScreen(
         AddMedicationContent(
             state = state,
             nameFocusRequester = nameFocusRequester,
+            doseUnitFocusRequester = doseUnitFocusRequester,
             onMedicationNameChange = onMedicationNameChange,
             onDoseUnitChange = onDoseUnitChange,
             onNotesChange = onNotesChange,
@@ -140,6 +148,7 @@ private fun AddMedicationTopBar(
 private fun AddMedicationContent(
     state: AddMedicationViewState,
     nameFocusRequester: FocusRequester,
+    doseUnitFocusRequester: FocusRequester,
     onMedicationNameChange: (String) -> Unit,
     onDoseUnitChange: (String) -> Unit,
     onNotesChange: (String) -> Unit,
@@ -169,10 +178,14 @@ private fun AddMedicationContent(
         OutlinedTextField(
             value = state.doseUnit,
             onValueChange = onDoseUnitChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(doseUnitFocusRequester),
             label = { Text(text = stringResource(R.string.screen_add_medication_dose_unit_label)) },
             placeholder = { Text(text = stringResource(R.string.screen_add_medication_dose_unit_placeholder)) },
-            supportingText = { Text(text = "") },
+            supportingText = {
+                Text(text = if (state.doseUnitError) stringResource(R.string.screen_add_medication_error_dose_unit_empty) else "")
+            },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             singleLine = true
         )
@@ -205,6 +218,7 @@ private fun AddMedicationScreenPreview() {
         AddMedicationScreen(
             state = AddMedicationViewState(),
             snackbarHostState = remember { SnackbarHostState() },
+            doseUnitFocusRequester = remember { FocusRequester() },
             nameFocusRequester = remember { FocusRequester() },
             onBackClick = {},
             onMedicationNameChange = {},

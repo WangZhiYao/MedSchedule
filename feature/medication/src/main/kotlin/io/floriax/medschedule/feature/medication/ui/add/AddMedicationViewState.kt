@@ -10,5 +10,6 @@ data class AddMedicationViewState(
     val medicationName: String = "",
     val medicationNameError: Boolean = false,
     val doseUnit: String = "",
+    val doseUnitError: Boolean = false,
     val notes: String = ""
 )

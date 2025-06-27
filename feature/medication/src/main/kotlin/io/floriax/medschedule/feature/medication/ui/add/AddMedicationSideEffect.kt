@@ -15,3 +15,5 @@ data class AddMedicationSuccess(val medication: Medication) : AddMedicationSideE
 data object AddMedicationFailure : AddMedicationSideEffect()
 
 data object RequestFocusOnNameField : AddMedicationSideEffect()
+
+data object RequestFocusOnDoseUnitField : AddMedicationSideEffect()

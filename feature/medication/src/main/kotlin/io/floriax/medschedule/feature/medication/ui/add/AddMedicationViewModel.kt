@@ -39,7 +39,7 @@ class AddMedicationViewModel @Inject constructor(
 
     fun onDoseUnitChange(doseUnit: String) {
         reduce {
-            copy(doseUnit = doseUnit)
+            copy(doseUnit = doseUnit, doseUnitError = doseUnit.isBlank())
         }
     }
 
@@ -60,6 +60,14 @@ class AddMedicationViewModel @Inject constructor(
         }
 
         val doseUnit = currentState.doseUnit
+        if (doseUnit.isBlank()) {
+            reduce {
+                copy(doseUnitError = true)
+            }
+            postSideEffect(RequestFocusOnDoseUnitField)
+            return
+        }
+
         val notes = currentState.notes
 
         viewModelScope.launch {
