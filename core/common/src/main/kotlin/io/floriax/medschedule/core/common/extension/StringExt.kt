@@ -1,4 +1,4 @@
-package io.floriax.medschedule.common.ext
+package io.floriax.medschedule.core.common.extension
 
 /**
  *
