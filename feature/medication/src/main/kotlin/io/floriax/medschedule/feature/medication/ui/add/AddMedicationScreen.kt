@@ -32,7 +32,7 @@ import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
-import io.floriax.medschedule.shared.ui.R as uiR
+import io.floriax.medschedule.shared.ui.R as sharedUiR
 
 /**
  *
@@ -129,7 +129,7 @@ private fun AddMedicationTopBar(
             ) {
                 Icon(
                     imageVector = AppIcons.ArrowBack,
-                    contentDescription = stringResource(uiR.string.core_ui_back)
+                    contentDescription = stringResource(sharedUiR.string.core_ui_back)
                 )
             }
         }
@@ -193,7 +193,7 @@ private fun AddMedicationContent(
                 .fillMaxWidth()
                 .padding(top = 48.dp)
         ) {
-            Text(text = stringResource(uiR.string.core_ui_save))
+            Text(text = stringResource(sharedUiR.string.core_ui_save))
         }
     }
 }
