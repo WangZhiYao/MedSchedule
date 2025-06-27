@@ -1,6 +1,7 @@
 package io.floriax.medschedule.shared.designsystem.icon
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MedicalServices
@@ -38,5 +39,6 @@ object AppIcons {
     val HistoryBorder = Icons.Outlined.History
 
     val Add = Icons.Rounded.Add
+    val ArrowBack = Icons.AutoMirrored.Rounded.ArrowBack
 
 }

@@ -26,17 +26,20 @@ import io.floriax.medschedule.shared.designsystem.theme.AppTheme
  */
 @Composable
 fun MainRoute(
-    mainScreenState: MainScreenState
+    mainScreenState: MainScreenState,
+    onAddMedicationClick: () -> Unit,
 ) {
 
     MainScreen(
-        mainScreenState = mainScreenState
+        mainScreenState = mainScreenState,
+        onAddMedicationClick = onAddMedicationClick
     )
 }
 
 @Composable
 private fun MainScreen(
     mainScreenState: MainScreenState,
+    onAddMedicationClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -67,13 +70,17 @@ private fun MainScreen(
         },
         modifier = modifier
     ) {
-        MainNavHost(mainScreenState.navController)
+        MainNavHost(
+            navController = mainScreenState.navController,
+            onAddMedicationClick = onAddMedicationClick
+        )
     }
 }
 
 @Composable
 private fun MainNavHost(
     navController: NavHostController,
+    onAddMedicationClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -83,7 +90,7 @@ private fun MainNavHost(
     ) {
         homeScreen()
         medicationPlanScreen()
-        medicineCabinetScreen()
+        medicineCabinetScreen(onAddMedicationClick = onAddMedicationClick)
         medicationRecordScreen()
     }
 }
@@ -93,7 +100,8 @@ private fun MainNavHost(
 fun MainScreenPreview() {
     AppTheme {
         MainScreen(
-            mainScreenState = rememberMainScreenState()
+            mainScreenState = rememberMainScreenState(),
+            onAddMedicationClick = {}
         )
     }
 }

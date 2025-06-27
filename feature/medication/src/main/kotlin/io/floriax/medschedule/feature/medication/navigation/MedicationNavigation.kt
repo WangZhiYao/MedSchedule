@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import io.floriax.medschedule.feature.medication.ui.MedicineCabinetRoute
+import io.floriax.medschedule.feature.medication.ui.add.AddMedicationRoute
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,11 +17,29 @@ import kotlinx.serialization.Serializable
 @Serializable
 data object MedicineCabinetRoute
 
+@Serializable
+data object AddMedicationRoute
+
 fun NavController.navigateToMedicineCabinet(navOptions: NavOptions) =
     navigate(route = MedicineCabinetRoute, navOptions)
 
-fun NavGraphBuilder.medicineCabinetScreen() {
+fun NavController.navigateToAddMedication() =
+    navigate(route = AddMedicationRoute)
+
+fun NavGraphBuilder.medicineCabinetScreen(
+    onAddMedicationClick: () -> Unit,
+) {
     composable<MedicineCabinetRoute> {
-        MedicineCabinetRoute()
+        MedicineCabinetRoute(
+            onAddMedicationClick = onAddMedicationClick
+        )
+    }
+}
+
+fun NavGraphBuilder.addMedicationScreen(
+    onBackClick: () -> Unit,
+) {
+    composable<AddMedicationRoute> {
+        AddMedicationRoute(onBackClick = onBackClick)
     }
 }

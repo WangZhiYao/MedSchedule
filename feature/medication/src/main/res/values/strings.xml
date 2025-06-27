@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_medication_title">Meds</string>
+
+    <string name="screen_medicine_cabinet_title">Medicine Cabinet</string>
+    <string name="screen_medicine_cabinet_subtitle">Keep track of all your medications and stock</string>
+
+    <string name="screen_add_medication_title">Add Medication</string>
+    <string name="screen_add_medication_medication_name_label">Medication name</string>
+    <string name="screen_add_medication_medication_name_placeholder">e.g., Emergen-C</string>
+    <string name="screen_add_medication_error_name_empty">Medication name cannot be empty</string>
+    <string name="screen_add_medication_dose_unit_label">Dose Unit</string>
+    <string name="screen_add_medication_dose_unit_placeholder">e.g., mg, ml, tables</string>
+    <string name="screen_add_medication_notes_label">Notes</string>
+    <string name="screen_add_medication_notes_placeholder">e.g., after eating, before sleeping</string>
+    <string name="screen_add_medication_save">Save</string>
+    <string name="screen_add_medication_error_add_failed">Medication add failed</string>
 </resources>

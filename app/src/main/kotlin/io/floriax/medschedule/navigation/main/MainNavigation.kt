@@ -20,9 +20,14 @@ data object MainRoute
 fun NavController.navigateToMain(navOptions: NavOptions) =
     navigate(route = MainRoute, navOptions = navOptions)
 
-fun NavGraphBuilder.mainScreen() {
+fun NavGraphBuilder.mainScreen(
+    onAddMedicationClick: () -> Unit,
+) {
     composable<MainRoute> {
         val mainScreenState = rememberMainScreenState()
-        MainRoute(mainScreenState = mainScreenState)
+        MainRoute(
+            mainScreenState = mainScreenState,
+            onAddMedicationClick = onAddMedicationClick
+        )
     }
 }
