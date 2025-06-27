@@ -193,7 +193,7 @@ private fun AddMedicationContent(
                 .fillMaxWidth()
                 .padding(top = 48.dp)
         ) {
-            Text(text = stringResource(R.string.screen_add_medication_save))
+            Text(text = stringResource(uiR.string.core_ui_save))
         }
     }
 }

@@ -13,6 +13,5 @@
     <string name="screen_add_medication_dose_unit_placeholder">e.g., mg, ml, tables</string>
     <string name="screen_add_medication_notes_label">Notes</string>
     <string name="screen_add_medication_notes_placeholder">e.g., after eating, before sleeping</string>
-    <string name="screen_add_medication_save">Save</string>
     <string name="screen_add_medication_error_add_failed">Medication add failed</string>
 </resources>
