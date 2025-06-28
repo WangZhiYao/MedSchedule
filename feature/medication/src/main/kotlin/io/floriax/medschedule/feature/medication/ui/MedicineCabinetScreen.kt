@@ -168,7 +168,8 @@ private fun MedicineCabinetContent(
         medicationPagingItems.loadState.refresh == LoadState.Loading ->
             MedScheduleLoadingIndicator(modifier = modifier.fillMaxSize())
 
-        medicationPagingItems.itemCount == 0 -> EmptyMedicationList(modifier = modifier)
+        medicationPagingItems.itemCount == 0 ->
+            EmptyMedicationList(modifier = modifier.padding(top = 128.dp))
 
         else -> {
             MedicationList(
@@ -186,7 +187,9 @@ private fun EmptyMedicationList(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
