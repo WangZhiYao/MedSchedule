@@ -58,7 +58,9 @@ fun AddMedicationRoute(
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             AddMedicationFailure -> {
-                snackbarHostState.showSnackbar(context.getString(R.string.screen_add_medication_error_add_failed))
+                snackbarHostState.showSnackbar(
+                    message = context.getString(R.string.screen_add_medication_error_add_failed)
+                )
             }
 
             is AddMedicationSuccess -> {
