@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c861d88cad1ffb86479e8fef5f07805a",
+    "identityHash": "ec59a1ada165ab4d52689bdedd462cdf",
     "entities": [
       {
         "tableName": "medication",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `stock` REAL, `dose_unit` TEXT NOT NULL, `notes` TEXT, `created_at` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `stock` TEXT, `dose_unit` TEXT NOT NULL, `notes` TEXT, `created_at` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -23,7 +23,7 @@
           {
             "fieldPath": "stock",
             "columnName": "stock",
-            "affinity": "REAL"
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "doseUnit",
@@ -53,7 +53,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c861d88cad1ffb86479e8fef5f07805a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ec59a1ada165ab4d52689bdedd462cdf')"
     ]
   }
 }

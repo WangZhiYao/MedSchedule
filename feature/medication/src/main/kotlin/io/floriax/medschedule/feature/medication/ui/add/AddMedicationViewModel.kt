@@ -76,7 +76,7 @@ class AddMedicationViewModel @Inject constructor(
             return
         }
 
-        val stock = stockString.toFloatOrNull()
+        val stock = stockString.toBigDecimalOrNull()
 
         val doseUnit = currentState.doseUnit
         if (doseUnit.isBlank()) {

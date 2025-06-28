@@ -331,7 +331,7 @@ private fun MedicationCardPreview() {
         MedicationCard(
             medication = Medication(
                 name = "Aspirin",
-                stock = 10f,
+                stock = "10".toBigDecimal(),
                 doseUnit = "mg",
                 notes = "Take with food"
             ),
