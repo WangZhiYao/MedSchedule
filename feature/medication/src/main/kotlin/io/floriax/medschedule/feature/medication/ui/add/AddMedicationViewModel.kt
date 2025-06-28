@@ -9,10 +9,8 @@ import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.core.domain.usecase.AddMedicationUseCase
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -92,8 +90,8 @@ class AddMedicationViewModel @Inject constructor(
         val notes = currentState.notes
 
         viewModelScope.launch {
-            flow {
-                emit(
+            runCatching {
+                withContext(ioDispatcher) {
                     addMedicationUseCase(
                         Medication(
                             name = medicationName,
@@ -102,16 +100,15 @@ class AddMedicationViewModel @Inject constructor(
                             notes = notes
                         )
                     )
-                )
-            }
-                .flowOn(ioDispatcher)
-                .catch { ex ->
-                    logger.e(ex, "Add medication failed")
-                    postSideEffect(AddMedicationFailure)
                 }
-                .collect { medication ->
+            }
+                .onSuccess { medication ->
                     logger.d("Add medication success: $medication")
                     postSideEffect(AddMedicationSuccess(medication))
+                }
+                .onFailure { ex ->
+                    logger.e(ex, "Add medication failed")
+                    postSideEffect(AddMedicationFailure)
                 }
         }
     }
