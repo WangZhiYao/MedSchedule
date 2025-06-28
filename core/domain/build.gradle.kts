@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.floriax.medschedule.domain"
+    namespace = "io.floriax.medschedule.core.domain"
     compileSdk = 36
 
     defaultConfig {

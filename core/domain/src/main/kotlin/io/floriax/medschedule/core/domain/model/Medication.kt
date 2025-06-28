@@ -1,4 +1,4 @@
-package io.floriax.medschedule.domain.model
+package io.floriax.medschedule.core.domain.model
 
 import java.time.Instant
 

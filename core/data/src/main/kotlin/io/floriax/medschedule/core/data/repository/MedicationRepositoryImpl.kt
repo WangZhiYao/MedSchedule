@@ -7,8 +7,8 @@ import androidx.paging.map
 import io.floriax.medschedule.core.data.local.dao.MedicationDao
 import io.floriax.medschedule.core.data.local.mapper.toEntity
 import io.floriax.medschedule.core.data.local.mapper.toModel
-import io.floriax.medschedule.domain.model.Medication
-import io.floriax.medschedule.domain.repository.MedicationRepository
+import io.floriax.medschedule.core.domain.model.Medication
+import io.floriax.medschedule.core.domain.repository.MedicationRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

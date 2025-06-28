@@ -5,8 +5,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.core.common.extension.isValidStock
 import io.floriax.medschedule.core.common.extension.logger
-import io.floriax.medschedule.domain.model.Medication
-import io.floriax.medschedule.domain.usecase.AddMedicationUseCase
+import io.floriax.medschedule.core.domain.model.Medication
+import io.floriax.medschedule.core.domain.usecase.AddMedicationUseCase
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch

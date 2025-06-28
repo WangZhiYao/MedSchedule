@@ -1,4 +1,4 @@
-package io.floriax.medschedule.domain
+package io.floriax.medschedule.core.domain
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("io.floriax.medschedule.domain.test", appContext.packageName)
+        assertEquals("io.floriax.medschedule.core.domain.test", appContext.packageName)
     }
 }

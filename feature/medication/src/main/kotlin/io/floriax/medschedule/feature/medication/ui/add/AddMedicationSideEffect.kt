@@ -1,6 +1,6 @@
 package io.floriax.medschedule.feature.medication.ui.add
 
-import io.floriax.medschedule.domain.model.Medication
+import io.floriax.medschedule.core.domain.model.Medication
 
 /**
  *

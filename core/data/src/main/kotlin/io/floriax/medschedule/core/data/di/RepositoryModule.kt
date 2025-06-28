@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.floriax.medschedule.core.data.repository.MedicationRepositoryImpl
-import io.floriax.medschedule.domain.repository.MedicationRepository
+import io.floriax.medschedule.core.domain.repository.MedicationRepository
 import javax.inject.Singleton
 
 /**

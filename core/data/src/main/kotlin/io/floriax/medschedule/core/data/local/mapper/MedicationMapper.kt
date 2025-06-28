@@ -2,7 +2,7 @@ package io.floriax.medschedule.core.data.local.mapper
 
 import io.floriax.medschedule.core.common.extension.nullIfBlank
 import io.floriax.medschedule.core.data.local.entity.MedicationEntity
-import io.floriax.medschedule.domain.model.Medication
+import io.floriax.medschedule.core.domain.model.Medication
 import java.time.Instant
 
 /**

@@ -1,4 +1,4 @@
-package io.floriax.medschedule.domain
+package io.floriax.medschedule.core.domain
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
