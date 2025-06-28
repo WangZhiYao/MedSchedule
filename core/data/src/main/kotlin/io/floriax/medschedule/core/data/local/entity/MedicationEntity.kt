@@ -15,7 +15,7 @@ data class MedicationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val name: String,
-    val stock: Float,
+    val stock: Float?,
     @ColumnInfo(name = "dose_unit")
     val doseUnit: String,
     val notes: String?,

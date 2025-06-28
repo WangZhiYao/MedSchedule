@@ -78,7 +78,7 @@ class AddMedicationViewModel @Inject constructor(
             return
         }
 
-        val stock = stockString.toFloatOrNull() ?: DEFAULT_STOCK
+        val stock = stockString.toFloatOrNull()
 
         val doseUnit = currentState.doseUnit
         if (doseUnit.isBlank()) {
@@ -114,11 +114,5 @@ class AddMedicationViewModel @Inject constructor(
                     postSideEffect(AddMedicationSuccess(medication))
                 }
         }
-    }
-
-    companion object {
-
-        private const val DEFAULT_STOCK = -1f
-
     }
 }
