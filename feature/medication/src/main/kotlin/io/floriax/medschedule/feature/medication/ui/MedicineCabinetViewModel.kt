@@ -10,10 +10,9 @@ import io.floriax.medschedule.core.domain.usecase.DeleteMedicationUseCase
 import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationsUseCase
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -46,19 +45,20 @@ class MedicineCabinetViewModel @Inject constructor(
 
     fun attemptDeleteMedication(medication: Medication) {
         viewModelScope.launch {
-            flow {
-                emit(deleteMedicationUseCase(medication))
-            }
-                .flowOn(ioDispatcher)
-                .catch { ex ->
-                    logger.e(ex, "Delete medication failed")
-                    postSideEffect(DeleteMedicationFailure)
+            runCatching {
+                withContext(ioDispatcher) {
+                    deleteMedicationUseCase(medication)
                 }
-                .collect {
+            }
+                .onSuccess {
                     reduce {
                         copy(medicationToDelete = null)
                     }
                     postSideEffect(DeleteMedicationSuccess)
+                }
+                .onFailure { ex ->
+                    logger.e(ex, "Delete medication failed")
+                    postSideEffect(DeleteMedicationFailure)
                 }
         }
     }

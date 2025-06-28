@@ -72,8 +72,6 @@ fun MedicineCabinetRoute(
 
     val state by viewModel.collectState()
 
-    val medicationPagingItems = viewModel.pagedMedications.collectAsLazyPagingItems()
-
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -92,6 +90,8 @@ fun MedicineCabinetRoute(
             }
         }
     }
+
+    val medicationPagingItems = viewModel.pagedMedications.collectAsLazyPagingItems()
 
     state.medicationToDelete?.let { medication ->
         DeleteMedicationConfirmationDialog(

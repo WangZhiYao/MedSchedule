@@ -95,23 +95,23 @@ class EditMedicationViewModel @Inject constructor(
     }
 
     fun onSaveClick() {
-        if (!validateInputs()) {
-            return
-        }
-
-        if (!currentState.hasContentChanged()) {
-            currentState.originalMedication?.let { medication ->
-                postSideEffect(UpdateMedicationSuccess(medication))
-                return
-            }
-        }
-
-        val medicationName = currentState.medicationName
-        val stock = currentState.stockString.toBigDecimalOrNull()
-        val doseUnit = currentState.doseUnit
-        val notes = currentState.notes
-
         viewModelScope.launch {
+            if (!validateInputs()) {
+                return@launch
+            }
+
+            if (!currentState.hasContentChanged()) {
+                currentState.originalMedication?.let { medication ->
+                    postSideEffect(UpdateMedicationSuccess(medication))
+                    return@launch
+                }
+            }
+
+            val medicationName = currentState.medicationName
+            val stock = currentState.stockString.toBigDecimalOrNull()
+            val doseUnit = currentState.doseUnit
+            val notes = currentState.notes
+
             runCatching {
                 withContext(ioDispatcher) {
                     updateMedicationUseCase(
@@ -135,10 +135,10 @@ class EditMedicationViewModel @Inject constructor(
         }
     }
 
-    private fun validateInputs(): Boolean {
+    private suspend fun validateInputs(): Boolean {
         val nameError = currentState.medicationName.isBlank()
-        val stockError =
-            currentState.stockString.isNotBlank() && !currentState.stockString.isValidStock()
+        val stockError = currentState.stockString.isNotBlank()
+                && !currentState.stockString.isValidStock()
         val doseUnitError = currentState.doseUnit.isBlank()
 
         reduce {

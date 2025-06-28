@@ -58,16 +58,16 @@ class AddMedicationViewModel @Inject constructor(
     }
 
     fun onSaveClick() {
-        if (!validateInputs()) {
-            return
-        }
-
-        val medicationName = currentState.medicationName
-        val stock = currentState.stockString.toBigDecimalOrNull()
-        val doseUnit = currentState.doseUnit
-        val notes = currentState.notes
-
         viewModelScope.launch {
+            if (!validateInputs()) {
+                return@launch
+            }
+
+            val medicationName = currentState.medicationName
+            val stock = currentState.stockString.toBigDecimalOrNull()
+            val doseUnit = currentState.doseUnit
+            val notes = currentState.notes
+
             runCatching {
                 withContext(ioDispatcher) {
                     addMedicationUseCase(
@@ -91,7 +91,7 @@ class AddMedicationViewModel @Inject constructor(
         }
     }
 
-    private fun validateInputs(): Boolean {
+    private suspend fun validateInputs(): Boolean {
         val nameError = currentState.medicationName.isBlank()
         val stockError = currentState.stockString.isNotBlank()
                 && !currentState.stockString.isValidStock()
