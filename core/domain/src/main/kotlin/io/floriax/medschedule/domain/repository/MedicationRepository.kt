@@ -1,5 +1,6 @@
 package io.floriax.medschedule.domain.repository
 
+import androidx.paging.PagingData
 import io.floriax.medschedule.domain.model.Medication
 import kotlinx.coroutines.flow.Flow
 
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface MedicationRepository {
 
-    fun observeAll(): Flow<List<Medication>>
+    fun observePaged(): Flow<PagingData<Medication>>
 
     suspend fun delete(medication: Medication): Boolean
 
