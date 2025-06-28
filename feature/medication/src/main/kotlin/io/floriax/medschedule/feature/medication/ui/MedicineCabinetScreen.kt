@@ -1,6 +1,7 @@
 package io.floriax.medschedule.feature.medication.ui
 
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -213,16 +214,20 @@ private fun MedicationCard(
             Spacer(modifier = Modifier.width(8.dp))
 
             medication.stock?.let { stock ->
-                Row {
+                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text = medication.stock.toString()
+                        text = stringResource(R.string.screen_medicine_cabinet_stock_prefix),
+                        style = MaterialTheme.typography.bodyMedium,
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = medication.doseUnit
+                        text = medication.stock.toString(),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                    Text(
+                        text = medication.doseUnit,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
-                Spacer(modifier = Modifier.width(8.dp))
             }
 
             Box {
