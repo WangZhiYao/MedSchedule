@@ -3,12 +3,14 @@
     <string name="feature_medication_title">Meds</string>
 
     <string name="screen_medicine_cabinet_title">Medicine Cabinet</string>
-    <string name="screen_medicine_cabinet_subtitle">Keep track of all your medications and stock</string>
+    <string name="screen_medicine_cabinet_subtitle">Keep track of your medications and their stock</string>
+    <string name="screen_medicine_cabinet_empty_medication">Your medicine cabinet is empty</string>
+    <string name="screen_medicine_cabinet_click_to_add_medication">Start by tapping the "+" button to add your first medication</string>
     <string name="screen_medicine_cabinet_add_medication">Add Medication</string>
     <string name="screen_medicine_cabinet_stock_prefix">Stock: </string>
     <string name="screen_medicine_cabinet_medication_card_no_notes">No notes</string>
     <string name="screen_medicine_cabinet_delete_medication_success">Medication deleted successfully</string>
-    <string name="screen_medicine_cabinet_delete_medication_failure">Medication delete failed</string>
+    <string name="screen_medicine_cabinet_delete_medication_failure">Failed to delete medication</string>
 
     <string name="dialog_delete_medication_title">Delete Medication</string>
     <string name="dialog_delete_medication_content">Do you want to delete: %s?\nIf you delete this medication, all medication records related to this will also be deleted. This operation cannot be undone.</string>
@@ -21,11 +23,11 @@
     <string name="screen_add_medication_stock_placeholder">e.g., 10.5</string>
     <string name="screen_add_medication_error_stock_invalid">Please enter a valid number</string>
     <string name="screen_add_medication_dose_unit_label">Unit</string>
-    <string name="screen_add_medication_dose_unit_placeholder">e.g., mg, ml, tables</string>
+    <string name="screen_add_medication_dose_unit_placeholder">e.g., mg, ml, tablets</string>
     <string name="screen_add_medication_error_dose_unit_empty">Dose unit cannot be empty</string>
     <string name="screen_add_medication_notes_label">Notes (Optional)</string>
     <string name="screen_add_medication_notes_placeholder">e.g., after eating, before sleeping</string>
-    <string name="screen_add_medication_error_add_failed">Medication add failed</string>
+    <string name="screen_add_medication_error_add_failed">Failed to add medication</string>
 
     <string name="screen_edit_medication_title">Update Medication</string>
     <string name="screen_edit_medication_medication_name_label">Medication name</string>
@@ -35,11 +37,11 @@
     <string name="screen_edit_medication_stock_placeholder">e.g., 10.5</string>
     <string name="screen_edit_medication_error_stock_invalid">Please enter a valid number</string>
     <string name="screen_edit_medication_dose_unit_label">Unit</string>
-    <string name="screen_edit_medication_dose_unit_placeholder">e.g., mg, ml, tables</string>
+    <string name="screen_edit_medication_dose_unit_placeholder">e.g., mg, ml, tablets</string>
     <string name="screen_edit_medication_error_dose_unit_empty">Dose unit cannot be empty</string>
     <string name="screen_edit_medication_notes_label">Notes (Optional)</string>
     <string name="screen_edit_medication_notes_placeholder">e.g., after eating, before sleeping</string>
     <string name="screen_edit_medication_error_medication_not_found">Medication not found</string>
     <string name="screen_edit_medication_error_get_medication_failed">Get medication failed</string>
-    <string name="screen_edit_medication_error_update_failed">Medication update failed</string>
+    <string name="screen_edit_medication_error_update_failed">Failed to update medication</string>
 </resources>

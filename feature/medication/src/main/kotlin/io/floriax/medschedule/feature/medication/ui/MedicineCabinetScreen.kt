@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
@@ -35,10 +36,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -48,6 +51,7 @@ import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
+import io.floriax.medschedule.shared.ui.MedScheduleLoadingIndicator
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import kotlinx.coroutines.flow.flowOf
@@ -155,6 +159,61 @@ private fun MedicineCabinetTopBar(
 
 @Composable
 private fun MedicineCabinetContent(
+    medicationPagingItems: LazyPagingItems<Medication>,
+    onEditMedicationClick: (Medication) -> Unit,
+    onDeleteMedicationClick: (Medication) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    when {
+        medicationPagingItems.loadState.refresh == LoadState.Loading ->
+            MedScheduleLoadingIndicator(modifier = modifier.fillMaxSize())
+
+        medicationPagingItems.itemCount == 0 -> EmptyMedicationList(modifier = modifier)
+
+        else -> {
+            MedicationList(
+                medicationPagingItems = medicationPagingItems,
+                onEditMedicationClick = onEditMedicationClick,
+                onDeleteMedicationClick = onDeleteMedicationClick,
+                modifier = modifier
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyMedicationList(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = AppIcons.MedicationBorder,
+            contentDescription = null,
+            modifier = Modifier.size(96.dp),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(R.string.screen_medicine_cabinet_empty_medication),
+            color = MaterialTheme.colorScheme.outline,
+            style = MaterialTheme.typography.titleMedium,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = stringResource(R.string.screen_medicine_cabinet_click_to_add_medication),
+            color = MaterialTheme.colorScheme.outline,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}
+
+@Composable
+private fun MedicationList(
     medicationPagingItems: LazyPagingItems<Medication>,
     onEditMedicationClick: (Medication) -> Unit,
     onDeleteMedicationClick: (Medication) -> Unit,
@@ -327,6 +386,14 @@ private fun DeleteMedicationConfirmationDialog(
             )
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EmptyMedicationListPreview() {
+    AppTheme {
+        EmptyMedicationList()
+    }
 }
 
 @Preview(showBackground = true)

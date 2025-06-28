@@ -47,4 +47,8 @@ object AppIcons {
     val Edit = Icons.Rounded.Edit
     val Delete = Icons.Rounded.Delete
 
+    val MedicationBorder
+        @Composable
+        get() = ImageVector.vectorResource(R.drawable.ic_medication_24dp)
+
 }

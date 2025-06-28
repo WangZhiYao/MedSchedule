@@ -4,6 +4,8 @@
 
     <string name="screen_medicine_cabinet_title">我的药箱</string>
     <string name="screen_medicine_cabinet_subtitle">管理您的所有药品和库存</string>
+    <string name="screen_medicine_cabinet_empty_medication">您的药箱还是空的</string>
+    <string name="screen_medicine_cabinet_click_to_add_medication">点击右下角 "+" 按钮以添加您的第一种药品</string>
     <string name="screen_medicine_cabinet_add_medication">添加药品</string>
     <string name="screen_medicine_cabinet_stock_prefix">库存: </string>
     <string name="screen_medicine_cabinet_medication_card_no_notes">暂无备注</string>
