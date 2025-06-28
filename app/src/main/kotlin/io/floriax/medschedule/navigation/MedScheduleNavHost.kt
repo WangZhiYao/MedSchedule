@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import io.floriax.medschedule.feature.medication.navigation.addMedicationScreen
+import io.floriax.medschedule.feature.medication.navigation.editMedicationScreen
 import io.floriax.medschedule.feature.medication.navigation.navigateToAddMedication
+import io.floriax.medschedule.feature.medication.navigation.navigateToEditMedication
 import io.floriax.medschedule.navigation.main.MainRoute
 import io.floriax.medschedule.navigation.main.mainScreen
 
@@ -28,11 +30,15 @@ fun MedScheduleNavHost(
         modifier = modifier,
     ) {
         mainScreen(
-            onAddMedicationClick = { navController.navigateToAddMedication() },
-            onEditMedicationClick = { medicationId -> }
+            onAddMedicationClick = navController::navigateToAddMedication,
+            onEditMedicationClick = navController::navigateToEditMedication
         )
 
         addMedicationScreen(
+            onBackClick = navController::popBackStack
+        )
+
+        editMedicationScreen(
             onBackClick = navController::popBackStack
         )
     }

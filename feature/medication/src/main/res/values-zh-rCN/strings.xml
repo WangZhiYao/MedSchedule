@@ -26,4 +26,20 @@
     <string name="screen_add_medication_notes_label">备注(可选)</string>
     <string name="screen_add_medication_notes_placeholder">例如：饭后服用，睡前服用</string>
     <string name="screen_add_medication_error_add_failed">药品添加失败</string>
+
+    <string name="screen_edit_medication_title">修改药品</string>
+    <string name="screen_edit_medication_medication_name_label">药品名称</string>
+    <string name="screen_edit_medication_medication_name_placeholder">例如：复方氨酚烷胺片</string>
+    <string name="screen_edit_medication_error_name_empty">药品名不能为空</string>
+    <string name="screen_edit_medication_stock_label">库存数量(可选)</string>
+    <string name="screen_edit_medication_stock_placeholder">例如：10.5</string>
+    <string name="screen_edit_medication_error_stock_invalid">请输入有效的数字</string>
+    <string name="screen_edit_medication_dose_unit_label">单位</string>
+    <string name="screen_edit_medication_dose_unit_placeholder">例如：片/粒</string>
+    <string name="screen_edit_medication_error_dose_unit_empty">单位不能为空</string>
+    <string name="screen_edit_medication_notes_label">备注(可选)</string>
+    <string name="screen_edit_medication_notes_placeholder">例如：饭后服用，睡前服用</string>
+    <string name="screen_edit_medication_error_medication_not_found">药品不存在</string>
+    <string name="screen_edit_medication_error_get_medication_failed">获取药品失败</string>
+    <string name="screen_edit_medication_error_update_failed">药品更新失败</string>
 </resources>
