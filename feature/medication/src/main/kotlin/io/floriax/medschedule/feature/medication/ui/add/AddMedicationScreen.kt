@@ -148,7 +148,7 @@ private fun AddMedicationTopBar(
             ) {
                 Icon(
                     imageVector = AppIcons.ArrowBack,
-                    contentDescription = stringResource(sharedUiR.string.core_ui_back)
+                    contentDescription = stringResource(sharedUiR.string.shared_ui_back)
                 )
             }
         }
@@ -236,7 +236,7 @@ private fun AddMedicationContent(
                 .fillMaxWidth()
                 .padding(top = 48.dp)
         ) {
-            Text(text = stringResource(sharedUiR.string.core_ui_save))
+            Text(text = stringResource(sharedUiR.string.shared_ui_save))
         }
     }
 }
