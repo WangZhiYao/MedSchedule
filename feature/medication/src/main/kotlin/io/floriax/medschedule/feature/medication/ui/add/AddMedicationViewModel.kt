@@ -3,6 +3,7 @@ package io.floriax.medschedule.feature.medication.ui.add
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
+import io.floriax.medschedule.core.common.extension.isValidStock
 import io.floriax.medschedule.core.common.extension.logger
 import io.floriax.medschedule.domain.model.Medication
 import io.floriax.medschedule.domain.usecase.AddMedicationUseCase
@@ -37,6 +38,15 @@ class AddMedicationViewModel @Inject constructor(
         }
     }
 
+    fun onStockStringChange(stockString: String) {
+        reduce {
+            copy(
+                stockString = stockString,
+                stockError = stockString.isNotBlank() && !stockString.isValidStock()
+            )
+        }
+    }
+
     fun onDoseUnitChange(doseUnit: String) {
         reduce {
             copy(doseUnit = doseUnit, doseUnitError = doseUnit.isBlank())
@@ -59,6 +69,17 @@ class AddMedicationViewModel @Inject constructor(
             return
         }
 
+        val stockString = currentState.stockString
+        if (stockString.isNotBlank() && !stockString.isValidStock()) {
+            reduce {
+                copy(stockError = true)
+            }
+            postSideEffect(RequestFocusOnStockField)
+            return
+        }
+
+        val stock = stockString.toFloatOrNull() ?: DEFAULT_STOCK
+
         val doseUnit = currentState.doseUnit
         if (doseUnit.isBlank()) {
             reduce {
@@ -74,7 +95,12 @@ class AddMedicationViewModel @Inject constructor(
             flow {
                 emit(
                     addMedicationUseCase(
-                        Medication(name = medicationName, doseUnit = doseUnit, notes = notes)
+                        Medication(
+                            name = medicationName,
+                            stock = stock,
+                            doseUnit = doseUnit,
+                            notes = notes
+                        )
                     )
                 )
             }
@@ -88,5 +114,11 @@ class AddMedicationViewModel @Inject constructor(
                     postSideEffect(AddMedicationSuccess(medication))
                 }
         }
+    }
+
+    companion object {
+
+        private const val DEFAULT_STOCK = -1f
+
     }
 }

@@ -16,4 +16,6 @@ data object AddMedicationFailure : AddMedicationSideEffect()
 
 data object RequestFocusOnNameField : AddMedicationSideEffect()
 
+data object RequestFocusOnStockField : AddMedicationSideEffect()
+
 data object RequestFocusOnDoseUnitField : AddMedicationSideEffect()

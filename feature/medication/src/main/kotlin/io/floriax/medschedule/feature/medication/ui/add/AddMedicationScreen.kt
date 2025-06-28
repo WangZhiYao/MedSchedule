@@ -52,6 +52,7 @@ fun AddMedicationRoute(
     val snackbarHostState = remember { SnackbarHostState() }
 
     val nameFocusRequester = remember { FocusRequester() }
+    val stockFocusRequester = remember { FocusRequester() }
     val doseUnitFocusRequester = remember { FocusRequester() }
 
     viewModel.collectSideEffect { sideEffect ->
@@ -68,6 +69,10 @@ fun AddMedicationRoute(
                 nameFocusRequester.requestFocus()
             }
 
+            RequestFocusOnStockField -> {
+                stockFocusRequester.requestFocus()
+            }
+
             RequestFocusOnDoseUnitField -> {
                 doseUnitFocusRequester.requestFocus()
             }
@@ -78,9 +83,11 @@ fun AddMedicationRoute(
         state = state,
         snackbarHostState = snackbarHostState,
         nameFocusRequester = nameFocusRequester,
+        stockFocusRequester = stockFocusRequester,
         doseUnitFocusRequester = doseUnitFocusRequester,
         onBackClick = onBackClick,
         onMedicationNameChange = viewModel::onMedicationNameChange,
+        onStockStringChange = viewModel::onStockStringChange,
         onDoseUnitChange = viewModel::onDoseUnitChange,
         onNotesChange = viewModel::onNotesChange,
         onSaveClick = viewModel::onSaveClick
@@ -92,9 +99,11 @@ private fun AddMedicationScreen(
     state: AddMedicationViewState,
     snackbarHostState: SnackbarHostState,
     nameFocusRequester: FocusRequester,
+    stockFocusRequester: FocusRequester,
     doseUnitFocusRequester: FocusRequester,
     onBackClick: () -> Unit,
     onMedicationNameChange: (String) -> Unit,
+    onStockStringChange: (String) -> Unit,
     onDoseUnitChange: (String) -> Unit,
     onNotesChange: (String) -> Unit,
     onSaveClick: () -> Unit,
@@ -112,8 +121,10 @@ private fun AddMedicationScreen(
         AddMedicationContent(
             state = state,
             nameFocusRequester = nameFocusRequester,
+            stockFocusRequester = stockFocusRequester,
             doseUnitFocusRequester = doseUnitFocusRequester,
             onMedicationNameChange = onMedicationNameChange,
+            onStockStringChange = onStockStringChange,
             onDoseUnitChange = onDoseUnitChange,
             onNotesChange = onNotesChange,
             onSaveClick = onSaveClick,
@@ -148,8 +159,10 @@ private fun AddMedicationTopBar(
 private fun AddMedicationContent(
     state: AddMedicationViewState,
     nameFocusRequester: FocusRequester,
+    stockFocusRequester: FocusRequester,
     doseUnitFocusRequester: FocusRequester,
     onMedicationNameChange: (String) -> Unit,
+    onStockStringChange: (String) -> Unit,
     onDoseUnitChange: (String) -> Unit,
     onNotesChange: (String) -> Unit,
     onSaveClick: () -> Unit,
@@ -176,6 +189,22 @@ private fun AddMedicationContent(
         )
 
         OutlinedTextField(
+            value = state.stockString,
+            onValueChange = onStockStringChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(stockFocusRequester),
+            label = { Text(text = stringResource(R.string.screen_add_medication_stock_label)) },
+            placeholder = { Text(text = stringResource(R.string.screen_add_medication_stock_placeholder)) },
+            supportingText = {
+                Text(text = if (state.stockError) stringResource(R.string.screen_add_medication_error_stock_invalid) else "")
+            },
+            isError = state.stockError,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            singleLine = true
+        )
+
+        OutlinedTextField(
             value = state.doseUnit,
             onValueChange = onDoseUnitChange,
             modifier = Modifier
@@ -186,6 +215,7 @@ private fun AddMedicationContent(
             supportingText = {
                 Text(text = if (state.doseUnitError) stringResource(R.string.screen_add_medication_error_dose_unit_empty) else "")
             },
+            isError = state.doseUnitError,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             singleLine = true
         )
@@ -218,10 +248,12 @@ private fun AddMedicationScreenPreview() {
         AddMedicationScreen(
             state = AddMedicationViewState(),
             snackbarHostState = remember { SnackbarHostState() },
-            doseUnitFocusRequester = remember { FocusRequester() },
+            stockFocusRequester = remember { FocusRequester() },
             nameFocusRequester = remember { FocusRequester() },
+            doseUnitFocusRequester = remember { FocusRequester() },
             onBackClick = {},
             onMedicationNameChange = {},
+            onStockStringChange = {},
             onDoseUnitChange = {},
             onNotesChange = {},
             onSaveClick = {}

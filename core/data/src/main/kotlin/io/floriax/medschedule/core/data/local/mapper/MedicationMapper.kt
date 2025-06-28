@@ -15,6 +15,7 @@ fun MedicationEntity.toModel(): Medication =
     Medication(
         id = id,
         name = name,
+        stock = stock,
         doseUnit = doseUnit,
         notes = notes.orEmpty(),
         createdAt = Instant.ofEpochMilli(createdAt)
@@ -24,6 +25,7 @@ fun Medication.toEntity(): MedicationEntity =
     MedicationEntity(
         id = id,
         name = name,
+        stock = stock,
         doseUnit = doseUnit,
         notes = notes.nullIfBlank(),
         createdAt = createdAt.toEpochMilli()

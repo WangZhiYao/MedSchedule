@@ -9,10 +9,13 @@
     <string name="screen_add_medication_medication_name_label">Medication name</string>
     <string name="screen_add_medication_medication_name_placeholder">e.g., Emergen-C</string>
     <string name="screen_add_medication_error_name_empty">Medication name cannot be empty</string>
-    <string name="screen_add_medication_dose_unit_label">Dose Unit</string>
+    <string name="screen_add_medication_stock_label">Stock (Optional)</string>
+    <string name="screen_add_medication_stock_placeholder">e.g., 10.5</string>
+    <string name="screen_add_medication_error_stock_invalid">Please enter a valid number</string>
+    <string name="screen_add_medication_dose_unit_label">Unit</string>
     <string name="screen_add_medication_dose_unit_placeholder">e.g., mg, ml, tables</string>
     <string name="screen_add_medication_error_dose_unit_empty">Dose unit cannot be empty</string>
-    <string name="screen_add_medication_notes_label">Notes</string>
+    <string name="screen_add_medication_notes_label">Notes (Optional)</string>
     <string name="screen_add_medication_notes_placeholder">e.g., after eating, before sleeping</string>
     <string name="screen_add_medication_error_add_failed">Medication add failed</string>
 </resources>
