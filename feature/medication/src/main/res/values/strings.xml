@@ -4,6 +4,13 @@
 
     <string name="screen_medicine_cabinet_title">Medicine Cabinet</string>
     <string name="screen_medicine_cabinet_subtitle">Keep track of all your medications and stock</string>
+    <string name="screen_medicine_cabinet_add_medication">Add Medication</string>
+    <string name="screen_medicine_cabinet_medication_card_no_notes">No notes</string>
+    <string name="screen_medicine_cabinet_delete_medication_success">Medication deleted successfully</string>
+    <string name="screen_medicine_cabinet_delete_medication_failure">Medication delete failed</string>
+
+    <string name="dialog_delete_medication_title">Delete Medication</string>
+    <string name="dialog_delete_medication_content">Do you want to delete %s?\nIf you delete this medication, all medication records related to this will also be deleted. This operation cannot be undone.</string>
 
     <string name="screen_add_medication_title">Add Medication</string>
     <string name="screen_add_medication_medication_name_label">Medication name</string>

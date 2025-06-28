@@ -2,4 +2,9 @@
 <resources>
     <string name="shared_ui_back">Back</string>
     <string name="shared_ui_save">Save</string>
+    <string name="shared_ui_more">More</string>
+    <string name="shared_ui_edit">Edit</string>
+    <string name="shared_ui_delete">Delete</string>
+    <string name="shared_ui_confirm">OK</string>
+    <string name="shared_ui_cancel">Cancel</string>
 </resources>

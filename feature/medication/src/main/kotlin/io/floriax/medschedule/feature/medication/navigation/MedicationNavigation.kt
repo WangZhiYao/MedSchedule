@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medication.ui.MedicineCabinetRoute
 import io.floriax.medschedule.feature.medication.ui.add.AddMedicationRoute
 import kotlinx.serialization.Serializable
@@ -28,10 +29,12 @@ fun NavController.navigateToAddMedication() =
 
 fun NavGraphBuilder.medicineCabinetScreen(
     onAddMedicationClick: () -> Unit,
+    onEditMedicationClick: (Medication) -> Unit,
 ) {
     composable<MedicineCabinetRoute> {
         MedicineCabinetRoute(
-            onAddMedicationClick = onAddMedicationClick
+            onAddMedicationClick = onAddMedicationClick,
+            onEditMedicationClick = onEditMedicationClick
         )
     }
 }

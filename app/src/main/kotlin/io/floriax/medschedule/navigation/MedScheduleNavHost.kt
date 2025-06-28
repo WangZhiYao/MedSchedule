@@ -28,7 +28,8 @@ fun MedScheduleNavHost(
         modifier = modifier,
     ) {
         mainScreen(
-            onAddMedicationClick = { navController.navigateToAddMedication() }
+            onAddMedicationClick = { navController.navigateToAddMedication() },
+            onEditMedicationClick = { medicationId -> }
         )
 
         addMedicationScreen(

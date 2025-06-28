@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.ext.isRouteInHierarchy
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.home.navigation.homeScreen
@@ -28,11 +29,13 @@ import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 fun MainRoute(
     mainScreenState: MainScreenState,
     onAddMedicationClick: () -> Unit,
+    onEditMedicationClick: (Medication) -> Unit,
 ) {
 
     MainScreen(
         mainScreenState = mainScreenState,
-        onAddMedicationClick = onAddMedicationClick
+        onAddMedicationClick = onAddMedicationClick,
+        onEditMedicationClick = onEditMedicationClick
     )
 }
 
@@ -40,6 +43,7 @@ fun MainRoute(
 private fun MainScreen(
     mainScreenState: MainScreenState,
     onAddMedicationClick: () -> Unit,
+    onEditMedicationClick: (Medication) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -72,7 +76,8 @@ private fun MainScreen(
     ) {
         MainNavHost(
             navController = mainScreenState.navController,
-            onAddMedicationClick = onAddMedicationClick
+            onAddMedicationClick = onAddMedicationClick,
+            onEditMedicationClick = onEditMedicationClick
         )
     }
 }
@@ -81,6 +86,7 @@ private fun MainScreen(
 private fun MainNavHost(
     navController: NavHostController,
     onAddMedicationClick: () -> Unit,
+    onEditMedicationClick: (Medication) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -90,7 +96,10 @@ private fun MainNavHost(
     ) {
         homeScreen()
         medicationPlanScreen()
-        medicineCabinetScreen(onAddMedicationClick = onAddMedicationClick)
+        medicineCabinetScreen(
+            onAddMedicationClick = onAddMedicationClick,
+            onEditMedicationClick = onEditMedicationClick
+        )
         medicationRecordScreen()
     }
 }
@@ -101,7 +110,8 @@ fun MainScreenPreview() {
     AppTheme {
         MainScreen(
             mainScreenState = rememberMainScreenState(),
-            onAddMedicationClick = {}
+            onAddMedicationClick = {},
+            onEditMedicationClick = {}
         )
     }
 }

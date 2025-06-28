@@ -4,6 +4,13 @@
 
     <string name="screen_medicine_cabinet_title">我的药箱</string>
     <string name="screen_medicine_cabinet_subtitle">管理您的所有药品和库存</string>
+    <string name="screen_medicine_cabinet_add_medication">添加药品</string>
+    <string name="screen_medicine_cabinet_medication_card_no_notes">暂无备注</string>
+    <string name="screen_medicine_cabinet_delete_medication_success">药品删除成功</string>
+    <string name="screen_medicine_cabinet_delete_medication_failure">药品删除失败</string>
+
+    <string name="dialog_delete_medication_title">删除药品</string>
+    <string name="dialog_delete_medication_content">是否要删除%s？\n如果删除该药品，所有关于该药品的用药记录将同时被删除，该操作不能被撤销</string>
 
     <string name="screen_add_medication_title">添加药品</string>
     <string name="screen_add_medication_medication_name_label">药品名称</string>
