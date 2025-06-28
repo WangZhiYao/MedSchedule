@@ -58,35 +58,13 @@ class AddMedicationViewModel @Inject constructor(
     }
 
     fun onSaveClick() {
+        if (!validateInputs()) {
+            return
+        }
+
         val medicationName = currentState.medicationName
-        if (medicationName.isBlank()) {
-            reduce {
-                copy(medicationNameError = true)
-            }
-            postSideEffect(RequestFocusOnNameField)
-            return
-        }
-
-        val stockString = currentState.stockString
-        if (stockString.isNotBlank() && !stockString.isValidStock()) {
-            reduce {
-                copy(stockError = true)
-            }
-            postSideEffect(RequestFocusOnStockField)
-            return
-        }
-
-        val stock = stockString.toBigDecimalOrNull()
-
+        val stock = currentState.stockString.toBigDecimalOrNull()
         val doseUnit = currentState.doseUnit
-        if (doseUnit.isBlank()) {
-            reduce {
-                copy(doseUnitError = true)
-            }
-            postSideEffect(RequestFocusOnDoseUnitField)
-            return
-        }
-
         val notes = currentState.notes
 
         viewModelScope.launch {
@@ -111,5 +89,28 @@ class AddMedicationViewModel @Inject constructor(
                     postSideEffect(AddMedicationFailure)
                 }
         }
+    }
+
+    private fun validateInputs(): Boolean {
+        val nameError = currentState.medicationName.isBlank()
+        val stockError = currentState.stockString.isNotBlank()
+                && !currentState.stockString.isValidStock()
+        val doseUnitError = currentState.doseUnit.isBlank()
+
+        reduce {
+            copy(
+                medicationNameError = nameError,
+                stockError = stockError,
+                doseUnitError = doseUnitError
+            )
+        }
+
+        when {
+            nameError -> postSideEffect(RequestFocusOnNameField)
+            stockError -> postSideEffect(RequestFocusOnStockField)
+            doseUnitError -> postSideEffect(RequestFocusOnDoseUnitField)
+        }
+
+        return !nameError && !stockError && !doseUnitError
     }
 }
