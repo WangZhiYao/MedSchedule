@@ -47,8 +47,10 @@ object AppIcons {
     val Edit = Icons.Rounded.Edit
     val Delete = Icons.Rounded.Delete
 
-    val MedicationBorder
+    val MedicationSlimBorder
         @Composable
-        get() = ImageVector.vectorResource(R.drawable.ic_medication_24dp)
-
+        get() = ImageVector.vectorResource(R.drawable.ic_medication_w200_24dp)
+    val HistorySlimBorder
+        @Composable
+        get() = ImageVector.vectorResource(R.drawable.ic_history_w200_24dp)
 }

@@ -194,7 +194,7 @@ private fun EmptyMedicationList(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            imageVector = AppIcons.MedicationBorder,
+            imageVector = AppIcons.MedicationSlimBorder,
             contentDescription = null,
             modifier = Modifier.size(96.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
