@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ec59a1ada165ab4d52689bdedd462cdf",
+    "identityHash": "a504300912ae37942ddd12c7f2ccc51f",
     "entities": [
       {
         "tableName": "medication",
@@ -49,11 +49,139 @@
             "id"
           ]
         }
+      },
+      {
+        "tableName": "medication_record",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `medication_time` INTEGER NOT NULL, `state` INTEGER NOT NULL, `type` INTEGER NOT NULL, `time_zone` TEXT NOT NULL, `notes` TEXT, `created_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "medicationTime",
+            "columnName": "medication_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeZone",
+            "columnName": "time_zone",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "medication_record_entry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`medication_record_id` INTEGER NOT NULL, `medication_id` INTEGER NOT NULL, `dose` TEXT NOT NULL, PRIMARY KEY(`medication_record_id`, `medication_id`), FOREIGN KEY(`medication_record_id`) REFERENCES `medication_record`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`medication_id`) REFERENCES `medication`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "medicationRecordId",
+            "columnName": "medication_record_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "medicationId",
+            "columnName": "medication_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dose",
+            "columnName": "dose",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "medication_record_id",
+            "medication_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_medication_record_entry_medication_record_id",
+            "unique": false,
+            "columnNames": [
+              "medication_record_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_record_entry_medication_record_id` ON `${TABLE_NAME}` (`medication_record_id`)"
+          },
+          {
+            "name": "index_medication_record_entry_medication_id",
+            "unique": false,
+            "columnNames": [
+              "medication_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_record_entry_medication_id` ON `${TABLE_NAME}` (`medication_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "medication_record",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "medication_record_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "medication",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "medication_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ec59a1ada165ab4d52689bdedd462cdf')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a504300912ae37942ddd12c7f2ccc51f')"
     ]
   }
 }

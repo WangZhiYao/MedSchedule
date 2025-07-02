@@ -54,4 +54,8 @@ object DatabaseModule {
     @Singleton
     fun provideMedicationDao(appDatabase: AppDatabase) = appDatabase.medicationDao()
 
+    @Provides
+    @Singleton
+    fun provideMedicationRecordDao(appDatabase: AppDatabase) = appDatabase.medicationRecordDao()
+
 }
