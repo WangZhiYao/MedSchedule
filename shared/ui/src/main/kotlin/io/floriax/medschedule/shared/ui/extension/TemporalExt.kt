@@ -35,12 +35,12 @@ fun Instant.formatLocalDateTime(): String {
         targetDate.year == today.year -> targetDate.format(
             DateTimeFormatter.ofPattern(
                 context.getString(
-                    R.string.shared_ui_date_pattern_this_year
+                    R.string.shared_ui_date_pattern_short
                 )
             )
         )
 
-        else -> targetDate.format(DateTimeFormatter.ofPattern(context.getString(R.string.shared_ui_date_pattern_past_year)))
+        else -> targetDate.format(DateTimeFormatter.ofPattern(context.getString(R.string.shared_ui_date_pattern_long)))
     }
 
     return if (formattedDate != null) {
