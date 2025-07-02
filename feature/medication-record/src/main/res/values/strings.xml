@@ -4,8 +4,10 @@
 
     <string name="screen_medication_record_title">Medication Record</string>
     <string name="screen_medication_record_subtitle">View all your medication history</string>
+    <string name="screen_medication_record_add_medication_record">Add Medication Record</string>
     <string name="screen_medication_record_empty">No medication record</string>
     <string name="screen_medication_record_card_tag_manual">Manual</string>
     <string name="screen_medication_record_card_notes_prefix">Notes: </string>
 
+    <string name="screen_create_medication_record_title">Create Medication Record</string>
 </resources>

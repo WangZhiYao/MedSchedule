@@ -30,12 +30,14 @@ fun MainRoute(
     mainScreenState: MainScreenState,
     onAddMedicationClick: () -> Unit,
     onEditMedicationClick: (Medication) -> Unit,
+    onCreateMedicationRecordClick: () -> Unit,
 ) {
 
     MainScreen(
         mainScreenState = mainScreenState,
         onAddMedicationClick = onAddMedicationClick,
-        onEditMedicationClick = onEditMedicationClick
+        onEditMedicationClick = onEditMedicationClick,
+        onCreateMedicationRecordClick = onCreateMedicationRecordClick,
     )
 }
 
@@ -44,6 +46,7 @@ private fun MainScreen(
     mainScreenState: MainScreenState,
     onAddMedicationClick: () -> Unit,
     onEditMedicationClick: (Medication) -> Unit,
+    onCreateMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -77,7 +80,8 @@ private fun MainScreen(
         MainNavHost(
             navController = mainScreenState.navController,
             onAddMedicationClick = onAddMedicationClick,
-            onEditMedicationClick = onEditMedicationClick
+            onEditMedicationClick = onEditMedicationClick,
+            onCreateMedicationRecordClick = onCreateMedicationRecordClick,
         )
     }
 }
@@ -87,6 +91,7 @@ private fun MainNavHost(
     navController: NavHostController,
     onAddMedicationClick: () -> Unit,
     onEditMedicationClick: (Medication) -> Unit,
+    onCreateMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -95,12 +100,17 @@ private fun MainNavHost(
         modifier = modifier
     ) {
         homeScreen()
+
         medicationPlanScreen()
+
         medicineCabinetScreen(
             onAddMedicationClick = onAddMedicationClick,
             onEditMedicationClick = onEditMedicationClick
         )
-        medicationRecordScreen()
+
+        medicationRecordScreen(
+            onCreateMedicationRecordClick = onCreateMedicationRecordClick
+        )
     }
 }
 
@@ -111,7 +121,8 @@ fun MainScreenPreview() {
         MainScreen(
             mainScreenState = rememberMainScreenState(),
             onAddMedicationClick = {},
-            onEditMedicationClick = {}
+            onEditMedicationClick = {},
+            onCreateMedicationRecordClick = {},
         )
     }
 }

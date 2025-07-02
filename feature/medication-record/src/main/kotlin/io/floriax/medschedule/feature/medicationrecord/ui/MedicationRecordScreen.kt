@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -47,25 +48,38 @@ import io.floriax.medschedule.shared.ui.extension.formatLocalDateTime
  */
 @Composable
 fun MedicationRecordRoute(
+    onCreateMedicationRecordClick: () -> Unit,
     viewModel: MedicationRecordViewModel = hiltViewModel()
 ) {
 
     val medicationRecordPagingItems = viewModel.pagedMedicationRecords.collectAsLazyPagingItems()
 
     MedicationRecordScreen(
-        medicationRecordPagingItems = medicationRecordPagingItems
+        medicationRecordPagingItems = medicationRecordPagingItems,
+        onCreateMedicationRecordClick = onCreateMedicationRecordClick
     )
 }
 
 @Composable
 private fun MedicationRecordScreen(
     medicationRecordPagingItems: LazyPagingItems<MedicationRecord>,
+    onCreateMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             MedicationRecordTopBar()
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onCreateMedicationRecordClick
+            ) {
+                Icon(
+                    imageVector = AppIcons.Add,
+                    contentDescription = stringResource(R.string.screen_medication_record_add_medication_record)
+                )
+            }
         }
     ) { paddingValues ->
         when {
