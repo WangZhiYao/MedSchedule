@@ -7,4 +7,11 @@
     <string name="shared_ui_delete">Delete</string>
     <string name="shared_ui_confirm">OK</string>
     <string name="shared_ui_cancel">Cancel</string>
+
+    <string name="shared_ui_time_12">h:mm a</string>
+    <string name="shared_ui_time_24" translatable="false">H:mm</string>
+    <string name="shared_ui_date_yesterday">Yesterday</string>
+    <string name="shared_ui_date_pattern_this_year">MMMM d</string>
+    <string name="shared_ui_date_pattern_past_year">MMM d, yyyy</string>
+
 </resources>

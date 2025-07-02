@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_medication_record_title">记录</string>
+
+    <string name="screen_medication_record_title">用药记录</string>
+    <string name="screen_medication_record_subtitle">查看您的所有用药历史</string>
+    <string name="screen_medication_record_empty">暂无用药记录</string>
+    <string name="screen_medication_record_card_tag_manual">手动记录</string>
+    <string name="screen_medication_record_card_notes_prefix">备注: </string>
+</resources>

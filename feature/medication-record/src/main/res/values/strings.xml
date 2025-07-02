@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feature_medication_record_title">Record</string>
+
+    <string name="screen_medication_record_title">Medication Record</string>
+    <string name="screen_medication_record_subtitle">View all your medication history</string>
+    <string name="screen_medication_record_empty">No medication record</string>
+    <string name="screen_medication_record_card_tag_manual">Manual</string>
+    <string name="screen_medication_record_card_notes_prefix">Notes: </string>
+
 </resources>

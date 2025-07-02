@@ -2,16 +2,23 @@ package io.floriax.medschedule.shared.designsystem.icon
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MedicalServices
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.ArrowDropUp
+import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.MedicalServices
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.RadioButtonUnchecked
+import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -46,6 +53,8 @@ object AppIcons {
     val MoreVert = Icons.Rounded.MoreVert
     val Edit = Icons.Rounded.Edit
     val Delete = Icons.Rounded.Delete
+    val ArrowDropDown = Icons.Rounded.ArrowDropDown
+    val ArrowDropUp = Icons.Rounded.ArrowDropUp
 
     val MedicationSlimBorder
         @Composable
@@ -53,4 +62,10 @@ object AppIcons {
     val HistorySlimBorder
         @Composable
         get() = ImageVector.vectorResource(R.drawable.ic_history_w200_24dp)
+
+    val CheckCircle = Icons.Rounded.CheckCircle
+    val RemoveCircle = Icons.Rounded.RemoveCircle
+    val Error = Icons.Rounded.Error
+    val RadioButtonUnchecked = Icons.Rounded.RadioButtonUnchecked
+    val HelpOutline = Icons.AutoMirrored.Rounded.HelpOutline
 }
