@@ -1,6 +1,7 @@
 package io.floriax.medschedule.feature.medication.ui
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
@@ -10,6 +11,7 @@ import io.floriax.medschedule.core.domain.usecase.DeleteMedicationUseCase
 import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationsUseCase
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,9 +35,10 @@ class MedicineCabinetViewModel @Inject constructor(
     override val initialState: MedicineCabinetViewState
         get() = MedicineCabinetViewState()
 
-    val pagedMedications = observePagedMedicationsUseCase()
-        .flowOn(ioDispatcher)
-        .cachedIn(viewModelScope)
+    val pagedMedications: Flow<PagingData<Medication>> =
+        observePagedMedicationsUseCase()
+            .flowOn(ioDispatcher)
+            .cachedIn(viewModelScope)
 
     fun updateMedicationToDelete(medication: Medication?) {
         reduce {
