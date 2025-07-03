@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -121,6 +123,8 @@ private fun MedicineCabinetScreen(
     onDeleteMedicationClick: (Medication) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val listState = rememberLazyListState()
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -137,6 +141,7 @@ private fun MedicineCabinetScreen(
         }
     ) { paddingValues ->
         MedicineCabinetContent(
+            listState = listState,
             medicationPagingItems = medicationPagingItems,
             onEditMedicationClick = onEditMedicationClick,
             onDeleteMedicationClick = onDeleteMedicationClick,
@@ -159,6 +164,7 @@ private fun MedicineCabinetTopBar(
 
 @Composable
 private fun MedicineCabinetContent(
+    listState: LazyListState,
     medicationPagingItems: LazyPagingItems<Medication>,
     onEditMedicationClick: (Medication) -> Unit,
     onDeleteMedicationClick: (Medication) -> Unit,
@@ -173,6 +179,7 @@ private fun MedicineCabinetContent(
 
         else -> {
             MedicationList(
+                state = listState,
                 medicationPagingItems = medicationPagingItems,
                 onEditMedicationClick = onEditMedicationClick,
                 onDeleteMedicationClick = onDeleteMedicationClick,
@@ -217,6 +224,7 @@ private fun EmptyMedicationList(
 
 @Composable
 private fun MedicationList(
+    state: LazyListState,
     medicationPagingItems: LazyPagingItems<Medication>,
     onEditMedicationClick: (Medication) -> Unit,
     onDeleteMedicationClick: (Medication) -> Unit,
@@ -224,7 +232,9 @@ private fun MedicationList(
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
+        state = state,
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
             count = medicationPagingItems.itemCount,
