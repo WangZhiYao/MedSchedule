@@ -1,5 +1,10 @@
 package io.floriax.medschedule.feature.medicationrecord.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +22,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
@@ -27,6 +34,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -74,19 +84,33 @@ private fun MedicationRecordScreen(
     onCreateMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val listState = rememberLazyListState()
+    val showFab by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset < 10
+        }
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             MedicationRecordTopBar()
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onCreateMedicationRecordClick
+            AnimatedVisibility(
+                visible = showFab,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut(),
             ) {
-                Icon(
-                    imageVector = AppIcons.Add,
-                    contentDescription = stringResource(R.string.screen_medication_record_add_medication_record)
-                )
+                FloatingActionButton(
+                    onClick = onCreateMedicationRecordClick
+                ) {
+                    Icon(
+                        imageVector = AppIcons.Add,
+                        contentDescription = stringResource(R.string.screen_medication_record_add_medication_record)
+                    )
+                }
             }
         }
     ) { paddingValues ->
@@ -103,6 +127,7 @@ private fun MedicationRecordScreen(
 
             else -> {
                 MedicationRecordList(
+                    listState = listState,
                     medicationRecordPagingItems = medicationRecordPagingItems,
                     modifier = Modifier.padding(paddingValues)
                 )
@@ -150,11 +175,13 @@ private fun EmptyMedicationRecordList(
 
 @Composable
 private fun MedicationRecordList(
+    listState: LazyListState,
     medicationRecordPagingItems: LazyPagingItems<MedicationRecord>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
+        state = listState,
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
