@@ -1,6 +1,7 @@
 package io.floriax.medschedule.feature.medicationrecord.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -267,13 +268,16 @@ private fun TakenMedicationItem(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = takenMedication.medication.name,
+            modifier = Modifier
+                .weight(1f)
+                .basicMarquee(),
             style = MaterialTheme.typography.bodyMedium
         )
+        Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "${takenMedication.dose} ${takenMedication.medication.doseUnit}",
             style = MaterialTheme.typography.bodyMedium,
