@@ -1,10 +1,14 @@
 package io.floriax.medschedule.feature.medicationrecord.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,17 +16,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -34,6 +40,7 @@ import androidx.paging.compose.itemKey
 import io.floriax.medschedule.core.domain.enums.MedicationRecordType
 import io.floriax.medschedule.core.domain.enums.MedicationState
 import io.floriax.medschedule.core.domain.model.MedicationRecord
+import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medicationrecord.R
 import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
@@ -148,6 +155,7 @@ private fun MedicationRecordList(
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
             count = medicationRecordPagingItems.itemCount,
@@ -169,75 +177,57 @@ private fun MedicationRecordCard(
     modifier: Modifier = Modifier
 ) {
 
-    val (icon, color) = getVisualsForState(medicationRecord.state)
+    val stateVisuals = getVisualsForState(medicationRecord.state)
+
     ElevatedCard(
         modifier = modifier.fillMaxWidth()
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+            Box(
+                modifier = Modifier
+                    .width(6.dp)
+                    .fillMaxHeight()
+                    .background(stateVisuals.color)
+            )
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = medicationRecord.state.name,
-                    tint = color,
-                    modifier = Modifier.size(24.dp)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = medicationRecord.medicationTime.formatLocalDateTime(),
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                if (medicationRecord.type == MedicationRecordType.MANUAL) {
-                    Text(
-                        text = stringResource(R.string.screen_medication_record_card_tag_manual),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Column(
-                modifier = Modifier.padding(start = 36.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                medicationRecord.takenMedications.forEach { takenMed ->
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = takenMed.medication.name,
-                            style = MaterialTheme.typography.bodyLarge
+                            text = medicationRecord.medicationTime.formatLocalDateTime(),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
                         )
-                        Text(
-                            text = "${takenMed.dose} ${takenMed.medication.doseUnit}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        if (medicationRecord.type == MedicationRecordType.MANUAL) {
+                            ManualTag()
+                        }
                     }
-                }
-            }
-
-            if (medicationRecord.notes.isNotBlank()) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    modifier = Modifier.padding(start = 36.dp)
-                ) {
-                    Text(
-                        text = stringResource(
-                            R.string.screen_medication_record_card_notes_prefix,
-                            medicationRecord.notes
-                        ),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        medicationRecord.takenMedications.forEach { takenMedication ->
+                            TakenMedicationItem(takenMedication)
+                        }
+                    }
+                    if (medicationRecord.notes.isNotBlank()) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        NotesSection(notes = medicationRecord.notes)
+                    }
                 }
             }
         }
@@ -245,11 +235,67 @@ private fun MedicationRecordCard(
 }
 
 @Composable
-private fun getVisualsForState(state: MedicationState): Pair<ImageVector, Color> =
+private fun getVisualsForState(state: MedicationState): StateVisuals =
     when (state) {
-        MedicationState.PENDING -> AppIcons.RadioButtonUnchecked to MaterialTheme.colorScheme.tertiary
-        MedicationState.TAKEN -> AppIcons.CheckCircle to MaterialTheme.colorScheme.primary
-        MedicationState.SKIPPED -> AppIcons.RemoveCircle to MaterialTheme.colorScheme.onSurfaceVariant
-        MedicationState.MISSED -> AppIcons.Error to MaterialTheme.colorScheme.error
-        else -> AppIcons.HelpOutline to MaterialTheme.colorScheme.outline
+        MedicationState.PENDING -> StateVisuals(MaterialTheme.colorScheme.tertiary)
+        MedicationState.TAKEN -> StateVisuals(MaterialTheme.colorScheme.primary)
+        MedicationState.SKIPPED -> StateVisuals(MaterialTheme.colorScheme.onSurfaceVariant)
+        MedicationState.MISSED -> StateVisuals(MaterialTheme.colorScheme.error)
+        else -> StateVisuals(MaterialTheme.colorScheme.outline)
     }
+
+data class StateVisuals(val color: Color)
+
+@Composable
+private fun ManualTag() {
+    Surface(
+        color = MaterialTheme.colorScheme.secondaryContainer,
+        shape = CircleShape
+    ) {
+        Text(
+            text = stringResource(R.string.screen_medication_record_card_tag_manual),
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+        )
+    }
+}
+
+@Composable
+private fun TakenMedicationItem(
+    takenMedication: TakenMedication,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = takenMedication.medication.name,
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Text(
+            text = "${takenMedication.dose} ${takenMedication.medication.doseUnit}",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun NotesSection(notes: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = stringResource(R.string.screen_medication_record_card_notes_prefix),
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = notes,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
