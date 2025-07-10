@@ -1,19 +1,70 @@
 package io.floriax.medschedule.feature.medicationrecord.ui.create
 
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medicationrecord.R
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
+import io.floriax.medschedule.shared.ui.DatePickerDialog
+import io.floriax.medschedule.shared.ui.TimePickerDialog
+import io.floriax.medschedule.shared.ui.extension.UpToTodaySelectableDates
+import io.floriax.medschedule.shared.ui.extension.collectSideEffect
+import io.floriax.medschedule.shared.ui.extension.collectState
+import io.floriax.medschedule.shared.ui.extension.formatLocalized
+import java.time.LocalDate
+import java.time.LocalTime
 import io.floriax.medschedule.shared.ui.R as sharedUiR
 
 /**
@@ -22,29 +73,193 @@ import io.floriax.medschedule.shared.ui.R as sharedUiR
  * @author WangZhiYao
  * @since 2025/7/2
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateMedicationRecordRoute(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onAddMedicationClick: () -> Unit,
+    viewModel: CreateMedicationRecordViewModel = hiltViewModel()
 ) {
+
+    val state by viewModel.collectState()
+
+    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            NavigateToAddMedication -> onAddMedicationClick()
+            TakenMedicationsEmpty -> {
+                snackbarHostState.showSnackbar(context.getString(R.string.screen_create_medication_record_medication_list_empty))
+            }
+
+            is CreateMedicationRecordSuccess -> onBackClick()
+            CreateMedicationRecordFailure -> {
+                snackbarHostState.showSnackbar(context.getString(R.string.screen_create_medication_record_create_medication_record_failure))
+            }
+        }
+    }
+
+    if (state.showSelectDateDialog) {
+        DatePickerDialog(
+            onDismissRequest = { viewModel.toggleDatePickerDialog(false) },
+            currentDate = state.selectedDate,
+            selectableDates = UpToTodaySelectableDates,
+            onDateChange = viewModel::onDateSelected
+        )
+    }
+
+    if (state.showSelectTimeDialog) {
+        TimePickerDialog(
+            onDismissRequest = { viewModel.toggleTimePickerDialog(false) },
+            currentTime = state.selectedTime,
+            onTimeChange = viewModel::onTimeSelected
+        )
+    }
+
+    if (state.showAddMedicationDialog) {
+        AddMedicationDialog(
+            onDismissRequest = {
+                viewModel.toggleAddMedicationDialog(false)
+            },
+            onAddMedicationClick = viewModel::confirmAddMedication
+        )
+    }
+
+    val medicationPageItems = viewModel.pagedMedications.collectAsLazyPagingItems()
+
+    if (state.showSelectMedicationBottomSheet) {
+        SelectMedicationBottomSheetDialog(
+            medicationPageItems = medicationPageItems,
+            selectedMedications = state.takenMedicationInputs.map { takenMedication ->
+                takenMedication.medication
+            },
+            onDismissRequest = {
+                viewModel.toggleAddMedicationBottomSheet(false)
+            },
+            onCheckedChange = { medication, checked ->
+                if (checked) {
+                    viewModel.onAddTakenMedication(medication)
+                } else {
+                    viewModel.onRemoveTakenMedication(medication)
+                }
+            }
+        )
+    }
+
     CreateMedicationRecordScreen(
-        onBackClick = onBackClick
+        state = state,
+        snackbarHostState = snackbarHostState,
+        onBackClick = onBackClick,
+        onSelectDateClick = { viewModel.toggleDatePickerDialog(true) },
+        onSelectTimeClick = { viewModel.toggleTimePickerDialog(true) },
+        onAddMedicationClick = {
+            if (medicationPageItems.itemCount == 0) {
+                viewModel.toggleAddMedicationDialog(true)
+            } else {
+                viewModel.toggleAddMedicationBottomSheet(true)
+            }
+        },
+        onDoseChange = viewModel::onDoseChange,
+        onRemoveTakenMedicationClick = { takenMedication ->
+            viewModel.onRemoveTakenMedication(takenMedication.medication)
+        },
+        onNotesChange = viewModel::onNotesChange,
+        onSaveClick = viewModel::attemptCreateMedicationRecord
     )
 }
 
 @Composable
 private fun CreateMedicationRecordScreen(
+    state: CreateMedicationRecordViewState,
+    snackbarHostState: SnackbarHostState,
     onBackClick: () -> Unit,
+    onSelectDateClick: () -> Unit,
+    onSelectTimeClick: () -> Unit,
+    onAddMedicationClick: () -> Unit,
+    onDoseChange: (Int, String) -> Unit,
+    onRemoveTakenMedicationClick: (TakenMedicationInput) -> Unit,
+    onNotesChange: (String) -> Unit,
+    onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            CreateMedicationRecordTopBar(
-                onBackClick = onBackClick
-            )
-        }
+            CreateMedicationRecordTopBar(onBackClick = onBackClick)
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier.padding(paddingValues),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            dateTimeRow(
+                selectedDate = state.selectedDate,
+                selectedTime = state.selectedTime,
+                onSelectDateClick = onSelectDateClick,
+                onSelectTimeClick = onSelectTimeClick
+            )
 
+            medicationListHeader()
+
+            if (state.takenMedicationInputs.isEmpty()) {
+                item {
+                    Text(
+                        text = stringResource(R.string.screen_create_medication_record_medication_list_empty),
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            } else {
+                itemsIndexed(
+                    items = state.takenMedicationInputs,
+                    key = { index, takenMedication -> takenMedication.medication.id }
+                ) { index, takenMedication ->
+                    TakenMedicationItem(
+                        takenMedication = takenMedication,
+                        onDoseChange = { doseString -> onDoseChange(index, doseString) },
+                        onRemoveClick = { onRemoveTakenMedicationClick(takenMedication) }
+                    )
+                }
+            }
+
+            item {
+                FilledTonalButton(
+                    onClick = onAddMedicationClick,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = stringResource(R.string.screen_create_medication_record_select_medication))
+                }
+            }
+
+            item {
+                OutlinedTextField(
+                    value = state.notes,
+                    onValueChange = onNotesChange,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = {
+                        Text(text = stringResource(R.string.screen_create_medication_record_notes))
+                    },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    maxLines = 3,
+                    minLines = 3
+                )
+            }
+
+            item {
+                Button(
+                    onClick = onSaveClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 48.dp)
+                ) {
+                    Text(text = stringResource(sharedUiR.string.shared_ui_save))
+                }
+            }
+        }
     }
 }
 
@@ -70,12 +285,321 @@ private fun CreateMedicationRecordTopBar(
     )
 }
 
+private fun LazyListScope.dateTimeRow(
+    selectedDate: LocalDate,
+    selectedTime: LocalTime,
+    onSelectDateClick: () -> Unit,
+    onSelectTimeClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    item {
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            OutlinedTextField(
+                value = selectedDate.formatLocalized(),
+                onValueChange = {},
+                modifier = Modifier.weight(1.4f),
+                readOnly = true,
+                label = {
+                    Text(
+                        text = stringResource(R.string.screen_create_medication_record_date),
+                        modifier = Modifier.basicMarquee()
+                    )
+                },
+                trailingIcon = {
+                    IconButton(onClick = onSelectDateClick) {
+                        Icon(
+                            imageVector = AppIcons.CalendarToday,
+                            contentDescription = stringResource(R.string.screen_create_medication_record_select_date)
+                        )
+                    }
+                },
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            OutlinedTextField(
+                value = selectedTime.formatLocalized(),
+                onValueChange = {},
+                modifier = Modifier.weight(1f),
+                readOnly = true,
+                label = {
+                    Text(
+                        text = stringResource(R.string.screen_create_medication_record_time),
+                        modifier = Modifier.basicMarquee()
+                    )
+                },
+                trailingIcon = {
+                    IconButton(onClick = onSelectTimeClick) {
+                        Icon(
+                            imageVector = AppIcons.AccessTime,
+                            contentDescription = stringResource(R.string.screen_create_medication_record_select_time)
+                        )
+                    }
+                },
+                singleLine = true
+            )
+        }
+    }
+}
+
+private fun LazyListScope.medicationListHeader(
+    modifier: Modifier = Modifier
+) {
+    item {
+        Column(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.screen_create_medication_record_medication_list_header),
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+        }
+    }
+}
+
+@Composable
+private fun TakenMedicationItem(
+    takenMedication: TakenMedicationInput,
+    onDoseChange: (String) -> Unit,
+    onRemoveClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.small,
+        tonalElevation = 2.dp
+    ) {
+        Row(
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 4.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = takenMedication.medication.name,
+                modifier = Modifier
+                    .weight(1.2f)
+                    .basicMarquee(),
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            OutlinedTextField(
+                value = takenMedication.doseString,
+                onValueChange = onDoseChange,
+                modifier = Modifier.weight(1f),
+                label = {
+                    Text(text = stringResource(R.string.screen_create_medication_record_dose))
+                },
+                suffix = {
+                    Text(text = takenMedication.medication.doseUnit)
+                },
+                isError = takenMedication.error,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Decimal,
+                    imeAction = ImeAction.Next
+                ),
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            IconButton(onClick = onRemoveClick) {
+                Icon(
+                    imageVector = AppIcons.RemoveCircle,
+                    contentDescription = stringResource(sharedUiR.string.shared_ui_delete),
+                    tint = MaterialTheme.colorScheme.error
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AddMedicationDialog(
+    onDismissRequest: () -> Unit,
+    onAddMedicationClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(onClick = onAddMedicationClick) {
+                Text(text = stringResource(R.string.dialog_add_medication_confirm))
+            }
+        },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(text = stringResource(sharedUiR.string.shared_ui_cancel))
+            }
+        },
+        title = { Text(text = stringResource(R.string.dialog_add_medication_title)) },
+        text = {
+            Text(text = stringResource(R.string.dialog_add_medication_content))
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SelectMedicationBottomSheetDialog(
+    medicationPageItems: LazyPagingItems<Medication>,
+    selectedMedications: List<Medication>,
+    onDismissRequest: () -> Unit,
+    onCheckedChange: (Medication, Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ModalBottomSheet(
+        onDismissRequest = onDismissRequest,
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.9f)
+                .navigationBarsPadding(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.screen_create_medication_record_select_medication),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.titleLarge,
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+            ) {
+                items(count = medicationPageItems.itemCount) {
+                    val item = medicationPageItems[it]
+                    if (item != null) {
+                        MedicationItem(
+                            medication = item,
+                            checked = selectedMedications.contains(item),
+                            onCheckedChange = { checked -> onCheckedChange(item, checked) }
+                        )
+                    }
+                }
+            }
+            TextButton(
+                onClick = onDismissRequest,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(end = 16.dp, bottom = 16.dp)
+            ) {
+                Text(text = stringResource(sharedUiR.string.shared_ui_confirm))
+            }
+        }
+    }
+}
+
+@Composable
+private fun MedicationItem(
+    medication: Medication,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ListItem(
+        headlineContent = {
+            Text(
+                text = medication.name,
+                modifier = Modifier.basicMarquee(),
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
+        modifier = modifier.selectable(
+            selected = checked,
+            onClick = { onCheckedChange(!checked) },
+            role = Role.Checkbox
+        ),
+        supportingContent = {
+            val stock = medication.stock
+            val text = if (stock == null) {
+                stringResource(R.string.screen_create_medication_record_medication_item_stock_not_set)
+            } else {
+                stringResource(
+                    R.string.screen_create_medication_record_medication_item_stock,
+                    stock.toPlainString()
+                )
+            }
+            Text(text = text)
+        },
+        leadingContent = {
+            Checkbox(
+                checked = checked,
+                onCheckedChange = onCheckedChange,
+            )
+        },
+        trailingContent = {
+            Text(text = medication.doseUnit, style = MaterialTheme.typography.bodyLarge)
+        },
+        colors = ListItemDefaults.colors(MaterialTheme.colorScheme.surfaceContainerLow)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MedicationItemPreview() {
+    AppTheme {
+        MedicationItem(
+            medication = Medication(
+                name = "Aspirin",
+                stock = 10.toBigDecimal(),
+                doseUnit = "mg",
+                notes = "Notes"
+            ),
+            checked = true,
+            onCheckedChange = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun TakenMedicationItemPreview() {
+    AppTheme {
+        TakenMedicationItem(
+            takenMedication = TakenMedicationInput(
+                medication = Medication(
+                    name = "Aspirin",
+                    stock = 10.toBigDecimal(),
+                    doseUnit = "mg",
+                    notes = "Notes"
+                ),
+                doseString = "1",
+                error = false
+            ),
+            onDoseChange = {},
+            onRemoveClick = {}
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun CreateMedicationRecordScreenPreview() {
     AppTheme {
         CreateMedicationRecordScreen(
-            onBackClick = {}
+            state = CreateMedicationRecordViewState(),
+            snackbarHostState = remember { SnackbarHostState() },
+            onBackClick = {},
+            onSelectDateClick = {},
+            onSelectTimeClick = {},
+            onAddMedicationClick = {},
+            onDoseChange = { index, doseString -> },
+            onRemoveTakenMedicationClick = {},
+            onNotesChange = {},
+            onSaveClick = {}
         )
     }
 }

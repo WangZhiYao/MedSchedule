@@ -37,11 +37,13 @@ fun NavGraphBuilder.medicationRecordScreen(
 }
 
 fun NavGraphBuilder.createMedicationRecordScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onAddMedicationClick: () -> Unit
 ) {
     composable<CreateMedicationRecordRoute> {
         CreateMedicationRecordRoute(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onAddMedicationClick = onAddMedicationClick
         )
     }
 }

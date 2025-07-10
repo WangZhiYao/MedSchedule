@@ -5,7 +5,7 @@
     <string name="shared_ui_more">More</string>
     <string name="shared_ui_edit">Edit</string>
     <string name="shared_ui_delete">Delete</string>
-    <string name="shared_ui_confirm">OK</string>
+    <string name="shared_ui_confirm">Confirm</string>
     <string name="shared_ui_cancel">Cancel</string>
 
     <string name="shared_ui_time_12">h:mm a</string>
@@ -13,5 +13,7 @@
     <string name="shared_ui_date_yesterday">Yesterday</string>
     <string name="shared_ui_date_pattern_short">MMMM d</string>
     <string name="shared_ui_date_pattern_long">MMM d, yyyy</string>
+
+    <string name="shared_ui_dialog_time_picker">Select Time</string>
 
 </resources>

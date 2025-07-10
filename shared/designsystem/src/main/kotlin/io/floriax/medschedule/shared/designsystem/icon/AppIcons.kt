@@ -6,9 +6,11 @@ import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MedicalServices
+import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.ArrowDropUp
+import androidx.compose.material.icons.rounded.CalendarToday
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
@@ -68,4 +70,7 @@ object AppIcons {
     val Error = Icons.Rounded.Error
     val RadioButtonUnchecked = Icons.Rounded.RadioButtonUnchecked
     val HelpOutline = Icons.AutoMirrored.Rounded.HelpOutline
+
+    val CalendarToday = Icons.Rounded.CalendarToday
+    val AccessTime = Icons.Rounded.AccessTime
 }

@@ -46,7 +46,8 @@ fun MedScheduleNavHost(
         )
 
         createMedicationRecordScreen(
-            onBackClick = navController::popBackStack
+            onBackClick = navController::popBackStack,
+            onAddMedicationClick = navController::navigateToAddMedication
         )
     }
 }

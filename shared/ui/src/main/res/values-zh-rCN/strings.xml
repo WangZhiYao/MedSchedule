@@ -14,4 +14,6 @@
     <string name="shared_ui_date_pattern_short">M月d日</string>
     <string name="shared_ui_date_pattern_long">yyyy年M月d日</string>
 
+    <string name="shared_ui_dialog_time_picker">选择时间</string>
+
 </resources>
