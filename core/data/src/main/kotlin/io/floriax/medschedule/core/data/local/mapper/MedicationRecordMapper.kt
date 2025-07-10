@@ -30,7 +30,7 @@ fun MedicationRecordWithEntries.toModel(): MedicationRecord =
         createdAt = Instant.ofEpochMilli(record.createdAt)
     )
 
-fun MedicationRecord.toEntity(): Pair<MedicationRecordEntity, List<MedicationRecordEntryEntity>> =
+fun MedicationRecord.toEntity(): MedicationRecordEntity =
     MedicationRecordEntity(
         id = id,
         medicationTime = medicationTime.toEpochMilli(),
@@ -39,7 +39,7 @@ fun MedicationRecord.toEntity(): Pair<MedicationRecordEntity, List<MedicationRec
         timeZone = timeZone.id,
         notes = notes.nullIfBlank(),
         createdAt = createdAt.toEpochMilli()
-    ) to takenMedications.map { entry -> entry.toEntity(id) }
+    )
 
 fun MedicationRecordEntryWithMedication.toModel(): TakenMedication =
     TakenMedication(medication.toModel(), entry.dose.toBigDecimal())

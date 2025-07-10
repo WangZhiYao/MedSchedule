@@ -29,4 +29,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun medicationRecordDao(): MedicationRecordDao
 
+    abstract fun medicationRecordEntryDao(): MedicationRecordEntryDao
+
 }
