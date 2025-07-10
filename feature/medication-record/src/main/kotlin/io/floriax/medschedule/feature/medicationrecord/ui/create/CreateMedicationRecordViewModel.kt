@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.core.common.extension.logger
+import io.floriax.medschedule.core.common.extension.mapAt
 import io.floriax.medschedule.core.domain.enums.MedicationRecordType
 import io.floriax.medschedule.core.domain.enums.MedicationState
 import io.floriax.medschedule.core.domain.model.Medication
@@ -112,18 +113,9 @@ class CreateMedicationRecordViewModel @Inject constructor(
     fun onDoseChange(index: Int, doseString: String) {
         reduce {
             copy(
-                takenMedicationInputs = takenMedicationInputs.mapIndexed { i, takenMedication ->
-                    if (i == index) {
-                        with(takenMedication) {
-                            copy(
-                                doseString = doseString,
-                                error = doseString.toBigDecimalOrNull() == null
-                                        || (medication.stock != null && doseString.toBigDecimal() > medication.stock)
-                            )
-                        }
-                    } else {
-                        takenMedication
-                    }
+                takenMedicationInputs = takenMedicationInputs.mapAt(index) { input ->
+                    val updated = input.copy(doseString = doseString)
+                    updated.copy(isMarkedAsError = updated.hasError)
                 }
             )
         }
@@ -153,10 +145,23 @@ class CreateMedicationRecordViewModel @Inject constructor(
                 return@launch
             }
 
-            val takenMedicationHasError = takenMedicationInputs.any { takenMedication ->
-                takenMedication.hasError
+            var takenMedicationHasError = false
+            val updatedTakenMedicationInputs = mutableListOf<TakenMedicationInput>()
+            for (takenMedicationInput in takenMedicationInputs) {
+                if (takenMedicationInput.hasError) {
+                    takenMedicationHasError = true
+                    if (!takenMedicationInput.isMarkedAsError) {
+                        updatedTakenMedicationInputs += takenMedicationInput.copy(isMarkedAsError = true)
+                        continue
+                    }
+                }
+                updatedTakenMedicationInputs += takenMedicationInput
             }
+
             if (takenMedicationHasError) {
+                reduce {
+                    copy(takenMedicationInputs = updatedTakenMedicationInputs)
+                }
                 return@launch
             }
 

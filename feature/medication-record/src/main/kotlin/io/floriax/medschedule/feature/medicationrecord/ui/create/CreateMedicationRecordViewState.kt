@@ -25,13 +25,21 @@ data class CreateMedicationRecordViewState(
 data class TakenMedicationInput(
     val medication: Medication,
     val doseString: String,
-    val error: Boolean = false,
+    val isMarkedAsError: Boolean = false
 ) {
 
-    val hasError: Boolean
+    val isDoseEmpty: Boolean
         get() = doseString.toBigDecimalOrNull() == null
-                || (medication.stock != null && doseString.toBigDecimal() > medication.stock)
-                || error
+
+    val isStockExceeded: Boolean
+        get() = medication.stock != null && doseString.isNotBlank()
+                && doseString.toBigDecimal() > medication.stock
+
+    val isDoseInvalid: Boolean
+        get() = isDoseEmpty || isStockExceeded
+
+    val hasError: Boolean
+        get() = isDoseInvalid
 
     fun toTakenMedication(): TakenMedication =
         TakenMedication(

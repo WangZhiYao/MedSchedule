@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -29,11 +30,11 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -371,46 +372,51 @@ private fun TakenMedicationItem(
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.small,
-        tonalElevation = 2.dp
-    ) {
+    OutlinedCard(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 4.dp, bottom = 8.dp),
+            modifier = modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = takenMedication.medication.name,
-                modifier = Modifier
-                    .weight(1.2f)
-                    .basicMarquee(),
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                style = MaterialTheme.typography.titleMedium
-            )
-
+            Column(modifier = modifier.weight(1f)) {
+                Text(
+                    text = takenMedication.medication.name,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .basicMarquee(),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = takenMedication.doseString,
+                    onValueChange = onDoseChange,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = {
+                        Text(text = stringResource(R.string.screen_create_medication_record_dose))
+                    },
+                    suffix = {
+                        Text(text = takenMedication.medication.doseUnit)
+                    },
+                    supportingText = {
+                        val stock = takenMedication.medication.stock
+                        val text = if (stock == null) {
+                            stringResource(R.string.screen_create_medication_record_medication_stock_not_set)
+                        } else {
+                            stringResource(
+                                R.string.screen_create_medication_record_medication_stock,
+                                stock.toPlainString()
+                            )
+                        }
+                        Text(text = text)
+                    },
+                    isError = takenMedication.isMarkedAsError,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Decimal,
+                        imeAction = ImeAction.Next
+                    ),
+                    singleLine = true
+                )
+            }
             Spacer(modifier = Modifier.width(8.dp))
-
-            OutlinedTextField(
-                value = takenMedication.doseString,
-                onValueChange = onDoseChange,
-                modifier = Modifier.weight(1f),
-                label = {
-                    Text(text = stringResource(R.string.screen_create_medication_record_dose))
-                },
-                suffix = {
-                    Text(text = takenMedication.medication.doseUnit)
-                },
-                isError = takenMedication.error,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Next
-                ),
-                singleLine = true
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
             IconButton(onClick = onRemoveClick) {
                 Icon(
                     imageVector = AppIcons.RemoveCircle,
@@ -524,10 +530,10 @@ private fun MedicationItem(
         supportingContent = {
             val stock = medication.stock
             val text = if (stock == null) {
-                stringResource(R.string.screen_create_medication_record_medication_item_stock_not_set)
+                stringResource(R.string.screen_create_medication_record_medication_stock_not_set)
             } else {
                 stringResource(
-                    R.string.screen_create_medication_record_medication_item_stock,
+                    R.string.screen_create_medication_record_medication_stock,
                     stock.toPlainString()
                 )
             }
@@ -576,7 +582,7 @@ private fun TakenMedicationItemPreview() {
                     notes = "Notes"
                 ),
                 doseString = "1",
-                error = false
+                isMarkedAsError = false
             ),
             onDoseChange = {},
             onRemoveClick = {}
