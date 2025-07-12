@@ -58,7 +58,7 @@ import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
-import io.floriax.medschedule.shared.ui.MedScheduleLoadingIndicator
+import io.floriax.medschedule.shared.ui.LoadingIndicator
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import kotlinx.coroutines.flow.flowOf
@@ -188,7 +188,7 @@ private fun MedicineCabinetContent(
 ) {
     when {
         medicationPagingItems.loadState.refresh == LoadState.Loading ->
-            MedScheduleLoadingIndicator(modifier = modifier.fillMaxSize())
+            LoadingIndicator(modifier = modifier.fillMaxSize())
 
         medicationPagingItems.itemCount == 0 ->
             EmptyMedicationList(modifier = modifier.padding(top = 128.dp))

@@ -15,7 +15,7 @@ import io.floriax.medschedule.shared.designsystem.theme.AppTheme
  * @since 2025/6/28
  */
 @Composable
-fun MedScheduleLoadingIndicator(
+fun LoadingIndicator(
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -28,8 +28,8 @@ fun MedScheduleLoadingIndicator(
 
 @Preview(showBackground = true)
 @Composable
-fun MedScheduleLoadingIndicatorPreview() {
+fun LoadingIndicatorPreview() {
     AppTheme {
-        MedScheduleLoadingIndicator()
+        LoadingIndicator()
     }
 }

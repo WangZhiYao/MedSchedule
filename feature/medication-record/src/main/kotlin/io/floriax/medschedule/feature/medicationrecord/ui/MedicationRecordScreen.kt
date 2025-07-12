@@ -55,7 +55,7 @@ import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medicationrecord.R
 import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
-import io.floriax.medschedule.shared.ui.MedScheduleLoadingIndicator
+import io.floriax.medschedule.shared.ui.LoadingIndicator
 import io.floriax.medschedule.shared.ui.extension.formatLocalDateTime
 
 /**
@@ -116,7 +116,7 @@ private fun MedicationRecordScreen(
     ) { paddingValues ->
         when {
             medicationRecordPagingItems.loadState.refresh == LoadState.Loading ->
-                MedScheduleLoadingIndicator(modifier = modifier.fillMaxSize())
+                LoadingIndicator(modifier = modifier.fillMaxSize())
 
             medicationRecordPagingItems.itemCount == 0 ->
                 EmptyMedicationRecordList(
