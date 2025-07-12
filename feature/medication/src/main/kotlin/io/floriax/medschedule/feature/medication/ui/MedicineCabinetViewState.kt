@@ -1,7 +1,5 @@
 package io.floriax.medschedule.feature.medication.ui
 
-import io.floriax.medschedule.core.domain.model.Medication
-
 /**
  *
  *
@@ -9,5 +7,5 @@ import io.floriax.medschedule.core.domain.model.Medication
  * @since 2025/6/27
  */
 data class MedicineCabinetViewState(
-    val medicationToDelete: Medication? = null,
+    val error: Boolean = false,
 )

@@ -7,13 +7,9 @@
     <string name="screen_medicine_cabinet_empty_medication">您的药箱还是空的</string>
     <string name="screen_medicine_cabinet_click_to_add_medication">点击右下角 "+" 按钮以添加您的第一种药品</string>
     <string name="screen_medicine_cabinet_add_medication">添加药品</string>
-    <string name="screen_medicine_cabinet_stock_prefix">库存: </string>
-    <string name="screen_medicine_cabinet_medication_card_no_notes">暂无备注</string>
-    <string name="screen_medicine_cabinet_delete_medication_success">药品删除成功</string>
-    <string name="screen_medicine_cabinet_delete_medication_failure">药品删除失败</string>
-
-    <string name="dialog_delete_medication_title">删除药品</string>
-    <string name="dialog_delete_medication_content">是否要删除: %s？\n如果删除该药品，所有关于该药品的用药记录将同时被删除，该操作不能被撤销</string>
+    <string name="screen_medicine_cabinet_stock">库存: %s%s</string>
+    <string name="screen_medicine_cabinet_stock_not_set">暂无库存</string>
+    <string name="screen_medicine_cabinet_no_notes">暂无备注</string>
 
     <string name="screen_add_medication_title">添加药品</string>
     <string name="screen_add_medication_medication_name_label">药品名称</string>
@@ -44,4 +40,11 @@
     <string name="screen_edit_medication_error_medication_not_found">药品不存在</string>
     <string name="screen_edit_medication_error_get_medication_failed">获取药品失败</string>
     <string name="screen_edit_medication_error_update_failed">药品更新失败</string>
+
+    <string name="screen_medication_detail_delete_medication_success">药品删除成功</string>
+    <string name="screen_medication_detail_delete_medication_failure">药品删除失败</string>
+
+    <string name="dialog_delete_medication_title">删除药品</string>
+    <string name="dialog_delete_medication_content">是否要删除: %s？\n如果删除该药品，所有关于该药品的用药记录将同时被删除，该操作不能被撤销</string>
+
 </resources>

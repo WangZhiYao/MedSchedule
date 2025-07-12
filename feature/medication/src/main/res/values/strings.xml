@@ -7,13 +7,9 @@
     <string name="screen_medicine_cabinet_empty_medication">Your medicine cabinet is empty</string>
     <string name="screen_medicine_cabinet_click_to_add_medication">Start by tapping the "+" button to add your first medication</string>
     <string name="screen_medicine_cabinet_add_medication">Add Medication</string>
-    <string name="screen_medicine_cabinet_stock_prefix">Stock: </string>
-    <string name="screen_medicine_cabinet_medication_card_no_notes">No notes</string>
-    <string name="screen_medicine_cabinet_delete_medication_success">Medication deleted successfully</string>
-    <string name="screen_medicine_cabinet_delete_medication_failure">Failed to delete medication</string>
-
-    <string name="dialog_delete_medication_title">Delete Medication</string>
-    <string name="dialog_delete_medication_content">Do you want to delete: %s?\nIf you delete this medication, all medication records related to this will also be deleted. This operation cannot be undone.</string>
+    <string name="screen_medicine_cabinet_stock">Stock: %s</string>
+    <string name="screen_medicine_cabinet_stock_not_set">Stock not set</string>
+    <string name="screen_medicine_cabinet_no_notes">No notes</string>
 
     <string name="screen_add_medication_title">Add Medication</string>
     <string name="screen_add_medication_medication_name_label">Medication name</string>
@@ -44,4 +40,11 @@
     <string name="screen_edit_medication_error_medication_not_found">Medication not found</string>
     <string name="screen_edit_medication_error_get_medication_failed">Get medication failed</string>
     <string name="screen_edit_medication_error_update_failed">Failed to update medication</string>
+
+    <string name="screen_medication_detail_delete_medication_success">Medication deleted successfully</string>
+    <string name="screen_medication_detail_delete_medication_failure">Failed to delete medication</string>
+
+    <string name="dialog_delete_medication_title">Delete Medication</string>
+    <string name="dialog_delete_medication_content">Do you want to delete: %s?\nIf you delete this medication, all medication records related to this will also be deleted. This operation cannot be undone.</string>
+
 </resources>

@@ -8,7 +8,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,28 +18,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -58,11 +48,10 @@ import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
+import io.floriax.medschedule.shared.ui.ErrorIndicator
 import io.floriax.medschedule.shared.ui.LoadingIndicator
-import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import kotlinx.coroutines.flow.flowOf
-import io.floriax.medschedule.shared.ui.R as sharedUiR
 
 /**
  *
@@ -73,59 +62,28 @@ import io.floriax.medschedule.shared.ui.R as sharedUiR
 @Composable
 fun MedicineCabinetRoute(
     onAddMedicationClick: () -> Unit,
-    onEditMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
     viewModel: MedicineCabinetViewModel = hiltViewModel(),
 ) {
 
     val state by viewModel.collectState()
 
-    val context = LocalContext.current
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    viewModel.collectSideEffect { sideEffect ->
-        when (sideEffect) {
-            DeleteMedicationSuccess -> {
-                snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.screen_medicine_cabinet_delete_medication_success)
-                )
-            }
-
-            DeleteMedicationFailure -> {
-                snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.screen_medicine_cabinet_delete_medication_failure)
-                )
-            }
-        }
-    }
-
     val medicationPagingItems = viewModel.pagedMedications.collectAsLazyPagingItems()
 
-    state.medicationToDelete?.let { medication ->
-        DeleteMedicationConfirmationDialog(
-            medicationName = medication.name,
-            onDismissRequest = { viewModel.updateMedicationToDelete(null) },
-            onConfirmClick = {
-                viewModel.attemptDeleteMedication(medication)
-            }
-        )
-    }
-
     MedicineCabinetScreen(
+        state = state,
         medicationPagingItems = medicationPagingItems,
-        snackbarHostState = snackbarHostState,
         onAddMedicationClick = onAddMedicationClick,
-        onEditMedicationClick = onEditMedicationClick,
-        onDeleteMedicationClick = viewModel::updateMedicationToDelete
+        onMedicationClick = onMedicationClick
     )
 }
 
 @Composable
 private fun MedicineCabinetScreen(
+    state: MedicineCabinetViewState,
     medicationPagingItems: LazyPagingItems<Medication>,
-    snackbarHostState: SnackbarHostState,
     onAddMedicationClick: () -> Unit,
-    onEditMedicationClick: (Medication) -> Unit,
-    onDeleteMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
@@ -140,7 +98,6 @@ private fun MedicineCabinetScreen(
         topBar = {
             MedicineCabinetTopBar()
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
             AnimatedVisibility(
                 visible = showFab,
@@ -157,10 +114,10 @@ private fun MedicineCabinetScreen(
         }
     ) { paddingValues ->
         MedicineCabinetContent(
+            state = state,
             listState = listState,
             medicationPagingItems = medicationPagingItems,
-            onEditMedicationClick = onEditMedicationClick,
-            onDeleteMedicationClick = onDeleteMedicationClick,
+            onMedicationClick = onMedicationClick,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -180,10 +137,10 @@ private fun MedicineCabinetTopBar(
 
 @Composable
 private fun MedicineCabinetContent(
+    state: MedicineCabinetViewState,
     listState: LazyListState,
     medicationPagingItems: LazyPagingItems<Medication>,
-    onEditMedicationClick: (Medication) -> Unit,
-    onDeleteMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
     modifier: Modifier = Modifier
 ) {
     when {
@@ -193,12 +150,13 @@ private fun MedicineCabinetContent(
         medicationPagingItems.itemCount == 0 ->
             EmptyMedicationList(modifier = modifier.padding(top = 128.dp))
 
+        state.error -> ErrorIndicator(modifier.fillMaxSize())
+
         else -> {
             MedicationList(
                 state = listState,
                 medicationPagingItems = medicationPagingItems,
-                onEditMedicationClick = onEditMedicationClick,
-                onDeleteMedicationClick = onDeleteMedicationClick,
+                onMedicationClick = onMedicationClick,
                 modifier = modifier
             )
         }
@@ -242,8 +200,7 @@ private fun EmptyMedicationList(
 private fun MedicationList(
     state: LazyListState,
     medicationPagingItems: LazyPagingItems<Medication>,
-    onEditMedicationClick: (Medication) -> Unit,
-    onDeleteMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -258,8 +215,7 @@ private fun MedicationList(
             if (item != null) {
                 MedicationItem(
                     medication = item,
-                    onEditClick = { onEditMedicationClick(item) },
-                    onDeleteClick = { onDeleteMedicationClick(item) }
+                    onMedicationClick = { onMedicationClick(item) }
                 )
             }
         }
@@ -269,11 +225,9 @@ private fun MedicationList(
 @Composable
 private fun MedicationItem(
     medication: Medication,
-    onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit,
+    onMedicationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val (showMenu, setShowMenu) = remember { mutableStateOf(false) }
     ListItem(
         headlineContent = {
             Text(
@@ -285,11 +239,11 @@ private fun MedicationItem(
         },
         modifier = modifier
             .fillMaxWidth()
-            .clickable { },
+            .clickable { onMedicationClick() },
         supportingContent = {
             Text(
                 text = medication.notes.ifBlank {
-                    stringResource(R.string.screen_medicine_cabinet_medication_card_no_notes)
+                    stringResource(R.string.screen_medicine_cabinet_no_notes)
                 },
                 color = MaterialTheme.colorScheme.outline,
                 overflow = TextOverflow.Ellipsis,
@@ -297,101 +251,17 @@ private fun MedicationItem(
             )
         },
         trailingContent = {
-            Box {
-                IconButton(onClick = { setShowMenu(!showMenu) }) {
-                    Icon(
-                        imageVector = AppIcons.MoreVert,
-                        contentDescription = stringResource(sharedUiR.string.shared_ui_more),
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-                MedicationMenu(
-                    expanded = showMenu,
-                    onDismissRequest = { setShowMenu(false) },
-                    onEditClick = {
-                        setShowMenu(false)
-                        onEditClick()
-                    },
-                    onDeleteClick = {
-                        setShowMenu(false)
-                        onDeleteClick()
-                    }
+            val stock = medication.stock
+            val trail = if (stock == null) {
+                stringResource(R.string.screen_medicine_cabinet_stock_not_set)
+            } else {
+                stringResource(
+                    R.string.screen_medicine_cabinet_stock,
+                    stock.toPlainString(),
+                    medication.doseUnit
                 )
             }
-        }
-    )
-}
-
-@Composable
-private fun MedicationMenu(
-    expanded: Boolean,
-    onDismissRequest: () -> Unit,
-    onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit
-) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest
-    ) {
-        DropdownMenuItem(
-            text = { Text(stringResource(sharedUiR.string.shared_ui_edit)) },
-            onClick = onEditClick,
-            leadingIcon = {
-                Icon(
-                    imageVector = AppIcons.Edit,
-                    contentDescription = stringResource(sharedUiR.string.shared_ui_edit)
-                )
-            }
-        )
-        DropdownMenuItem(
-            text = {
-                Text(
-                    stringResource(sharedUiR.string.shared_ui_delete),
-                    color = MaterialTheme.colorScheme.error
-                )
-            },
-            onClick = onDeleteClick,
-            leadingIcon = {
-                Icon(
-                    imageVector = AppIcons.Delete,
-                    contentDescription = stringResource(sharedUiR.string.shared_ui_delete),
-                    tint = MaterialTheme.colorScheme.error
-                )
-            }
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun DeleteMedicationConfirmationDialog(
-    medicationName: String,
-    onDismissRequest: () -> Unit,
-    onConfirmClick: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            TextButton(onClick = onConfirmClick) {
-                Text(
-                    text = stringResource(sharedUiR.string.shared_ui_confirm),
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismissRequest) {
-                Text(text = stringResource(sharedUiR.string.shared_ui_cancel))
-            }
-        },
-        title = { Text(text = stringResource(R.string.dialog_delete_medication_title)) },
-        text = {
-            Text(
-                text = stringResource(
-                    R.string.dialog_delete_medication_content,
-                    medicationName
-                )
-            )
+            Text(text = trail)
         }
     )
 }
@@ -415,8 +285,7 @@ private fun MedicationCardPreview() {
                 doseUnit = "mg",
                 notes = "Take with food"
             ),
-            onEditClick = {},
-            onDeleteClick = {}
+            onMedicationClick = {}
         )
     }
 }
@@ -428,11 +297,10 @@ private fun MedicineCabinetScreenPreview() {
         val pagingData = PagingData.from(emptyList<Medication>())
         val medicationPagingItems = flowOf(pagingData).collectAsLazyPagingItems()
         MedicineCabinetScreen(
+            state = MedicineCabinetViewState(),
             medicationPagingItems = medicationPagingItems,
-            snackbarHostState = remember { SnackbarHostState() },
             onAddMedicationClick = {},
-            onEditMedicationClick = {},
-            onDeleteMedicationClick = {}
+            onMedicationClick = {}
         )
     }
 }

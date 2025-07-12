@@ -7,14 +7,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.core.common.extension.logger
 import io.floriax.medschedule.core.domain.model.Medication
-import io.floriax.medschedule.core.domain.usecase.DeleteMedicationUseCase
 import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationsUseCase
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -26,7 +24,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MedicineCabinetViewModel @Inject constructor(
     private val observePagedMedicationsUseCase: ObservePagedMedicationsUseCase,
-    private val deleteMedicationUseCase: DeleteMedicationUseCase,
     @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel<MedicineCabinetViewState, MedicineCabinetSideEffect>() {
 
@@ -39,30 +36,10 @@ class MedicineCabinetViewModel @Inject constructor(
         observePagedMedicationsUseCase()
             .flowOn(ioDispatcher)
             .cachedIn(viewModelScope)
-
-    fun updateMedicationToDelete(medication: Medication?) {
-        reduce {
-            copy(medicationToDelete = medication)
-        }
-    }
-
-    fun attemptDeleteMedication(medication: Medication) {
-        viewModelScope.launch {
-            runCatching {
-                withContext(ioDispatcher) {
-                    deleteMedicationUseCase(medication)
+            .catch { ex ->
+                logger.e(ex, "Failed to observe paged medications")
+                reduce {
+                    copy(error = true)
                 }
             }
-                .onSuccess {
-                    reduce {
-                        copy(medicationToDelete = null)
-                    }
-                    postSideEffect(DeleteMedicationSuccess)
-                }
-                .onFailure { ex ->
-                    logger.e(ex, "Delete medication failed")
-                    postSideEffect(DeleteMedicationFailure)
-                }
-        }
-    }
 }

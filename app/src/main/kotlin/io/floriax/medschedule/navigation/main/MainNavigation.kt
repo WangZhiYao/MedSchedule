@@ -23,7 +23,7 @@ fun NavController.navigateToMain(navOptions: NavOptions) =
 
 fun NavGraphBuilder.mainScreen(
     onAddMedicationClick: () -> Unit,
-    onEditMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
     onCreateMedicationRecordClick: () -> Unit
 ) {
     composable<MainRoute> {
@@ -31,7 +31,7 @@ fun NavGraphBuilder.mainScreen(
         MainRoute(
             mainScreenState = mainScreenState,
             onAddMedicationClick = onAddMedicationClick,
-            onEditMedicationClick = onEditMedicationClick,
+            onMedicationClick = onMedicationClick,
             onCreateMedicationRecordClick = onCreateMedicationRecordClick,
         )
     }

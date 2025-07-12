@@ -3,6 +3,7 @@ package io.floriax.medschedule.shared.designsystem.icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.HelpOutline
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MedicalServices
@@ -68,6 +69,7 @@ object AppIcons {
     val CheckCircle = Icons.Rounded.CheckCircle
     val RemoveCircle = Icons.Rounded.RemoveCircle
     val Error = Icons.Rounded.Error
+    val ErrorOutline = Icons.Outlined.ErrorOutline
     val RadioButtonUnchecked = Icons.Rounded.RadioButtonUnchecked
     val HelpOutline = Icons.AutoMirrored.Rounded.HelpOutline
 

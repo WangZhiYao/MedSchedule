@@ -23,6 +23,9 @@ data object MedicineCabinetRoute
 data object AddMedicationRoute
 
 @Serializable
+data class MedicationDetailRoute(val medicationId: Long)
+
+@Serializable
 data class EditMedicationRoute(val medicationId: Long)
 
 fun NavController.navigateToMedicineCabinet(navOptions: NavOptions) =
@@ -31,17 +34,20 @@ fun NavController.navigateToMedicineCabinet(navOptions: NavOptions) =
 fun NavController.navigateToAddMedication() =
     navigate(route = AddMedicationRoute)
 
+fun NavController.navigateToMedicationDetail(medication: Medication) =
+    navigate(route = MedicationDetailRoute(medication.id))
+
 fun NavController.navigateToEditMedication(medication: Medication) =
     navigate(route = EditMedicationRoute(medication.id))
 
 fun NavGraphBuilder.medicineCabinetScreen(
     onAddMedicationClick: () -> Unit,
-    onEditMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
 ) {
     composable<MedicineCabinetRoute> {
         MedicineCabinetRoute(
             onAddMedicationClick = onAddMedicationClick,
-            onEditMedicationClick = onEditMedicationClick
+            onMedicationClick = onMedicationClick
         )
     }
 }
@@ -51,6 +57,14 @@ fun NavGraphBuilder.addMedicationScreen(
 ) {
     composable<AddMedicationRoute> {
         AddMedicationRoute(onBackClick = onBackClick)
+    }
+}
+
+fun NavGraphBuilder.medicationDetailScreen(
+    onBackClick: () -> Unit,
+    onEditClick: (Medication) -> Unit,
+) {
+    composable<MedicationDetailRoute> {
     }
 }
 

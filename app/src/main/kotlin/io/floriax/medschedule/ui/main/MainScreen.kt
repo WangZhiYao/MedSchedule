@@ -29,14 +29,14 @@ import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 fun MainRoute(
     mainScreenState: MainScreenState,
     onAddMedicationClick: () -> Unit,
-    onEditMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
     onCreateMedicationRecordClick: () -> Unit,
 ) {
 
     MainScreen(
         mainScreenState = mainScreenState,
         onAddMedicationClick = onAddMedicationClick,
-        onEditMedicationClick = onEditMedicationClick,
+        onMedicationClick = onMedicationClick,
         onCreateMedicationRecordClick = onCreateMedicationRecordClick,
     )
 }
@@ -45,7 +45,7 @@ fun MainRoute(
 private fun MainScreen(
     mainScreenState: MainScreenState,
     onAddMedicationClick: () -> Unit,
-    onEditMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
     onCreateMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -80,7 +80,7 @@ private fun MainScreen(
         MainNavHost(
             navController = mainScreenState.navController,
             onAddMedicationClick = onAddMedicationClick,
-            onEditMedicationClick = onEditMedicationClick,
+            onMedicationClick = onMedicationClick,
             onCreateMedicationRecordClick = onCreateMedicationRecordClick,
         )
     }
@@ -90,7 +90,7 @@ private fun MainScreen(
 private fun MainNavHost(
     navController: NavHostController,
     onAddMedicationClick: () -> Unit,
-    onEditMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Medication) -> Unit,
     onCreateMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -105,7 +105,7 @@ private fun MainNavHost(
 
         medicineCabinetScreen(
             onAddMedicationClick = onAddMedicationClick,
-            onEditMedicationClick = onEditMedicationClick
+            onMedicationClick = onMedicationClick
         )
 
         medicationRecordScreen(
@@ -121,7 +121,7 @@ fun MainScreenPreview() {
         MainScreen(
             mainScreenState = rememberMainScreenState(),
             onAddMedicationClick = {},
-            onEditMedicationClick = {},
+            onMedicationClick = {},
             onCreateMedicationRecordClick = {},
         )
     }
