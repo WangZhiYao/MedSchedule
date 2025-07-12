@@ -58,6 +58,7 @@ import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medicationrecord.R
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
+import io.floriax.medschedule.shared.ui.BackButton
 import io.floriax.medschedule.shared.ui.DatePickerDialog
 import io.floriax.medschedule.shared.ui.TimePickerDialog
 import io.floriax.medschedule.shared.ui.extension.UpToTodaySelectableDates
@@ -274,14 +275,7 @@ private fun CreateMedicationRecordTopBar(
             Text(text = stringResource(R.string.screen_create_medication_record_title))
         },
         navigationIcon = {
-            IconButton(
-                onClick = onBackClick
-            ) {
-                Icon(
-                    imageVector = AppIcons.ArrowBack,
-                    contentDescription = stringResource(sharedUiR.string.shared_ui_back)
-                )
-            }
+            BackButton(onClick = onBackClick)
         }
     )
 }

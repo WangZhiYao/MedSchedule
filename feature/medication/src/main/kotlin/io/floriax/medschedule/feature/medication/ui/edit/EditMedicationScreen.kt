@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -28,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.floriax.medschedule.feature.medication.R
-import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
+import io.floriax.medschedule.shared.ui.BackButton
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import io.floriax.medschedule.shared.ui.R as sharedUiR
@@ -156,14 +154,7 @@ private fun EditMedicationTopBar(
             Text(text = stringResource(R.string.screen_edit_medication_title))
         },
         navigationIcon = {
-            IconButton(
-                onClick = onBackClick
-            ) {
-                Icon(
-                    imageVector = AppIcons.ArrowBack,
-                    contentDescription = stringResource(sharedUiR.string.shared_ui_back)
-                )
-            }
+            BackButton(onClick = onBackClick)
         }
     )
 }
