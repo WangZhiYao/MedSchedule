@@ -368,7 +368,8 @@ private fun NotesCard(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = notes.ifBlank { stringResource(R.string.screen_medication_detail_no_notes) }
+                text = notes.ifBlank { stringResource(R.string.screen_medication_detail_no_notes) },
+                color = if (notes.isBlank()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurface,
             )
         }
     }
