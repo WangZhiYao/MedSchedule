@@ -421,7 +421,10 @@ private fun MedicationRecordItem(
         ) {
             Text(text = medicationTime.formatLocalDateTime(), modifier = Modifier.weight(1f))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}")
+            Text(
+                text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}",
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
