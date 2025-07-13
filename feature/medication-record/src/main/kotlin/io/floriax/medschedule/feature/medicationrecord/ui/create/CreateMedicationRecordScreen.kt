@@ -465,14 +465,14 @@ private fun SelectMedicationBottomSheetDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.9f)
-                .navigationBarsPadding(),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .navigationBarsPadding()
         ) {
             Text(
                 text = stringResource(R.string.screen_create_medication_record_select_medication),
                 modifier = Modifier.padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.titleLarge,
             )
+            Spacer(modifier = Modifier.height(16.dp))
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
