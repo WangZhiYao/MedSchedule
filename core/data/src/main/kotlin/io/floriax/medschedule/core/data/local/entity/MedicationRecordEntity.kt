@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
 data class MedicationRecordEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    @ColumnInfo(name = "medication_time")
+    @ColumnInfo(name = "medication_time", index = true)
     val medicationTime: Long,
     val state: Int,
     val type: Int,

@@ -20,4 +20,17 @@ interface MedicationRecordDao : IDao<MedicationRecordEntity> {
     @Query("SELECT * FROM medication_record ORDER BY medication_time DESC")
     fun observePaged(): PagingSource<Int, MedicationRecordWithEntries>
 
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM medication_record
+        WHERE id IN (
+            SELECT medication_record_id FROM medication_record_entry
+            WHERE medication_id = :medicationId
+        )
+        ORDER BY medication_time DESC
+    """
+    )
+    fun observePagedByMedicationId(medicationId: Long): PagingSource<Int, MedicationRecordWithEntries>
+
 }

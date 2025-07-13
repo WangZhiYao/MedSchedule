@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a504300912ae37942ddd12c7f2ccc51f",
+    "identityHash": "69594410e2170e8b4e334d6a3d4e2f05",
     "entities": [
       {
         "tableName": "medication",
@@ -101,7 +101,18 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_medication_record_medication_time",
+            "unique": false,
+            "columnNames": [
+              "medication_time"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_record_medication_time` ON `${TABLE_NAME}` (`medication_time`)"
+          }
+        ]
       },
       {
         "tableName": "medication_record_entry",
@@ -181,7 +192,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a504300912ae37942ddd12c7f2ccc51f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '69594410e2170e8b4e334d6a3d4e2f05')"
     ]
   }
 }

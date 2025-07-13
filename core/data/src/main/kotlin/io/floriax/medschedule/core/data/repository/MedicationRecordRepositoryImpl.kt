@@ -79,4 +79,15 @@ class MedicationRecordRepositoryImpl @Inject constructor(
 
             medicationRecord.copy(id = id)
         }
+
+    override fun observePagedByMedicationId(medicationId: Long): Flow<PagingData<MedicationRecord>> =
+        Pager(pagingConfig) {
+            medicationRecordDao.observePagedByMedicationId(medicationId)
+        }
+            .flow
+            .map { entityList ->
+                entityList.map { entity ->
+                    entity.toModel()
+                }
+            }
 }

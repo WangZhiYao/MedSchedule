@@ -16,4 +16,6 @@ interface MedicationRecordRepository {
 
     suspend fun add(medicationRecord: MedicationRecord): MedicationRecord
 
+    fun observePagedByMedicationId(medicationId: Long): Flow<PagingData<MedicationRecord>>
+
 }
