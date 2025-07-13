@@ -249,19 +249,6 @@ private fun MedicationItem(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2
             )
-        },
-        trailingContent = {
-            val stock = medication.stock
-            val trail = if (stock == null) {
-                stringResource(R.string.screen_medicine_cabinet_stock_not_set)
-            } else {
-                stringResource(
-                    R.string.screen_medicine_cabinet_stock,
-                    stock.toPlainString(),
-                    medication.doseUnit
-                )
-            }
-            Text(text = trail)
         }
     )
 }
