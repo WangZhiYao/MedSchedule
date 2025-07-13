@@ -50,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -247,7 +248,7 @@ private fun MedicationDetailContent(
             text = stringResource(R.string.screen_medication_detail_medication_records),
             modifier = Modifier.padding(horizontal = 16.dp),
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp)
         )
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -367,7 +368,7 @@ private fun NotesCard(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = notes.ifBlank { stringResource(R.string.screen_medication_detail_no_notes) },
+                text = notes.ifBlank { stringResource(R.string.screen_medication_detail_no_notes) }
             )
         }
     }
