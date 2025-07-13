@@ -248,7 +248,7 @@ private fun MedicationDetailContent(
             text = stringResource(R.string.screen_medication_detail_medication_records),
             modifier = Modifier.padding(horizontal = 16.dp),
             fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp)
+            style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp)
         )
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -273,7 +273,7 @@ private fun MedicationDetailContent(
             medicationRecordPagingItems.itemCount == 0 -> {
                 Text(
                     text = stringResource(R.string.screen_medication_detail_no_medication_records),
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodyMedium
                 )
