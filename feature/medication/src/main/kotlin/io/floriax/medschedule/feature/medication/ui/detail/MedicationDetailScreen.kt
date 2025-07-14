@@ -73,7 +73,7 @@ import io.floriax.medschedule.shared.ui.ErrorIndicator
 import io.floriax.medschedule.shared.ui.LoadingIndicator
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
-import io.floriax.medschedule.shared.ui.extension.formatLocalDateTime
+import io.floriax.medschedule.shared.ui.extension.formatFullLocalDateTime
 import kotlinx.coroutines.flow.flowOf
 import java.math.BigDecimal
 import java.time.Instant
@@ -101,11 +101,7 @@ fun MedicationDetailRoute(
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            DeleteMedicationSuccess -> {
-                snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.screen_medication_detail_delete_medication_success)
-                )
-            }
+            DeleteMedicationSuccess -> onBackClick()
 
             DeleteMedicationFailure -> {
                 snackbarHostState.showSnackbar(

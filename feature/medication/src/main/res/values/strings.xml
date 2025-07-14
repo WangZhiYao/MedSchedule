@@ -40,7 +40,6 @@
     <string name="screen_edit_medication_error_get_medication_failed">Get medication failed</string>
     <string name="screen_edit_medication_error_update_failed">Failed to update medication</string>
 
-    <string name="screen_medication_detail_delete_medication_success">Medication deleted successfully</string>
     <string name="screen_medication_detail_delete_medication_failure">Failed to delete medication</string>
     <string name="screen_medication_detail_stock">Stock</string>
     <string name="screen_medication_detail_stock_not_set">Stock not set</string>

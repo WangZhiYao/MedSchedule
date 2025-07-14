@@ -40,7 +40,6 @@
     <string name="screen_edit_medication_error_get_medication_failed">获取药品失败</string>
     <string name="screen_edit_medication_error_update_failed">药品更新失败</string>
 
-    <string name="screen_medication_detail_delete_medication_success">药品删除成功</string>
     <string name="screen_medication_detail_delete_medication_failure">药品删除失败</string>
     <string name="screen_medication_detail_stock">当前库存</string>
     <string name="screen_medication_detail_stock_not_set">暂无库存</string>
