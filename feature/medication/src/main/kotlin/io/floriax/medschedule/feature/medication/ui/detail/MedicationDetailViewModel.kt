@@ -93,6 +93,9 @@ class MedicationDetailViewModel @Inject constructor(
 
     fun attemptDeleteMedication() {
         viewModelScope.launch {
+            reduce {
+                copy(showDeleteDialog = false)
+            }
             val medication = currentState.medication ?: return@launch
             runCatching {
                 withContext(ioDispatcher) {
