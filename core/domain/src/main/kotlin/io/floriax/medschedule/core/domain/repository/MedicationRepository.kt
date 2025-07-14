@@ -20,6 +20,8 @@ interface MedicationRepository {
 
     suspend fun getById(id: Long): Medication?
 
+    fun observeById(id: Long): Flow<Medication?>
+
     suspend fun update(medication: Medication): Medication
 
 }

@@ -47,6 +47,12 @@ class MedicationRepositoryImpl @Inject constructor(
     override suspend fun getById(id: Long): Medication? =
         medicationDao.getById(id)?.toModel()
 
+    override fun observeById(id: Long): Flow<Medication?> =
+        medicationDao.observeById(id)
+            .map { entity ->
+                entity?.toModel()
+            }
+
     override suspend fun update(medication: Medication): Medication =
         medicationDao.update(medication.toEntity())
             .let {

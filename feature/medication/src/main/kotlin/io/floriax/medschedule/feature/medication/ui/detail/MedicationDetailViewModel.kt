@@ -10,7 +10,7 @@ import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.core.common.extension.logger
 import io.floriax.medschedule.core.domain.model.MedicationRecord
 import io.floriax.medschedule.core.domain.usecase.DeleteMedicationUseCase
-import io.floriax.medschedule.core.domain.usecase.GetMedicationByIdUseCase
+import io.floriax.medschedule.core.domain.usecase.ObserveMedicationByIdUseCase
 import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationRecordByMedicationUseCase
 import io.floriax.medschedule.core.domain.usecase.UpdateMedicationUseCase
 import io.floriax.medschedule.feature.medication.navigation.EditMedicationRoute
@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.math.BigDecimal
@@ -33,7 +34,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MedicationDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getMedicationByIdUseCase: GetMedicationByIdUseCase,
+    private val observeMedicationByIdUseCase: ObserveMedicationByIdUseCase,
     observePagedMedicationRecordByMedicationUseCase: ObservePagedMedicationRecordByMedicationUseCase,
     private val deleteMedicationUseCase: DeleteMedicationUseCase,
     private val updateMedicationUseCase: UpdateMedicationUseCase,
@@ -57,19 +58,22 @@ class MedicationDetailViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            runCatching {
-                withContext(ioDispatcher) {
-                    getMedicationByIdUseCase(medicationId)
-                }
-            }
-                .onSuccess { medication ->
+            observeMedicationByIdUseCase(medicationId)
+                .flowOn(ioDispatcher)
+                .onStart {
                     reduce {
-                        copy(loading = false, error = false, medication = medication)
+                        copy(loading = true, error = false)
                     }
                 }
-                .onFailure { ex ->
+                .catch { ex ->
+                    logger.e(ex, "Error while observing medication")
                     reduce {
                         copy(loading = false, error = true)
+                    }
+                }
+                .collect { medication ->
+                    reduce {
+                        copy(loading = false, error = false, medication = medication)
                     }
                 }
         }
@@ -116,9 +120,6 @@ class MedicationDetailViewModel @Inject constructor(
             }
                 .onSuccess { medication ->
                     postSideEffect(AddStockSuccess)
-                    reduce {
-                        copy(medication = medication)
-                    }
                 }
                 .onFailure { ex ->
                     logger.e(ex, "Error while adding stock")
