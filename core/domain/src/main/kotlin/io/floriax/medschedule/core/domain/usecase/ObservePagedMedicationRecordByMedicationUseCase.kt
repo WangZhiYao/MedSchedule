@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 class ObservePagedMedicationRecordByMedicationUseCase @Inject constructor(
     private val medicationRecordRepository: MedicationRecordRepository
-) {
+) : IUseCase {
 
     operator fun invoke(medicationId: Long): Flow<PagingData<MedicationRecord>> =
         medicationRecordRepository.observePagedByMedicationId(medicationId)

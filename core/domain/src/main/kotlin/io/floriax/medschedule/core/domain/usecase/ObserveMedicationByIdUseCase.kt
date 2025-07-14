@@ -13,7 +13,7 @@ import javax.inject.Inject
  */
 class ObserveMedicationByIdUseCase @Inject constructor(
     private val medicationRepository: MedicationRepository
-) {
+) : IUseCase {
 
     operator fun invoke(id: Long): Flow<Medication?> =
         medicationRepository.observeById(id)
