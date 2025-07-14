@@ -445,27 +445,15 @@ private fun MedicationRecordItem(
             notesSurfaceRef
         ) = createRefs()
 
-        if (!firstItem) {
-            VerticalDivider(
-                modifier = Modifier.constrainAs(topDividerRef) {
-                    height = Dimension.value(16.dp)
-                    top.linkTo(iconRef.bottom)
-                    bottom.linkTo(iconRef.top)
-                    centerHorizontallyTo(iconRef)
-                },
-                thickness = 2.dp,
-                color = MaterialTheme.colorScheme.outline
-            )
-        } else {
-            Spacer(
-                modifier = Modifier.constrainAs(topDividerRef) {
-                    height = Dimension.value(8.dp)
-                    top.linkTo(iconRef.bottom)
-                    bottom.linkTo(iconRef.top)
-                    centerHorizontallyTo(iconRef)
-                }
-            )
-        }
+        TimelineDivider(
+            visible = !firstItem,
+            modifier = Modifier.constrainAs(topDividerRef) {
+                height = Dimension.value(16.dp)
+                top.linkTo(iconRef.bottom)
+                bottom.linkTo(iconRef.top)
+                centerHorizontallyTo(iconRef)
+            }
+        )
 
         Icon(
             imageVector = AppIcons.CircleBorder,
@@ -477,26 +465,19 @@ private fun MedicationRecordItem(
             tint = MaterialTheme.colorScheme.primary
         )
 
-        val lastItemModifier = Modifier.constrainAs(bottomDividerRef) {
-            height = if (notes.isNotBlank()) {
-                Dimension.fillToConstraints
-            } else {
-                Dimension.value(16.dp)
+        TimelineDivider(
+            visible = !lastItem,
+            modifier = Modifier.constrainAs(bottomDividerRef) {
+                height = if (notes.isNotBlank()) {
+                    Dimension.fillToConstraints
+                } else {
+                    Dimension.value(16.dp)
+                }
+                top.linkTo(iconRef.bottom)
+                bottom.linkTo(parent.bottom)
+                centerHorizontallyTo(iconRef)
             }
-            top.linkTo(iconRef.bottom)
-            bottom.linkTo(parent.bottom)
-            centerHorizontallyTo(iconRef)
-        }
-
-        if (!lastItem) {
-            VerticalDivider(
-                modifier = lastItemModifier,
-                thickness = 2.dp,
-                color = MaterialTheme.colorScheme.outline
-            )
-        } else {
-            Spacer(modifier = lastItemModifier)
-        }
+        )
 
         Text(
             text = medicationTime.formatLocalDateTime(),
@@ -537,6 +518,22 @@ private fun MedicationRecordItem(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun TimelineDivider(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    if (visible) {
+        VerticalDivider(
+            modifier = modifier,
+            thickness = 2.dp,
+            color = MaterialTheme.colorScheme.outline
+        )
+    } else {
+        Spacer(modifier = modifier)
     }
 }
 
