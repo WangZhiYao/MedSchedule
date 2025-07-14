@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import io.floriax.medschedule.core.data.local.entity.MedicationRecordEntity
 import io.floriax.medschedule.core.data.local.relation.MedicationRecordWithEntries
+import kotlinx.coroutines.flow.Flow
 
 /**
  *
@@ -19,6 +20,10 @@ interface MedicationRecordDao : IDao<MedicationRecordEntity> {
     @Transaction
     @Query("SELECT * FROM medication_record ORDER BY medication_time DESC")
     fun observePaged(): PagingSource<Int, MedicationRecordWithEntries>
+
+    @Transaction
+    @Query("SELECT * FROM medication_record WHERE id = :id")
+    fun observeById(id: Long): Flow<MedicationRecordWithEntries?>
 
     @Transaction
     @Query(

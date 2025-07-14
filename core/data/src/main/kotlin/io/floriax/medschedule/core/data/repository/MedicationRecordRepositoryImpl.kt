@@ -80,6 +80,12 @@ class MedicationRecordRepositoryImpl @Inject constructor(
             medicationRecord.copy(id = id)
         }
 
+    override fun observeById(id: Long): Flow<MedicationRecord?> =
+        medicationRecordDao.observeById(id)
+            .map { entity ->
+                entity?.toModel()
+            }
+
     override fun observePagedByMedicationId(medicationId: Long): Flow<PagingData<MedicationRecord>> =
         Pager(pagingConfig) {
             medicationRecordDao.observePagedByMedicationId(medicationId)
@@ -90,4 +96,7 @@ class MedicationRecordRepositoryImpl @Inject constructor(
                     entity.toModel()
                 }
             }
+
+    override suspend fun delete(medicationRecord: MedicationRecord): Boolean =
+        medicationRecordDao.delete(medicationRecord.toEntity()) > 0
 }
