@@ -24,14 +24,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -56,6 +54,7 @@ import io.floriax.medschedule.feature.medicationrecord.R
 import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.ui.LoadingIndicator
+import io.floriax.medschedule.shared.ui.ManualTag
 import io.floriax.medschedule.shared.ui.extension.formatLocalDateTime
 
 /**
@@ -273,21 +272,6 @@ private fun getVisualsForState(state: MedicationState): StateVisuals =
     }
 
 data class StateVisuals(val color: Color)
-
-@Composable
-private fun ManualTag() {
-    Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer,
-        shape = CircleShape
-    ) {
-        Text(
-            text = stringResource(R.string.screen_medication_record_card_tag_manual),
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-        )
-    }
-}
 
 @Composable
 private fun TakenMedicationItem(

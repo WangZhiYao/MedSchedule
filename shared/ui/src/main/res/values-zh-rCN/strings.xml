@@ -17,4 +17,6 @@
 
     <string name="shared_ui_dialog_time_picker">选择时间</string>
 
+    <string name="shared_ui_tag_manual">手动记录</string>
+
 </resources>

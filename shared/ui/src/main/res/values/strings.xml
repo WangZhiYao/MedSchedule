@@ -17,4 +17,6 @@
 
     <string name="shared_ui_dialog_time_picker">Select Time</string>
 
+    <string name="shared_ui_tag_manual">Manual</string>
+
 </resources>
