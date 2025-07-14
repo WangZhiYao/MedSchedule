@@ -27,4 +27,14 @@
     <string name="dialog_add_medication_content">Your medicine cabinet is currently empty.\nPlease add a medication to continue.</string>
     <string name="dialog_add_medication_confirm">Add Medication</string>
 
+    <string name="screen_medication_record_detail_title">Medication Record Detail</string>
+    <string name="screen_medication_record_detail_tag_manual">Manual</string>
+    <string name="screen_medication_record_detail_medications_header">Medications</string>
+    <string name="screen_medication_record_detail_notes_header">Notes</string>
+    <string name="screen_medication_record_detail_notes_blank">No notes</string>
+    <string name="screen_medication_record_detail_delete_medication_record_failure">Failed to delete medication record</string>
+
+    <string name="dialog_delete_medication_record_confirmation_title">Delete Medication Record?</string>
+    <string name="dialog_delete_medication_record_confirmation_content">This action will permanently delete the medication record and cannot be undone. Are you sure you want to continue?</string>
+
 </resources>

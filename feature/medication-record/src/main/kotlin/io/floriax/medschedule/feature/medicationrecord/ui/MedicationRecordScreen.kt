@@ -40,9 +40,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -53,9 +56,11 @@ import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medicationrecord.R
 import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
+import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.LoadingIndicator
 import io.floriax.medschedule.shared.ui.ManualTag
 import io.floriax.medschedule.shared.ui.extension.formatLocalDateTime
+import kotlinx.coroutines.flow.flowOf
 
 /**
  *
@@ -66,6 +71,7 @@ import io.floriax.medschedule.shared.ui.extension.formatLocalDateTime
 @Composable
 fun MedicationRecordRoute(
     onCreateMedicationRecordClick: () -> Unit,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
     viewModel: MedicationRecordViewModel = hiltViewModel()
 ) {
 
@@ -73,7 +79,8 @@ fun MedicationRecordRoute(
 
     MedicationRecordScreen(
         medicationRecordPagingItems = medicationRecordPagingItems,
-        onCreateMedicationRecordClick = onCreateMedicationRecordClick
+        onCreateMedicationRecordClick = onCreateMedicationRecordClick,
+        onMedicationRecordClick = onMedicationRecordClick
     )
 }
 
@@ -81,6 +88,7 @@ fun MedicationRecordRoute(
 private fun MedicationRecordScreen(
     medicationRecordPagingItems: LazyPagingItems<MedicationRecord>,
     onCreateMedicationRecordClick: () -> Unit,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -128,6 +136,7 @@ private fun MedicationRecordScreen(
                 MedicationRecordList(
                     listState = listState,
                     medicationRecordPagingItems = medicationRecordPagingItems,
+                    onMedicationRecordClick = onMedicationRecordClick,
                     modifier = Modifier.padding(paddingValues)
                 )
             }
@@ -176,6 +185,7 @@ private fun EmptyMedicationRecordList(
 private fun MedicationRecordList(
     listState: LazyListState,
     medicationRecordPagingItems: LazyPagingItems<MedicationRecord>,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -191,7 +201,8 @@ private fun MedicationRecordList(
             val item = medicationRecordPagingItems[index]
             if (item != null) {
                 MedicationRecordCard(
-                    medicationRecord = item
+                    medicationRecord = item,
+                    onMedicationRecordClick = { onMedicationRecordClick(item) },
                 )
             }
         }
@@ -201,12 +212,14 @@ private fun MedicationRecordList(
 @Composable
 private fun MedicationRecordCard(
     medicationRecord: MedicationRecord,
+    onMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     val stateVisuals = getVisualsForState(medicationRecord.state)
 
     ElevatedCard(
+        onClick = onMedicationRecordClick,
         modifier = modifier.fillMaxWidth()
     ) {
         Row(
@@ -286,12 +299,10 @@ private fun TakenMedicationItem(
             modifier = Modifier
                 .weight(1f)
                 .basicMarquee(),
-            style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "${takenMedication.dose} ${takenMedication.medication.doseUnit}",
-            style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -302,15 +313,31 @@ private fun NotesSection(notes: String) {
     Row(verticalAlignment = Alignment.Top) {
         Text(
             text = stringResource(R.string.screen_medication_record_card_notes_prefix),
-            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.outline,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            style = MaterialTheme.typography.bodyMedium,
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = notes,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.outline,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 2,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun MedicationRecordScreenPreview() {
+    val medicationRecords = PagingData.empty<MedicationRecord>()
+    val medicationRecordsFlow = flowOf(medicationRecords)
+    AppTheme {
+        MedicationRecordScreen(
+            medicationRecordPagingItems = medicationRecordsFlow.collectAsLazyPagingItems(),
+            onCreateMedicationRecordClick = {},
+            onMedicationRecordClick = {}
         )
     }
 }

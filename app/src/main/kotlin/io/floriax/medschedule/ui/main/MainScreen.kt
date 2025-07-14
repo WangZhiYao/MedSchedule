@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import io.floriax.medschedule.core.domain.model.Medication
+import io.floriax.medschedule.core.domain.model.MedicationRecord
 import io.floriax.medschedule.ext.isRouteInHierarchy
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.home.navigation.homeScreen
@@ -31,6 +32,7 @@ fun MainRoute(
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
     onCreateMedicationRecordClick: () -> Unit,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
 ) {
 
     MainScreen(
@@ -38,6 +40,7 @@ fun MainRoute(
         onAddMedicationClick = onAddMedicationClick,
         onMedicationClick = onMedicationClick,
         onCreateMedicationRecordClick = onCreateMedicationRecordClick,
+        onMedicationRecordClick = onMedicationRecordClick
     )
 }
 
@@ -47,6 +50,7 @@ private fun MainScreen(
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
     onCreateMedicationRecordClick: () -> Unit,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -82,6 +86,7 @@ private fun MainScreen(
             onAddMedicationClick = onAddMedicationClick,
             onMedicationClick = onMedicationClick,
             onCreateMedicationRecordClick = onCreateMedicationRecordClick,
+            onMedicationRecordClick = onMedicationRecordClick
         )
     }
 }
@@ -92,6 +97,7 @@ private fun MainNavHost(
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
     onCreateMedicationRecordClick: () -> Unit,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -109,7 +115,8 @@ private fun MainNavHost(
         )
 
         medicationRecordScreen(
-            onCreateMedicationRecordClick = onCreateMedicationRecordClick
+            onCreateMedicationRecordClick = onCreateMedicationRecordClick,
+            onMedicationRecordClick = onMedicationRecordClick
         )
     }
 }
@@ -123,6 +130,7 @@ fun MainScreenPreview() {
             onAddMedicationClick = {},
             onMedicationClick = {},
             onCreateMedicationRecordClick = {},
+            onMedicationRecordClick = {}
         )
     }
 }

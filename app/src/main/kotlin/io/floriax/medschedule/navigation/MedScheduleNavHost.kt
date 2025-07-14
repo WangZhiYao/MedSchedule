@@ -38,7 +38,10 @@ fun MedScheduleNavHost(
         mainScreen(
             onAddMedicationClick = navController::navigateToAddMedication,
             onMedicationClick = navController::navigateToMedicationDetail,
-            onCreateMedicationRecordClick = navController::navigateToCreateMedicationRecord
+            onCreateMedicationRecordClick = navController::navigateToCreateMedicationRecord,
+            onMedicationRecordClick = { medicationRecord ->
+                navController.navigateToMedicationRecordDetail(medicationRecord.id)
+            }
         )
 
         addMedicationScreen(
@@ -63,7 +66,8 @@ fun MedScheduleNavHost(
         )
 
         medicationRecordDetailScreen(
-            onBackClick = navController::popBackStack
+            onBackClick = navController::popBackStack,
+            onEditClick = { /**TODO*/ }
         )
     }
 }
