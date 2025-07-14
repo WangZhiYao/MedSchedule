@@ -8,6 +8,7 @@
     <string name="screen_medicine_cabinet_click_to_add_medication">点击右下角 "+" 按钮以添加您的第一种药品</string>
     <string name="screen_medicine_cabinet_add_medication">添加药品</string>
     <string name="screen_medicine_cabinet_no_notes">暂无备注</string>
+    <string name="screen_medicine_cabinet_stock_not_set">暂无库存</string>
 
     <string name="screen_add_medication_title">添加药品</string>
     <string name="screen_add_medication_medication_name_label">药品名称</string>

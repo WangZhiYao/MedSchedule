@@ -6,9 +6,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,12 +19,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -31,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -205,7 +208,9 @@ private fun MedicationList(
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        state = state
+        state = state,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
             count = medicationPagingItems.itemCount,
@@ -213,7 +218,7 @@ private fun MedicationList(
         ) { index ->
             val item = medicationPagingItems[index]
             if (item != null) {
-                MedicationItem(
+                MedicationCard(
                     medication = item,
                     onMedicationClick = { onMedicationClick(item) }
                 )
@@ -223,34 +228,83 @@ private fun MedicationList(
 }
 
 @Composable
-private fun MedicationItem(
+private fun MedicationCard(
     medication: Medication,
     onMedicationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ListItem(
-        headlineContent = {
-            Text(
-                text = medication.name,
-                modifier = Modifier.basicMarquee(),
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.titleMedium
-            )
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onMedicationClick() },
-        supportingContent = {
-            Text(
-                text = medication.notes.ifBlank {
-                    stringResource(R.string.screen_medicine_cabinet_no_notes)
-                },
-                color = MaterialTheme.colorScheme.outline,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2
-            )
+    ElevatedCard(
+        onClick = onMedicationClick,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = medication.name,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .basicMarquee(),
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = medication.notes.ifBlank {
+                        stringResource(R.string.screen_medicine_cabinet_no_notes)
+                    },
+                    color = MaterialTheme.colorScheme.outline,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                    minLines = 2,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    val stock = medication.stock
+                    if (stock != null) {
+                        Row {
+                            Text(
+                                text = stock.toPlainString(),
+                                modifier = Modifier.alignBy(LastBaseline),
+                                fontWeight = FontWeight.SemiBold,
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                            Spacer(modifier = Modifier.size(4.dp))
+                            Text(
+                                text = medication.doseUnit,
+                                modifier = Modifier.alignBy(LastBaseline)
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = stringResource(R.string.screen_medicine_cabinet_stock_not_set),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                    Icon(
+                        imageVector = AppIcons.ArrowForward,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
         }
-    )
+    }
 }
 
 @Preview(showBackground = true)
@@ -265,7 +319,7 @@ private fun EmptyMedicationListPreview() {
 @Composable
 private fun MedicationCardPreview() {
     AppTheme {
-        MedicationItem(
+        MedicationCard(
             medication = Medication(
                 name = "Aspirin",
                 stock = "10".toBigDecimal(),

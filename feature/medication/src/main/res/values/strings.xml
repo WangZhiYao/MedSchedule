@@ -8,6 +8,7 @@
     <string name="screen_medicine_cabinet_click_to_add_medication">Start by tapping the "+" button to add your first medication</string>
     <string name="screen_medicine_cabinet_add_medication">Add Medication</string>
     <string name="screen_medicine_cabinet_no_notes">No notes</string>
+    <string name="screen_medicine_cabinet_stock_not_set">Stock not set</string>
 
     <string name="screen_add_medication_title">Add Medication</string>
     <string name="screen_add_medication_medication_name_label">Medication name</string>
