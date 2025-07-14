@@ -88,6 +88,7 @@ import io.floriax.medschedule.shared.ui.R as sharedUiR
 fun MedicationDetailRoute(
     onBackClick: () -> Unit,
     onEditClick: (Medication) -> Unit,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
     viewModel: MedicationDetailViewModel = hiltViewModel()
 ) {
 
@@ -149,7 +150,8 @@ fun MedicationDetailRoute(
         onBackClick = onBackClick,
         onEditClick = onEditClick,
         onDeleteClick = { viewModel.toggleDeleteDialog(true) },
-        onAddStockClick = { viewModel.toggleAddStockBottomSheet(true) }
+        onAddStockClick = { viewModel.toggleAddStockBottomSheet(true) },
+        onMedicationRecordClick = onMedicationRecordClick
     )
 }
 
@@ -162,6 +164,7 @@ private fun MedicationDetailScreen(
     onEditClick: (Medication) -> Unit,
     onDeleteClick: () -> Unit,
     onAddStockClick: () -> Unit,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -188,6 +191,7 @@ private fun MedicationDetailScreen(
                     medication = state.medication,
                     medicationRecords = medicationRecordPagingItems,
                     onAddStockClick = onAddStockClick,
+                    onMedicationRecordClick = onMedicationRecordClick,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -347,6 +351,7 @@ private fun MedicationRecordList(
     medication: Medication,
     medicationRecords: LazyPagingItems<MedicationRecord>,
     onAddStockClick: () -> Unit,
+    onMedicationRecordClick: (MedicationRecord) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -383,7 +388,8 @@ private fun MedicationRecordList(
                             lastItem = index == medicationRecords.itemCount - 1,
                             medicationTime = medicationRecord.medicationTime,
                             takenMedication = takenMedication,
-                            notes = medicationRecord.notes
+                            notes = medicationRecord.notes,
+                            onMedicationRecordClick = { onMedicationRecordClick(medicationRecord) }
                         )
                     }
                 }
@@ -399,12 +405,13 @@ private fun MedicationRecordItem(
     medicationTime: Instant,
     takenMedication: TakenMedication,
     notes: String,
+    onMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
-            .clickable {}
+            .clickable { onMedicationRecordClick() },
     ) {
         val (
             topDividerRef,
@@ -631,7 +638,8 @@ private fun MedicationDetailScreenPreview() {
             onBackClick = {},
             onEditClick = {},
             onDeleteClick = {},
-            onAddStockClick = {}
+            onAddStockClick = {},
+            onMedicationRecordClick = {}
         )
     }
 }
