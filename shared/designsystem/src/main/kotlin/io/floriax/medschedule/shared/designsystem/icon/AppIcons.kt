@@ -3,6 +3,7 @@ package io.floriax.medschedule.shared.designsystem.icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.HelpOutline
+import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
@@ -75,4 +76,7 @@ object AppIcons {
 
     val CalendarToday = Icons.Rounded.CalendarToday
     val AccessTime = Icons.Rounded.AccessTime
+
+    val CircleBorder = Icons.Outlined.Circle
+
 }

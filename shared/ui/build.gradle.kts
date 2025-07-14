@@ -59,7 +59,9 @@ dependencies {
     api(libs.androidx.activity.compose)
     api(libs.androidx.lifecycle.runtime.compose)
     api(libs.androidx.compose.material3.adaptive.navigation.suite)
+    api(libs.androidx.compose.constraintlayout)
     api(libs.androidx.navigation.compose)
     api(libs.androidx.hilt.navigation.compose)
     api(libs.androidx.paging.compose)
+
 }

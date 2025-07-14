@@ -22,7 +22,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,9 +30,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -48,9 +49,12 @@ import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -383,8 +387,7 @@ private fun MedicationRecordList(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(bottom = 8.dp),
     ) {
         items(medicationRecords.itemCount) { index ->
             val medicationRecord = medicationRecords[index]
@@ -395,8 +398,11 @@ private fun MedicationRecordList(
                     }
                 if (takenMedication != null) {
                     MedicationRecordItem(
+                        firstItem = index == 0,
+                        lastItem = index == medicationRecords.itemCount - 1,
                         medicationTime = medicationRecord.medicationTime,
                         takenMedication = takenMedication,
+                        notes = medicationRecord.notes
                     )
                 }
             }
@@ -406,25 +412,118 @@ private fun MedicationRecordList(
 
 @Composable
 private fun MedicationRecordItem(
+    firstItem: Boolean,
+    lastItem: Boolean,
     medicationTime: Instant,
     takenMedication: TakenMedication,
+    notes: String,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(
-        onClick = {},
-        modifier = modifier.fillMaxWidth()
+    ConstraintLayout(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {}
     ) {
-        Row(
-            modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = medicationTime.formatLocalDateTime(), modifier = Modifier.weight(1f))
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}",
-                fontWeight = FontWeight.Bold
+        val (
+            topDividerRef,
+            iconRef,
+            bottomDividerRef,
+            timeTextRef,
+            doseTextRef,
+            notesSurfaceRef
+        ) = createRefs()
+
+        if (!firstItem) {
+            VerticalDivider(
+                modifier = Modifier.constrainAs(topDividerRef) {
+                    height = Dimension.value(16.dp)
+                    top.linkTo(iconRef.bottom)
+                    bottom.linkTo(iconRef.top)
+                    centerHorizontallyTo(iconRef)
+                },
+                thickness = 2.dp,
+                color = MaterialTheme.colorScheme.outline
             )
+        } else {
+            Spacer(
+                modifier = Modifier.constrainAs(topDividerRef) {
+                    height = Dimension.value(8.dp)
+                    top.linkTo(iconRef.bottom)
+                    bottom.linkTo(iconRef.top)
+                    centerHorizontallyTo(iconRef)
+                }
+            )
+        }
+
+        Icon(
+            imageVector = AppIcons.CircleBorder,
+            contentDescription = null,
+            modifier = Modifier.constrainAs(iconRef) {
+                start.linkTo(parent.start, margin = 16.dp)
+                top.linkTo(topDividerRef.bottom)
+            },
+            tint = MaterialTheme.colorScheme.primary
+        )
+
+        val lastItemModifier = Modifier.constrainAs(bottomDividerRef) {
+            height = if (notes.isNotBlank()) {
+                Dimension.fillToConstraints
+            } else {
+                Dimension.value(16.dp)
+            }
+            top.linkTo(iconRef.bottom)
+            bottom.linkTo(parent.bottom)
+            centerHorizontallyTo(iconRef)
+        }
+
+        if (!lastItem) {
+            VerticalDivider(
+                modifier = lastItemModifier,
+                thickness = 2.dp,
+                color = MaterialTheme.colorScheme.outline
+            )
+        } else {
+            Spacer(modifier = lastItemModifier)
+        }
+
+        Text(
+            text = medicationTime.formatLocalDateTime(),
+            modifier = Modifier
+                .constrainAs(timeTextRef) {
+                    start.linkTo(iconRef.end, margin = 8.dp)
+                    end.linkTo(doseTextRef.start, margin = 8.dp)
+                    centerVerticallyTo(iconRef)
+                    width = Dimension.fillToConstraints
+                }
+                .basicMarquee(),
+        )
+
+        Text(
+            text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}",
+            modifier = Modifier.constrainAs(doseTextRef) {
+                baseline.linkTo(timeTextRef.baseline)
+                end.linkTo(parent.end, margin = 16.dp)
+            },
+            fontWeight = FontWeight.Bold
+        )
+
+        if (notes.isNotBlank()) {
+            Surface(
+                modifier = Modifier
+                    .constrainAs(notesSurfaceRef) {
+                        start.linkTo(timeTextRef.start)
+                        top.linkTo(timeTextRef.bottom, margin = 4.dp)
+                        end.linkTo(doseTextRef.end)
+                        bottom.linkTo(parent.bottom, margin = 8.dp)
+                        width = Dimension.fillToConstraints
+                    },
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                shape = MaterialTheme.shapes.extraSmall
+            ) {
+                Box(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
+                    Text(text = notes, overflow = TextOverflow.Ellipsis, maxLines = 2)
+                }
+            }
         }
     }
 }
