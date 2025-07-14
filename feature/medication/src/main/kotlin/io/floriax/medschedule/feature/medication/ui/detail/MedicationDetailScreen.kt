@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -365,32 +366,54 @@ private fun MedicationRecordList(
             )
         }
 
-        if (medicationRecords.itemCount == 0) {
-            item {
-                Text(
-                    text = stringResource(R.string.screen_medication_detail_no_medication_records),
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium
+        when (medicationRecords.loadState.refresh) {
+            LoadState.Loading -> item {
+                LoadingIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
                 )
             }
-        } else {
-            items(medicationRecords.itemCount) { index ->
-                val medicationRecord = medicationRecords[index]
-                if (medicationRecord != null) {
-                    val takenMedication =
-                        medicationRecord.takenMedications.firstOrNull { takenMedication ->
-                            takenMedication.medication.id == medication.id
-                        }
-                    if (takenMedication != null) {
-                        MedicationRecordItem(
-                            firstItem = index == 0,
-                            lastItem = index == medicationRecords.itemCount - 1,
-                            medicationTime = medicationRecord.medicationTime,
-                            takenMedication = takenMedication,
-                            notes = medicationRecord.notes,
-                            onMedicationRecordClick = { onMedicationRecordClick(medicationRecord) }
+
+            is LoadState.Error -> item {
+                ErrorIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                )
+            }
+
+            else -> {
+                if (medicationRecords.itemCount == 0) {
+                    item {
+                        Text(
+                            text = stringResource(R.string.screen_medication_detail_no_medication_records),
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.bodyMedium
                         )
+                    }
+                } else {
+                    items(medicationRecords.itemCount) { index ->
+                        val medicationRecord = medicationRecords[index]
+                        if (medicationRecord != null) {
+                            val takenMedication =
+                                medicationRecord.takenMedications.firstOrNull { takenMedication ->
+                                    takenMedication.medication.id == medication.id
+                                }
+                            if (takenMedication != null) {
+                                MedicationRecordItem(
+                                    firstItem = index == 0,
+                                    lastItem = index == medicationRecords.itemCount - 1,
+                                    medicationTime = medicationRecord.medicationTime,
+                                    takenMedication = takenMedication,
+                                    notes = medicationRecord.notes,
+                                    onMedicationRecordClick = {
+                                        onMedicationRecordClick(medicationRecord)
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }
