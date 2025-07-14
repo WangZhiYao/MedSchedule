@@ -49,6 +49,16 @@ fun LocalDate.toStartOfDayAtUtc(): Instant =
     this.atStartOfDay(ZoneOffset.UTC).toInstant()
 
 @Composable
+fun Instant.formatFullLocalDateTime(
+    zoneId: ZoneId = ZoneId.systemDefault()
+): String {
+    val localDateTime = this.atZone(zoneId).toLocalDateTime()
+    return "${localDateTime.toLocalDate().formatLocalized()} ${
+        localDateTime.toLocalTime().formatLocalized()
+    }"
+}
+
+@Composable
 fun LocalDate.formatLocalized(): String {
     val context = LocalContext.current
     return this.formatLocalized(context)

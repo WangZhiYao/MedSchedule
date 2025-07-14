@@ -476,7 +476,7 @@ private fun MedicationRecordItem(
         )
 
         Text(
-            text = medicationTime.formatLocalDateTime(),
+            text = medicationTime.formatFullLocalDateTime(),
             modifier = Modifier
                 .constrainAs(timeTextRef) {
                     start.linkTo(iconRef.end, margin = 8.dp)
