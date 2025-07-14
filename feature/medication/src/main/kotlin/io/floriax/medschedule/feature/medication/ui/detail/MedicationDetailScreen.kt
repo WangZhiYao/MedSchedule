@@ -44,7 +44,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -56,7 +55,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -186,9 +184,9 @@ private fun MedicationDetailScreen(
             when {
                 state.loading -> LoadingIndicator(modifier = Modifier.fillMaxSize())
                 state.error -> ErrorIndicator(modifier = Modifier.fillMaxSize())
-                state.medication != null -> MedicationDetailContent(
+                state.medication != null -> MedicationRecordList(
                     medication = state.medication,
-                    medicationRecordPagingItems = medicationRecordPagingItems,
+                    medicationRecords = medicationRecordPagingItems,
                     onAddStockClick = onAddStockClick,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -225,9 +223,8 @@ private fun MedicationDetailTopBar(
 }
 
 @Composable
-private fun MedicationDetailContent(
+private fun Header(
     medication: Medication,
-    medicationRecordPagingItems: LazyPagingItems<MedicationRecord>,
     onAddStockClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -251,47 +248,11 @@ private fun MedicationDetailContent(
         Text(
             text = stringResource(R.string.screen_medication_detail_medication_records),
             modifier = Modifier.padding(horizontal = 16.dp),
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp)
         )
 
         Spacer(modifier = Modifier.height(4.dp))
-
-        when {
-            medicationRecordPagingItems.loadState.refresh == LoadState.Loading -> {
-                LoadingIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 128.dp)
-                )
-            }
-
-            medicationRecordPagingItems.loadState.refresh is LoadState.Error -> {
-                ErrorIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 128.dp)
-                )
-            }
-
-            medicationRecordPagingItems.itemCount == 0 -> {
-                Text(
-                    text = stringResource(R.string.screen_medication_detail_no_medication_records),
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-
-            else -> {
-                MedicationRecordList(
-                    medication = medication,
-                    medicationRecords = medicationRecordPagingItems,
-                    modifier = Modifier
-                        .fillMaxSize()
-                )
-            }
-        }
     }
 }
 
@@ -304,7 +265,7 @@ private fun StockCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -314,7 +275,6 @@ private fun StockCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(R.string.screen_medication_detail_stock),
-                    color = MaterialTheme.colorScheme.inverseOnSurface,
                     style = MaterialTheme.typography.labelLarge
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -339,19 +299,22 @@ private fun StockCard(
                     }
                 }
             }
+
+            val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
+
             Box(
                 modifier = Modifier
                     .size(36.dp)
                     .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.1f))
-                    .border(1.dp, Color.White, CircleShape)
+                    .background(onSurfaceVariant.copy(alpha = 0.1f))
+                    .border(1.dp, onSurfaceVariant, CircleShape)
                     .clickable(onClick = onAddStockClick),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = AppIcons.Add,
                     contentDescription = stringResource(R.string.screen_medication_detail_add_stock),
-                    tint = Color.White
+                    tint = onSurfaceVariant
                 )
             }
         }
@@ -383,27 +346,46 @@ private fun NotesCard(
 private fun MedicationRecordList(
     medication: Medication,
     medicationRecords: LazyPagingItems<MedicationRecord>,
+    onAddStockClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(bottom = 8.dp),
     ) {
-        items(medicationRecords.itemCount) { index ->
-            val medicationRecord = medicationRecords[index]
-            if (medicationRecord != null) {
-                val takenMedication =
-                    medicationRecord.takenMedications.firstOrNull { takenMedication ->
-                        takenMedication.medication.id == medication.id
+        item {
+            Header(
+                medication = medication,
+                onAddStockClick = onAddStockClick,
+            )
+        }
+
+        if (medicationRecords.itemCount == 0) {
+            item {
+                Text(
+                    text = stringResource(R.string.screen_medication_detail_no_medication_records),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        } else {
+            items(medicationRecords.itemCount) { index ->
+                val medicationRecord = medicationRecords[index]
+                if (medicationRecord != null) {
+                    val takenMedication =
+                        medicationRecord.takenMedications.firstOrNull { takenMedication ->
+                            takenMedication.medication.id == medication.id
+                        }
+                    if (takenMedication != null) {
+                        MedicationRecordItem(
+                            firstItem = index == 0,
+                            lastItem = index == medicationRecords.itemCount - 1,
+                            medicationTime = medicationRecord.medicationTime,
+                            takenMedication = takenMedication,
+                            notes = medicationRecord.notes
+                        )
                     }
-                if (takenMedication != null) {
-                    MedicationRecordItem(
-                        firstItem = index == 0,
-                        lastItem = index == medicationRecords.itemCount - 1,
-                        medicationTime = medicationRecord.medicationTime,
-                        takenMedication = takenMedication,
-                        notes = medicationRecord.notes
-                    )
                 }
             }
         }
