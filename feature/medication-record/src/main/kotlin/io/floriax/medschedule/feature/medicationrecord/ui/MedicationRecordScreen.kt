@@ -315,7 +315,7 @@ private fun TakenMedicationItem(
 
 @Composable
 private fun NotesSection(notes: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(verticalAlignment = Alignment.Top) {
         Text(
             text = stringResource(R.string.screen_medication_record_card_notes_prefix),
             style = MaterialTheme.typography.bodySmall,
