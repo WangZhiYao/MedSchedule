@@ -56,6 +56,6 @@
     <string name="screen_medication_detail_no_medication_records">暂无用药记录</string>
 
     <string name="dialog_delete_medication_title">删除药品</string>
-    <string name="dialog_delete_medication_content">是否要删除: %s？\n如果删除该药品，所有关于该药品的用药记录将同时被删除，该操作不能被撤销</string>
+    <string name="dialog_delete_medication_content_format">是否要删除: %s？\n如果删除该药品，所有关于该药品的用药记录将同时被删除，该操作不能被撤销</string>
 
 </resources>

@@ -16,7 +16,7 @@
     <string name="screen_create_medication_record_select_time">选择时间</string>
     <string name="screen_create_medication_record_medication_list_header">药物列表</string>
     <string name="screen_create_medication_record_medication_list_empty">尚未选择任何药品</string>
-    <string name="screen_create_medication_record_medication_stock">库存: %s</string>
+    <string name="screen_create_medication_record_medication_stock_format">库存: %s</string>
     <string name="screen_create_medication_record_medication_stock_not_set">库存未设置</string>
     <string name="screen_create_medication_record_select_medication">选择药物</string>
     <string name="screen_create_medication_record_dose">剂量</string>

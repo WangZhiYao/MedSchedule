@@ -56,6 +56,6 @@
     <string name="screen_medication_detail_no_medication_records">No medication records</string>
 
     <string name="dialog_delete_medication_title">Delete Medication</string>
-    <string name="dialog_delete_medication_content">Do you want to delete: %s?\nIf you delete this medication, all medication records related to this will also be deleted. This operation cannot be undone.</string>
+    <string name="dialog_delete_medication_content_format">Do you want to delete: %s?\nIf you delete this medication, all medication records related to this will also be deleted. This operation cannot be undone.</string>
 
 </resources>

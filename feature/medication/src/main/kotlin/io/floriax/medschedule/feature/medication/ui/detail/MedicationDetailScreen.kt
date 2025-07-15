@@ -559,7 +559,7 @@ private fun DeleteMedicationConfirmationDialog(
         text = {
             Text(
                 text = stringResource(
-                    R.string.dialog_delete_medication_content,
+                    R.string.dialog_delete_medication_content_format,
                     medicationName
                 )
             )

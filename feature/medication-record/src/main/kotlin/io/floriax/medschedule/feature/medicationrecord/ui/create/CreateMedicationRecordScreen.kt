@@ -396,7 +396,7 @@ private fun TakenMedicationItem(
                             stringResource(R.string.screen_create_medication_record_medication_stock_not_set)
                         } else {
                             stringResource(
-                                R.string.screen_create_medication_record_medication_stock,
+                                R.string.screen_create_medication_record_medication_stock_format,
                                 stock.toPlainString()
                             )
                         }
@@ -527,7 +527,7 @@ private fun MedicationItem(
                 stringResource(R.string.screen_create_medication_record_medication_stock_not_set)
             } else {
                 stringResource(
-                    R.string.screen_create_medication_record_medication_stock,
+                    R.string.screen_create_medication_record_medication_stock_format,
                     stock.toPlainString()
                 )
             }
