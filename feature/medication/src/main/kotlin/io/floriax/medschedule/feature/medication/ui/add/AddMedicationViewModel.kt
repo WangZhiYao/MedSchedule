@@ -23,12 +23,12 @@ import javax.inject.Inject
 class AddMedicationViewModel @Inject constructor(
     private val addMedicationUseCase: AddMedicationUseCase,
     @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
-) : BaseViewModel<AddMedicationViewState, AddMedicationSideEffect>() {
+) : BaseViewModel<AddMedicationUiState, AddMedicationSideEffect>() {
 
     private val logger by logger<AddMedicationViewModel>()
 
-    override val initialState: AddMedicationViewState
-        get() = AddMedicationViewState()
+    override val initialState: AddMedicationUiState
+        get() = AddMedicationUiState()
 
     fun onMedicationNameChange(medicationName: String) {
         reduce {

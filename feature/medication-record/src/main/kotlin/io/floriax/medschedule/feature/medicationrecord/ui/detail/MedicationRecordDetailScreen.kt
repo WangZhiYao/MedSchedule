@@ -102,7 +102,7 @@ fun MedicationRecordDetailRoute(
 
 @Composable
 private fun MedicationRecordDetailScreen(
-    state: MedicationRecordDetailViewState,
+    state: MedicationRecordDetailUiState,
     snackbarHostState: SnackbarHostState,
     onBackClick: () -> Unit,
     onEditClick: () -> Unit,
@@ -359,7 +359,7 @@ private fun MedicationRecordDetailScreenPreview() {
 
     AppTheme {
         MedicationRecordDetailScreen(
-            state = MedicationRecordDetailViewState(
+            state = MedicationRecordDetailUiState(
                 loading = false,
                 medicationRecord = medicationRecord
             ),

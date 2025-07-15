@@ -83,7 +83,7 @@ fun MedicineCabinetRoute(
 
 @Composable
 private fun MedicineCabinetScreen(
-    state: MedicineCabinetViewState,
+    state: MedicineCabinetUiState,
     medicationPagingItems: LazyPagingItems<Medication>,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
@@ -140,7 +140,7 @@ private fun MedicineCabinetTopBar(
 
 @Composable
 private fun MedicineCabinetContent(
-    state: MedicineCabinetViewState,
+    state: MedicineCabinetUiState,
     listState: LazyListState,
     medicationPagingItems: LazyPagingItems<Medication>,
     onMedicationClick: (Medication) -> Unit,
@@ -338,7 +338,7 @@ private fun MedicineCabinetScreenPreview() {
         val pagingData = PagingData.from(emptyList<Medication>())
         val medicationPagingItems = flowOf(pagingData).collectAsLazyPagingItems()
         MedicineCabinetScreen(
-            state = MedicineCabinetViewState(),
+            state = MedicineCabinetUiState(),
             medicationPagingItems = medicationPagingItems,
             onAddMedicationClick = {},
             onMedicationClick = {}

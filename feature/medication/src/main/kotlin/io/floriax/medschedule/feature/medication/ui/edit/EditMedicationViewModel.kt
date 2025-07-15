@@ -29,12 +29,12 @@ class EditMedicationViewModel @Inject constructor(
     private val getMedicationUseCase: GetMedicationByIdUseCase,
     private val updateMedicationUseCase: UpdateMedicationUseCase,
     @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
-) : BaseViewModel<EditMedicationViewState, EditMedicationSideEffect>() {
+) : BaseViewModel<EditMedicationUiState, EditMedicationSideEffect>() {
 
     private val logger by logger<EditMedicationViewModel>()
 
-    override val initialState: EditMedicationViewState
-        get() = EditMedicationViewState()
+    override val initialState: EditMedicationUiState
+        get() = EditMedicationUiState()
 
     private val medicationId: Long = savedStateHandle.toRoute<EditMedicationRoute>().medicationId
 

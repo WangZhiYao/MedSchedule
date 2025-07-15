@@ -109,7 +109,7 @@ fun EditMedicationRoute(
 
 @Composable
 private fun EditMedicationScreen(
-    state: EditMedicationViewState,
+    state: EditMedicationUiState,
     snackbarHostState: SnackbarHostState,
     nameFocusRequester: FocusRequester,
     stockFocusRequester: FocusRequester,
@@ -161,7 +161,7 @@ private fun EditMedicationTopBar(
 
 @Composable
 private fun EditMedicationContent(
-    state: EditMedicationViewState,
+    state: EditMedicationUiState,
     nameFocusRequester: FocusRequester,
     stockFocusRequester: FocusRequester,
     doseUnitFocusRequester: FocusRequester,
@@ -250,7 +250,7 @@ private fun EditMedicationContent(
 private fun EditMedicationScreenPreview() {
     AppTheme {
         EditMedicationScreen(
-            state = EditMedicationViewState(),
+            state = EditMedicationUiState(),
             snackbarHostState = remember { SnackbarHostState() },
             nameFocusRequester = remember { FocusRequester() },
             stockFocusRequester = remember { FocusRequester() },

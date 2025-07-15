@@ -173,7 +173,7 @@ fun CreateMedicationRecordRoute(
 
 @Composable
 private fun CreateMedicationRecordScreen(
-    state: CreateMedicationRecordViewState,
+    state: CreateMedicationRecordUiState,
     snackbarHostState: SnackbarHostState,
     onBackClick: () -> Unit,
     onSelectDateClick: () -> Unit,
@@ -590,7 +590,7 @@ private fun TakenMedicationItemPreview() {
 private fun CreateMedicationRecordScreenPreview() {
     AppTheme {
         CreateMedicationRecordScreen(
-            state = CreateMedicationRecordViewState(),
+            state = CreateMedicationRecordUiState(),
             snackbarHostState = remember { SnackbarHostState() },
             onBackClick = {},
             onSelectDateClick = {},

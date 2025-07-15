@@ -25,12 +25,12 @@ import javax.inject.Inject
 class MedicineCabinetViewModel @Inject constructor(
     private val observePagedMedicationsUseCase: ObservePagedMedicationsUseCase,
     @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
-) : BaseViewModel<MedicineCabinetViewState, MedicineCabinetSideEffect>() {
+) : BaseViewModel<MedicineCabinetUiState, MedicineCabinetSideEffect>() {
 
     private val logger by logger<MedicineCabinetViewModel>()
 
-    override val initialState: MedicineCabinetViewState
-        get() = MedicineCabinetViewState()
+    override val initialState: MedicineCabinetUiState
+        get() = MedicineCabinetUiState()
 
     val pagedMedications: Flow<PagingData<Medication>> =
         observePagedMedicationsUseCase()

@@ -154,7 +154,7 @@ fun MedicationDetailRoute(
 
 @Composable
 private fun MedicationDetailScreen(
-    state: MedicationDetailViewState,
+    state: MedicationDetailUiState,
     snackbarHostState: SnackbarHostState,
     medicationRecordPagingItems: LazyPagingItems<MedicationRecord>,
     onBackClick: () -> Unit,
@@ -639,7 +639,7 @@ private fun MedicationDetailScreenPreview() {
     val medicationRecords = flowOf(pagingData).collectAsLazyPagingItems()
     AppTheme {
         MedicationDetailScreen(
-            state = MedicationDetailViewState(
+            state = MedicationDetailUiState(
                 loading = false,
                 error = false,
                 medication = Medication(

@@ -96,7 +96,7 @@ fun AddMedicationRoute(
 
 @Composable
 private fun AddMedicationScreen(
-    state: AddMedicationViewState,
+    state: AddMedicationUiState,
     snackbarHostState: SnackbarHostState,
     nameFocusRequester: FocusRequester,
     stockFocusRequester: FocusRequester,
@@ -150,7 +150,7 @@ private fun AddMedicationTopBar(
 
 @Composable
 private fun AddMedicationContent(
-    state: AddMedicationViewState,
+    state: AddMedicationUiState,
     nameFocusRequester: FocusRequester,
     stockFocusRequester: FocusRequester,
     doseUnitFocusRequester: FocusRequester,
@@ -239,7 +239,7 @@ private fun AddMedicationContent(
 private fun AddMedicationScreenPreview() {
     AppTheme {
         AddMedicationScreen(
-            state = AddMedicationViewState(),
+            state = AddMedicationUiState(),
             snackbarHostState = remember { SnackbarHostState() },
             stockFocusRequester = remember { FocusRequester() },
             nameFocusRequester = remember { FocusRequester() },
