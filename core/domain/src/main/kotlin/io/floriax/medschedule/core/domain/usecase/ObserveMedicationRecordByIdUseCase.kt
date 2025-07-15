@@ -13,9 +13,9 @@ import javax.inject.Inject
  */
 class ObserveMedicationRecordByIdUseCase @Inject constructor(
     private val medicationRecordRepository: MedicationRecordRepository
-) : IUseCase {
+) : FlowUseCase<Long, MedicationRecord?> {
 
-    operator fun invoke(id: Long): Flow<MedicationRecord?> =
-        medicationRecordRepository.observeById(id)
+    override operator fun invoke(params: Long): Flow<MedicationRecord?> =
+        medicationRecordRepository.observeById(params)
 
 }

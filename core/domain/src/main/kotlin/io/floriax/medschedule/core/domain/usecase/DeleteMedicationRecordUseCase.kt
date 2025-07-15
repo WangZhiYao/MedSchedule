@@ -12,9 +12,9 @@ import javax.inject.Inject
  */
 class DeleteMedicationRecordUseCase @Inject constructor(
     private val medicationRecordRepository: MedicationRecordRepository
-) : IUseCase {
+) : SuspendUseCase<MedicationRecord, Boolean> {
 
-    suspend operator fun invoke(medicationRecord: MedicationRecord) =
-        medicationRecordRepository.delete(medicationRecord)
+    override suspend operator fun invoke(params: MedicationRecord): Boolean =
+        medicationRecordRepository.delete(params)
 
 }

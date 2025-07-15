@@ -13,6 +13,7 @@ import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.core.domain.model.MedicationRecord
 import io.floriax.medschedule.core.domain.usecase.CreateMedicationRecordUseCase
 import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationsUseCase
+import io.floriax.medschedule.core.domain.usecase.invoke
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

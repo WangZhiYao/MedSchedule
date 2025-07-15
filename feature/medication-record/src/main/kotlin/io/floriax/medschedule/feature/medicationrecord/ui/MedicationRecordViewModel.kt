@@ -8,6 +8,7 @@ import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.core.common.extension.logger
 import io.floriax.medschedule.core.domain.model.MedicationRecord
 import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationRecordsUseCase
+import io.floriax.medschedule.core.domain.usecase.invoke
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

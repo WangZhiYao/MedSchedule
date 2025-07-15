@@ -12,9 +12,9 @@ import javax.inject.Inject
  */
 class UpdateMedicationUseCase @Inject constructor(
     private val medicationRepository: MedicationRepository
-) : IUseCase {
+) : SuspendUseCase<Medication, Medication> {
 
-    suspend operator fun invoke(medication: Medication): Medication =
-        medicationRepository.update(medication)
+    override suspend operator fun invoke(params: Medication): Medication =
+        medicationRepository.update(params)
 
 }
