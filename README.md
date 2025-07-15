@@ -60,8 +60,8 @@ create a robust and maintainable application.
   * Manages dependencies throughout the application, improving modularity and testability.
 
 * Asynchronous Processing: Kotlin Coroutines + Flow
-  * All long-running tasks (like database access) are performed in coroutines to keep the UI thread
-    unblocked.
+  * All long-running tasks (like database access) are performed in coroutines to keep the UI
+    thread unblocked.
 
 * Data Persistence: Room
   * Serves as the local database for storing core data like medications and records.
@@ -77,7 +77,7 @@ create a robust and maintainable application.
 The project uses a clean, multi-module architecture to achieve separation of concerns and promote
 high cohesion and low coupling.
 
-```
+```text
 MedSchedule/
 ├── app/                   # Main application module, integrates all features
 |
@@ -119,3 +119,21 @@ MedSchedule/
 2. Open the project in `Android Studio Narwhal | 2025.1.1` or a newer version.
 3. Wait for Gradle to sync and build the project.
 4. Run the app module on an emulator or a physical device.
+
+## License
+
+```text
+Copyright 2025 WangZhiYao
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
