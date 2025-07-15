@@ -11,7 +11,7 @@ import io.floriax.medschedule.core.data.local.entity.MedicationRecordEntryEntity
  * @since 2025/7/1
  */
 @Dao
-interface MedicationRecordEntryDao : IDao<MedicationRecordEntryEntity> {
+interface MedicationRecordEntryDao : BaseDao<MedicationRecordEntryEntity> {
 
     @Insert
     suspend fun insertBatch(items: List<MedicationRecordEntryEntity>)

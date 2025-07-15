@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
  * @since 2025/5/30
  */
 @Dao
-interface MedicationDao : IDao<MedicationEntity> {
+interface MedicationDao : BaseDao<MedicationEntity> {
 
     @Query("SELECT * FROM medication")
     fun observePaged(): PagingSource<Int, MedicationEntity>

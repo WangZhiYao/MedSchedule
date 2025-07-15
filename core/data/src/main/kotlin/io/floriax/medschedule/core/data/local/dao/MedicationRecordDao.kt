@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
  * @since 2025/7/1
  */
 @Dao
-interface MedicationRecordDao : IDao<MedicationRecordEntity> {
+interface MedicationRecordDao : BaseDao<MedicationRecordEntity> {
 
     @Transaction
     @Query("SELECT * FROM medication_record ORDER BY medication_time DESC")

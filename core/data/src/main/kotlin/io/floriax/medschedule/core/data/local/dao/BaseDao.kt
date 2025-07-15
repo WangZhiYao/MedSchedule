@@ -10,7 +10,7 @@ import androidx.room.Update
  * @author WangZhiYao
  * @since 2025/5/30
  */
-interface IDao<T> {
+interface BaseDao<T> {
 
     @Insert
     suspend fun insert(item: T): Long
