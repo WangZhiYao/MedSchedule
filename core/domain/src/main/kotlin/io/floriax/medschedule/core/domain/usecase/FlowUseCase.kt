@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
  * @author WangZhiYao
  * @since 2025/7/15
  */
-interface FlowUseCase<in P, out R> {
+interface FlowUseCase<in P, out R> : UseCase<P, Flow<R>> {
 
     operator fun invoke(params: P): Flow<R>
 
