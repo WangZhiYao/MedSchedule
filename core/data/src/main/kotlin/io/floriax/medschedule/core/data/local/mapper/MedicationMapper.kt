@@ -17,7 +17,7 @@ fun MedicationEntity.toModel(): Medication =
         name = name,
         stock = stock?.toBigDecimalOrNull(),
         doseUnit = doseUnit,
-        notes = notes.orEmpty(),
+        notes = notes,
         createdAt = Instant.ofEpochMilli(createdAt)
     )
 
@@ -27,6 +27,6 @@ fun Medication.toEntity(): MedicationEntity =
         name = name,
         stock = stock?.toPlainString(),
         doseUnit = doseUnit,
-        notes = notes.nullIfBlank(),
+        notes = notes?.nullIfBlank(),
         createdAt = createdAt.toEpochMilli()
     )

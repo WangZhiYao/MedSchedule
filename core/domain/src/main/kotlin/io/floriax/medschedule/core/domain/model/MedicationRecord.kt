@@ -18,6 +18,6 @@ data class MedicationRecord(
     val state: MedicationState,
     val type: MedicationRecordType,
     val timeZone: ZoneId,
-    val notes: String,
+    val notes: String?,
     val createdAt: Instant = Instant.now()
 )

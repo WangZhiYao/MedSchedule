@@ -26,3 +26,9 @@ fun String.isValidDose(): Boolean {
 
 fun String.nullIfBlank(): String? =
     takeIf { str -> str.isNotBlank() }
+
+inline fun <C> C?.ifNullOrBlank(defaultValue: () -> C): C where C : CharSequence {
+    return if (this.isNullOrBlank()) defaultValue() else this
+}
+
+

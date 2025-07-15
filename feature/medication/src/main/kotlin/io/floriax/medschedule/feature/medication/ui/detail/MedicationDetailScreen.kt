@@ -59,6 +59,7 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import io.floriax.medschedule.core.common.extension.ifNullOrBlank
 import io.floriax.medschedule.core.common.extension.isValidStock
 import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.core.domain.model.MedicationRecord
@@ -324,7 +325,7 @@ private fun StockCard(
 
 @Composable
 private fun NotesCard(
-    notes: String,
+    notes: String?,
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
@@ -336,8 +337,8 @@ private fun NotesCard(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = notes.ifBlank { stringResource(R.string.screen_medication_detail_no_notes) },
-                color = if (notes.isBlank()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurface,
+                text = notes.ifNullOrBlank { stringResource(R.string.screen_medication_detail_no_notes) },
+                color = if (notes.isNullOrBlank()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -423,7 +424,7 @@ private fun MedicationRecordItem(
     lastItem: Boolean,
     medicationTime: Instant,
     takenMedication: TakenMedication,
-    notes: String,
+    notes: String?,
     onMedicationRecordClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -464,7 +465,7 @@ private fun MedicationRecordItem(
         TimelineDivider(
             visible = !lastItem,
             modifier = Modifier.constrainAs(bottomDividerRef) {
-                height = if (notes.isNotBlank()) {
+                height = if (!notes.isNullOrBlank()) {
                     Dimension.fillToConstraints
                 } else {
                     Dimension.value(16.dp)
@@ -496,7 +497,7 @@ private fun MedicationRecordItem(
             fontWeight = FontWeight.Bold
         )
 
-        if (notes.isNotBlank()) {
+        if (!notes.isNullOrBlank()) {
             Surface(
                 modifier = Modifier
                     .constrainAs(notesSurfaceRef) {

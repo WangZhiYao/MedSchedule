@@ -26,7 +26,7 @@ fun MedicationRecordWithEntries.toModel(): MedicationRecord =
         state = MedicationState.fromValue(record.state),
         type = MedicationRecordType.fromValue(record.type),
         timeZone = ZoneId.of(record.timeZone),
-        notes = record.notes.orEmpty(),
+        notes = record.notes,
         createdAt = Instant.ofEpochMilli(record.createdAt)
     )
 
@@ -37,7 +37,7 @@ fun MedicationRecord.toEntity(): MedicationRecordEntity =
         state = state.value,
         type = type.value,
         timeZone = timeZone.id,
-        notes = notes.nullIfBlank(),
+        notes = notes?.nullIfBlank(),
         createdAt = createdAt.toEpochMilli()
     )
 

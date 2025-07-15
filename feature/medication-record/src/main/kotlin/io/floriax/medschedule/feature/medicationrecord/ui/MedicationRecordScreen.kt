@@ -264,9 +264,10 @@ private fun MedicationRecordCard(
                             TakenMedicationItem(takenMedication)
                         }
                     }
-                    if (medicationRecord.notes.isNotBlank()) {
+                    val notes = medicationRecord.notes
+                    if (!notes.isNullOrBlank()) {
                         Spacer(modifier = Modifier.height(16.dp))
-                        NotesSection(notes = medicationRecord.notes)
+                        NotesSection(notes = notes)
                     }
                 }
             }

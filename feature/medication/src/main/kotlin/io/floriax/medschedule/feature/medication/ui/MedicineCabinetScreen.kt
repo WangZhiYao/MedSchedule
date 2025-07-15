@@ -46,6 +46,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import io.floriax.medschedule.core.common.extension.ifNullOrBlank
 import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
@@ -251,7 +252,7 @@ private fun MedicationCard(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = medication.notes.ifBlank {
+                    text = medication.notes.ifNullOrBlank {
                         stringResource(R.string.screen_medicine_cabinet_no_notes)
                     },
                     color = MaterialTheme.colorScheme.outline,

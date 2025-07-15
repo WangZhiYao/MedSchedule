@@ -55,7 +55,7 @@ class EditMedicationViewModel @Inject constructor(
                                 medicationName = medication.name,
                                 stockString = medication.stock?.toPlainString() ?: "",
                                 doseUnit = medication.doseUnit,
-                                notes = medication.notes
+                                notes = medication.notes.orEmpty()
                             )
                         }
                     }

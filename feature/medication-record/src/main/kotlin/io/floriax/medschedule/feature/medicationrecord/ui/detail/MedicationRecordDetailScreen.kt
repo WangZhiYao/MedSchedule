@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import io.floriax.medschedule.core.common.extension.ifNullOrBlank
 import io.floriax.medschedule.core.domain.enums.MedicationRecordType
 import io.floriax.medschedule.core.domain.enums.MedicationState
 import io.floriax.medschedule.core.domain.model.Medication
@@ -187,7 +188,7 @@ private fun MedicationRecordDetailContent(
         }
 
         item {
-            Notes(notes = medicationRecord.notes)
+            NotesSection(notes = medicationRecord.notes)
         }
     }
 }
@@ -279,8 +280,8 @@ private fun TakenMedicationItem(
 }
 
 @Composable
-private fun Notes(
-    notes: String,
+private fun NotesSection(
+    notes: String?,
     modifier: Modifier = Modifier
 ) {
     ElevatedCard(
@@ -292,7 +293,11 @@ private fun Notes(
                 style = MaterialTheme.typography.titleMedium
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = notes.ifBlank { stringResource(R.string.screen_medication_record_detail_notes_blank) })
+            Text(
+                text = notes.ifNullOrBlank {
+                    stringResource(R.string.screen_medication_record_detail_notes_blank)
+                }
+            )
         }
     }
 }
