@@ -10,5 +10,6 @@ import java.math.BigDecimal
  */
 data class TakenMedication(
     val medication: Medication,
-    val dose: BigDecimal
+    val dose: BigDecimal,
+    val deductFromStock: Boolean,
 )

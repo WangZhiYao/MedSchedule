@@ -21,6 +21,7 @@
     <string name="screen_create_medication_record_select_medication">选择药物</string>
     <string name="screen_create_medication_record_dose">剂量</string>
     <string name="screen_create_medication_record_notes">备注</string>
+    <string name="screen_create_medication_record_deduct_from_stock">扣除库存</string>
     <string name="screen_create_medication_record_create_medication_record_failure">创建用药记录失败</string>
 
     <string name="dialog_add_medication_title">暂无药品</string>

@@ -26,6 +26,7 @@ data class CreateMedicationRecordUiState(
 data class TakenMedicationInput(
     val medication: Medication,
     val doseString: String,
+    val deductFromStock: Boolean = true,
     val isMarkedAsError: Boolean = false
 ) {
 
@@ -45,6 +46,7 @@ data class TakenMedicationInput(
     fun toTakenMedication(): TakenMedication =
         TakenMedication(
             medication = medication,
-            dose = doseString.toBigDecimal()
+            dose = doseString.toBigDecimal(),
+            deductFromStock = deductFromStock
         )
 }

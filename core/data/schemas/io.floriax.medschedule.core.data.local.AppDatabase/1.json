@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "69594410e2170e8b4e334d6a3d4e2f05",
+    "identityHash": "29d195816663137fce4cc8742cd8f3cf",
     "entities": [
       {
         "tableName": "medication",
@@ -116,7 +116,7 @@
       },
       {
         "tableName": "medication_record_entry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`medication_record_id` INTEGER NOT NULL, `medication_id` INTEGER NOT NULL, `dose` TEXT NOT NULL, PRIMARY KEY(`medication_record_id`, `medication_id`), FOREIGN KEY(`medication_record_id`) REFERENCES `medication_record`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`medication_id`) REFERENCES `medication`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`medication_record_id` INTEGER NOT NULL, `medication_id` INTEGER NOT NULL, `dose` TEXT NOT NULL, `deduct_from_stock` INTEGER NOT NULL, PRIMARY KEY(`medication_record_id`, `medication_id`), FOREIGN KEY(`medication_record_id`) REFERENCES `medication_record`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`medication_id`) REFERENCES `medication`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "medicationRecordId",
@@ -134,6 +134,12 @@
             "fieldPath": "dose",
             "columnName": "dose",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "deductFromStock",
+            "columnName": "deduct_from_stock",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -192,7 +198,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '69594410e2170e8b4e334d6a3d4e2f05')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '29d195816663137fce4cc8742cd8f3cf')"
     ]
   }
 }

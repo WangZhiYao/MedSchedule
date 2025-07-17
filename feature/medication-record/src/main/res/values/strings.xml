@@ -21,6 +21,7 @@
     <string name="screen_create_medication_record_select_medication">Select Medication</string>
     <string name="screen_create_medication_record_dose">Dose</string>
     <string name="screen_create_medication_record_notes">Notes</string>
+    <string name="screen_create_medication_record_deduct_from_stock">Deduct from stock</string>
     <string name="screen_create_medication_record_create_medication_record_failure">Failed to create medication record</string>
 
     <string name="dialog_add_medication_title">No Medications Found</string>

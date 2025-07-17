@@ -42,11 +42,12 @@ fun MedicationRecord.toEntity(): MedicationRecordEntity =
     )
 
 fun MedicationRecordEntryWithMedication.toModel(): TakenMedication =
-    TakenMedication(medication.toModel(), entry.dose.toBigDecimal())
+    TakenMedication(medication.toModel(), entry.dose.toBigDecimal(), entry.deductFromStock)
 
 fun TakenMedication.toEntity(medicationRecordId: Long): MedicationRecordEntryEntity =
     MedicationRecordEntryEntity(
         medicationRecordId = medicationRecordId,
         medicationId = medication.id,
-        dose = dose.toPlainString()
+        dose = dose.toPlainString(),
+        deductFromStock = deductFromStock
     )

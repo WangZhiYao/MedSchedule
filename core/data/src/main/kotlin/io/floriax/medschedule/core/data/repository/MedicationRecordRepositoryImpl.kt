@@ -10,6 +10,7 @@ import io.floriax.medschedule.core.data.local.AppDatabase
 import io.floriax.medschedule.core.data.local.dao.MedicationDao
 import io.floriax.medschedule.core.data.local.dao.MedicationRecordDao
 import io.floriax.medschedule.core.data.local.dao.MedicationRecordEntryDao
+import io.floriax.medschedule.core.data.local.entity.MedicationRecordEntryEntity
 import io.floriax.medschedule.core.data.local.mapper.toEntity
 import io.floriax.medschedule.core.data.local.mapper.toModel
 import io.floriax.medschedule.core.domain.model.MedicationRecord
@@ -52,33 +53,49 @@ class MedicationRecordRepositoryImpl @Inject constructor(
             val takenMedications = medicationRecord.takenMedications
             val entries = takenMedications.map { takenMedication -> takenMedication.toEntity(id) }
 
-            val medicationIds = entries.map { entry -> entry.medicationId }
-            val medicationsToUpdate = medicationDao.getByIds(medicationIds)
-                .filter { medication -> !medication.stock.isNullOrBlank() }
+            updateMedicationStocksIfNeeded(entries)
 
-            val updatedMedications = medicationsToUpdate.mapNotNull { medication ->
-                val entry = entries.find { entry -> entry.medicationId == medication.id }
-                if (entry != null) {
-                    val dose = entry.dose.toBigDecimal()
-                    val currentStock = medication.stock!!.toBigDecimal()
-                    val newStock = currentStock - dose
-
-                    // 如果库存不足，立即抛出业务异常，整个事务将回滚
-                    if (newStock < BigDecimal.ZERO) {
-                        throw InsufficientStockException(medication.name)
-                    }
-
-                    medication.copy(stock = newStock.toPlainString())
-                } else {
-                    null
-                }
-            }
-
-            medicationDao.updateBatch(updatedMedications)
             medicationRecordEntryDao.insertBatch(entries)
 
             medicationRecord.copy(id = id)
         }
+
+    private suspend fun updateMedicationStocksIfNeeded(entries: List<MedicationRecordEntryEntity>) {
+        val medicationIds = entries.filter { entry -> entry.deductFromStock }
+            .map { entry -> entry.medicationId }
+            .distinct()
+
+        if (medicationIds.isEmpty()) {
+            return
+        }
+
+        val medicationsToUpdate = medicationDao.getByIds(medicationIds)
+            .filter { medication -> !medication.stock.isNullOrBlank() }
+
+        if (medicationsToUpdate.isEmpty()) {
+            return
+        }
+
+        val entryMap = entries.associateBy { entry -> entry.medicationId }
+
+        val updatedMedications = medicationsToUpdate.mapNotNull { medication ->
+            val entry = entryMap[medication.id] ?: return@mapNotNull null
+
+            val dose = entry.dose.toBigDecimal()
+            val currentStock = medication.stock!!.toBigDecimal()
+            val newStock = currentStock - dose
+
+            if (newStock < BigDecimal.ZERO) {
+                throw InsufficientStockException(medication.name)
+            }
+
+            medication.copy(stock = newStock.toPlainString())
+        }
+
+        if (updatedMedications.isNotEmpty()) {
+            medicationDao.updateBatch(updatedMedications)
+        }
+    }
 
     override fun observeById(id: Long): Flow<MedicationRecord?> =
         medicationRecordDao.observeById(id)

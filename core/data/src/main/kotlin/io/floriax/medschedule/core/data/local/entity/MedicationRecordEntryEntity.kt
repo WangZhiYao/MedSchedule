@@ -33,5 +33,7 @@ data class MedicationRecordEntryEntity(
     val medicationRecordId: Long,
     @ColumnInfo(name = "medication_id", index = true)
     val medicationId: Long,
-    val dose: String
+    val dose: String,
+    @ColumnInfo(name = "deduct_from_stock")
+    val deductFromStock: Boolean,
 )

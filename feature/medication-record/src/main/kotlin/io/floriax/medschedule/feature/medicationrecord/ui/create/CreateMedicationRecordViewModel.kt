@@ -122,6 +122,16 @@ class CreateMedicationRecordViewModel @Inject constructor(
         }
     }
 
+    fun onDeductFromStockCheckedChange(index: Int, deductFromStock: Boolean) {
+        reduce {
+            copy(
+                takenMedicationInputs = takenMedicationInputs.mapAt(index) { input ->
+                    input.copy(deductFromStock = deductFromStock)
+                }
+            )
+        }
+    }
+
     fun onRemoveTakenMedication(medication: Medication) {
         reduce {
             copy(

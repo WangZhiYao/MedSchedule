@@ -340,7 +340,8 @@ private fun MedicationRecordDetailScreenPreview() {
                 doseUnit = "tablets",
                 notes = "Take with food",
             ),
-            dose = "2".toBigDecimal()
+            dose = "2".toBigDecimal(),
+            deductFromStock = false
         ),
         TakenMedication(
             medication = Medication(
@@ -349,7 +350,8 @@ private fun MedicationRecordDetailScreenPreview() {
                 doseUnit = "tablets",
                 notes = "Take with food",
             ),
-            dose = "2".toBigDecimal()
+            dose = "2".toBigDecimal(),
+            deductFromStock = true
         )
     )
 
