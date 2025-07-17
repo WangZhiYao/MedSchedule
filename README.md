@@ -5,8 +5,9 @@ medications and track their medication history. The project is built entirely wi
 Jetpack Compose, strictly following the MVI (Model-View-Intent) architecture pattern to ensure
 high-quality, maintainable, and scalable code.
 
-> **Note:** This application is currently under active development, and some features may not be
-> fully implemented.
+> [!NOTE]
+> This application is currently under active development, and some features may not be fully
+> implemented.
 
 ## Features
 
