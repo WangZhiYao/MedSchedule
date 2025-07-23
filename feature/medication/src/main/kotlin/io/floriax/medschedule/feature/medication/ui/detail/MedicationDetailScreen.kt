@@ -62,7 +62,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import io.floriax.medschedule.core.common.extension.ifNullOrBlank
 import io.floriax.medschedule.core.common.extension.isValidStock
 import io.floriax.medschedule.core.domain.model.Medication
-import io.floriax.medschedule.core.domain.model.MedicationRecord
+import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
@@ -90,12 +90,12 @@ import io.floriax.medschedule.shared.ui.R as sharedUiR
 fun MedicationDetailRoute(
     onBackClick: () -> Unit,
     onEditClick: (Medication) -> Unit,
-    onMedicationRecordClick: (MedicationRecord) -> Unit,
+    onMedicationLogClick: (MedicationLog) -> Unit,
     viewModel: MedicationDetailViewModel = hiltViewModel()
 ) {
 
     val state by viewModel.collectState()
-    val medicationRecordPagingItems = viewModel.medicationRecords.collectAsLazyPagingItems()
+    val medicationLogPagingItems = viewModel.medicationLogs.collectAsLazyPagingItems()
 
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -144,12 +144,12 @@ fun MedicationDetailRoute(
     MedicationDetailScreen(
         state = state,
         snackbarHostState = snackbarHostState,
-        medicationRecordPagingItems = medicationRecordPagingItems,
+        medicationLogPagingItems = medicationLogPagingItems,
         onBackClick = onBackClick,
         onEditClick = onEditClick,
         onDeleteClick = { viewModel.toggleDeleteDialog(true) },
         onAddStockClick = { viewModel.toggleAddStockBottomSheet(true) },
-        onMedicationRecordClick = onMedicationRecordClick
+        onMedicationLogClick = onMedicationLogClick
     )
 }
 
@@ -157,12 +157,12 @@ fun MedicationDetailRoute(
 private fun MedicationDetailScreen(
     state: MedicationDetailUiState,
     snackbarHostState: SnackbarHostState,
-    medicationRecordPagingItems: LazyPagingItems<MedicationRecord>,
+    medicationLogPagingItems: LazyPagingItems<MedicationLog>,
     onBackClick: () -> Unit,
     onEditClick: (Medication) -> Unit,
     onDeleteClick: () -> Unit,
     onAddStockClick: () -> Unit,
-    onMedicationRecordClick: (MedicationRecord) -> Unit,
+    onMedicationLogClick: (MedicationLog) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -185,11 +185,11 @@ private fun MedicationDetailScreen(
             when {
                 state.loading -> LoadingIndicator(modifier = Modifier.fillMaxSize())
                 state.error -> ErrorIndicator(modifier = Modifier.fillMaxSize())
-                state.medication != null -> MedicationRecordList(
+                state.medication != null -> MedicationLogList(
                     medication = state.medication,
-                    medicationRecords = medicationRecordPagingItems,
+                    medicationLogs = medicationLogPagingItems,
                     onAddStockClick = onAddStockClick,
-                    onMedicationRecordClick = onMedicationRecordClick,
+                    onMedicationLogClick = onMedicationLogClick,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -248,7 +248,7 @@ private fun Header(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(R.string.screen_medication_detail_medication_records),
+            text = stringResource(R.string.screen_medication_detail_medication_logs),
             modifier = Modifier.padding(horizontal = 16.dp),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp)
@@ -345,11 +345,11 @@ private fun NotesCard(
 }
 
 @Composable
-private fun MedicationRecordList(
+private fun MedicationLogList(
     medication: Medication,
-    medicationRecords: LazyPagingItems<MedicationRecord>,
+    medicationLogs: LazyPagingItems<MedicationLog>,
     onAddStockClick: () -> Unit,
-    onMedicationRecordClick: (MedicationRecord) -> Unit,
+    onMedicationLogClick: (MedicationLog) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -363,7 +363,7 @@ private fun MedicationRecordList(
             )
         }
 
-        when (medicationRecords.loadState.refresh) {
+        when (medicationLogs.loadState.refresh) {
             LoadState.Loading -> item {
                 LoadingIndicator(
                     modifier = Modifier
@@ -381,32 +381,32 @@ private fun MedicationRecordList(
             }
 
             else -> {
-                if (medicationRecords.itemCount == 0) {
+                if (medicationLogs.itemCount == 0) {
                     item {
                         Text(
-                            text = stringResource(R.string.screen_medication_detail_no_medication_records),
+                            text = stringResource(R.string.screen_medication_detail_no_medication_logs),
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 } else {
-                    items(medicationRecords.itemCount) { index ->
-                        val medicationRecord = medicationRecords[index]
-                        if (medicationRecord != null) {
+                    items(medicationLogs.itemCount) { index ->
+                        val medicationLog = medicationLogs[index]
+                        if (medicationLog != null) {
                             val takenMedication =
-                                medicationRecord.takenMedications.firstOrNull { takenMedication ->
+                                medicationLog.takenMedications.firstOrNull { takenMedication ->
                                     takenMedication.medication.id == medication.id
                                 }
                             if (takenMedication != null) {
-                                MedicationRecordItem(
+                                MedicationLogItem(
                                     firstItem = index == 0,
-                                    lastItem = index == medicationRecords.itemCount - 1,
-                                    medicationTime = medicationRecord.medicationTime,
+                                    lastItem = index == medicationLogs.itemCount - 1,
+                                    medicationTime = medicationLog.medicationTime,
                                     takenMedication = takenMedication,
-                                    notes = medicationRecord.notes,
-                                    onMedicationRecordClick = {
-                                        onMedicationRecordClick(medicationRecord)
+                                    notes = medicationLog.notes,
+                                    onMedicationLogClick = {
+                                        onMedicationLogClick(medicationLog)
                                     }
                                 )
                             }
@@ -419,19 +419,19 @@ private fun MedicationRecordList(
 }
 
 @Composable
-private fun MedicationRecordItem(
+private fun MedicationLogItem(
     firstItem: Boolean,
     lastItem: Boolean,
     medicationTime: Instant,
     takenMedication: TakenMedication,
     notes: String?,
-    onMedicationRecordClick: () -> Unit,
+    onMedicationLogClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
-            .clickable { onMedicationRecordClick() },
+            .clickable { onMedicationLogClick() },
     ) {
         val (
             topDividerRef,
@@ -636,8 +636,8 @@ private fun AddStockBottomSheet(
 @Preview(showBackground = true)
 @Composable
 private fun MedicationDetailScreenPreview() {
-    val pagingData = PagingData.from(emptyList<MedicationRecord>())
-    val medicationRecords = flowOf(pagingData).collectAsLazyPagingItems()
+    val pagingData = PagingData.from(emptyList<MedicationLog>())
+    val medicationLogs = flowOf(pagingData).collectAsLazyPagingItems()
     AppTheme {
         MedicationDetailScreen(
             state = MedicationDetailUiState(
@@ -651,12 +651,12 @@ private fun MedicationDetailScreenPreview() {
                 )
             ),
             snackbarHostState = remember { SnackbarHostState() },
-            medicationRecordPagingItems = medicationRecords,
+            medicationLogPagingItems = medicationLogs,
             onBackClick = {},
             onEditClick = {},
             onDeleteClick = {},
             onAddStockClick = {},
-            onMedicationRecordClick = {}
+            onMedicationLogClick = {}
         )
     }
 }

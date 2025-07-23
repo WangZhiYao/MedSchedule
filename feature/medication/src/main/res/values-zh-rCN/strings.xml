@@ -52,8 +52,8 @@
     <string name="screen_medication_detail_dose_unit">剂量单位</string>
     <string name="screen_medication_detail_notes">备注</string>
     <string name="screen_medication_detail_no_notes">暂无备注</string>
-    <string name="screen_medication_detail_medication_records">用药记录</string>
-    <string name="screen_medication_detail_no_medication_records">暂无用药记录</string>
+    <string name="screen_medication_detail_medication_logs">用药记录</string>
+    <string name="screen_medication_detail_no_medication_logs">暂无用药记录</string>
 
     <string name="dialog_delete_medication_title">删除药品</string>
     <string name="dialog_delete_medication_content_format">是否要删除: %s？\n如果删除该药品，所有关于该药品的用药记录将同时被删除，该操作不能被撤销</string>

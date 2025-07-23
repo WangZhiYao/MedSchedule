@@ -9,10 +9,10 @@ import io.floriax.medschedule.feature.medication.navigation.medicationDetailScre
 import io.floriax.medschedule.feature.medication.navigation.navigateToAddMedication
 import io.floriax.medschedule.feature.medication.navigation.navigateToEditMedication
 import io.floriax.medschedule.feature.medication.navigation.navigateToMedicationDetail
-import io.floriax.medschedule.feature.medicationrecord.navigation.createMedicationRecordScreen
-import io.floriax.medschedule.feature.medicationrecord.navigation.medicationRecordDetailScreen
-import io.floriax.medschedule.feature.medicationrecord.navigation.navigateToCreateMedicationRecord
-import io.floriax.medschedule.feature.medicationrecord.navigation.navigateToMedicationRecordDetail
+import io.floriax.medschedule.feature.medicationlog.navigation.createMedicationLogScreen
+import io.floriax.medschedule.feature.medicationlog.navigation.medicationLogDetailScreen
+import io.floriax.medschedule.feature.medicationlog.navigation.navigateToCreateMedicationLog
+import io.floriax.medschedule.feature.medicationlog.navigation.navigateToMedicationLogDetail
 import io.floriax.medschedule.navigation.main.MainRoute
 import io.floriax.medschedule.navigation.main.mainScreen
 
@@ -38,9 +38,9 @@ fun MedScheduleNavHost(
         mainScreen(
             onAddMedicationClick = navController::navigateToAddMedication,
             onMedicationClick = navController::navigateToMedicationDetail,
-            onCreateMedicationRecordClick = navController::navigateToCreateMedicationRecord,
-            onMedicationRecordClick = { medicationRecord ->
-                navController.navigateToMedicationRecordDetail(medicationRecord.id)
+            onCreateMedicationLogClick = navController::navigateToCreateMedicationLog,
+            onMedicationLogClick = { medicationLog ->
+                navController.navigateToMedicationLogDetail(medicationLog.id)
             }
         )
 
@@ -51,8 +51,8 @@ fun MedScheduleNavHost(
         medicationDetailScreen(
             onBackClick = navController::popBackStack,
             onEditClick = navController::navigateToEditMedication,
-            onMedicationRecordClick = { medicationRecord ->
-                navController.navigateToMedicationRecordDetail(medicationRecord.id)
+            onMedicationLogClick = { medicationLog ->
+                navController.navigateToMedicationLogDetail(medicationLog.id)
             },
         )
 
@@ -60,12 +60,12 @@ fun MedScheduleNavHost(
             onBackClick = navController::popBackStack
         )
 
-        createMedicationRecordScreen(
+        createMedicationLogScreen(
             onBackClick = navController::popBackStack,
             onAddMedicationClick = navController::navigateToAddMedication
         )
 
-        medicationRecordDetailScreen(
+        medicationLogDetailScreen(
             onBackClick = navController::popBackStack,
             onEditClick = { /**TODO*/ }
         )

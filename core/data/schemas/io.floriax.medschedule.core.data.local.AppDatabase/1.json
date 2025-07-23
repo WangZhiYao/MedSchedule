@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "29d195816663137fce4cc8742cd8f3cf",
+    "identityHash": "a5a547783b1f8eb280c4ae2218a4c31d",
     "entities": [
       {
         "tableName": "medication",
@@ -51,7 +51,7 @@
         }
       },
       {
-        "tableName": "medication_record",
+        "tableName": "medication_log",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `medication_time` INTEGER NOT NULL, `state` INTEGER NOT NULL, `type` INTEGER NOT NULL, `time_zone` TEXT NOT NULL, `notes` TEXT, `created_at` INTEGER NOT NULL)",
         "fields": [
           {
@@ -104,23 +104,23 @@
         },
         "indices": [
           {
-            "name": "index_medication_record_medication_time",
+            "name": "index_medication_log_medication_time",
             "unique": false,
             "columnNames": [
               "medication_time"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_record_medication_time` ON `${TABLE_NAME}` (`medication_time`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_log_medication_time` ON `${TABLE_NAME}` (`medication_time`)"
           }
         ]
       },
       {
-        "tableName": "medication_record_entry",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`medication_record_id` INTEGER NOT NULL, `medication_id` INTEGER NOT NULL, `dose` TEXT NOT NULL, `deduct_from_stock` INTEGER NOT NULL, PRIMARY KEY(`medication_record_id`, `medication_id`), FOREIGN KEY(`medication_record_id`) REFERENCES `medication_record`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`medication_id`) REFERENCES `medication`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "medication_log_entry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`medication_log_id` INTEGER NOT NULL, `medication_id` INTEGER NOT NULL, `dose` TEXT NOT NULL, `deduct_from_stock` INTEGER NOT NULL, PRIMARY KEY(`medication_log_id`, `medication_id`), FOREIGN KEY(`medication_log_id`) REFERENCES `medication_log`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`medication_id`) REFERENCES `medication`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "medicationRecordId",
-            "columnName": "medication_record_id",
+            "fieldPath": "medicationLogId",
+            "columnName": "medication_log_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -146,37 +146,37 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "medication_record_id",
+            "medication_log_id",
             "medication_id"
           ]
         },
         "indices": [
           {
-            "name": "index_medication_record_entry_medication_record_id",
+            "name": "index_medication_log_entry_medication_log_id",
             "unique": false,
             "columnNames": [
-              "medication_record_id"
+              "medication_log_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_record_entry_medication_record_id` ON `${TABLE_NAME}` (`medication_record_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_log_entry_medication_log_id` ON `${TABLE_NAME}` (`medication_log_id`)"
           },
           {
-            "name": "index_medication_record_entry_medication_id",
+            "name": "index_medication_log_entry_medication_id",
             "unique": false,
             "columnNames": [
               "medication_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_record_entry_medication_id` ON `${TABLE_NAME}` (`medication_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_medication_log_entry_medication_id` ON `${TABLE_NAME}` (`medication_id`)"
           }
         ],
         "foreignKeys": [
           {
-            "table": "medication_record",
+            "table": "medication_log",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "medication_record_id"
+              "medication_log_id"
             ],
             "referencedColumns": [
               "id"
@@ -198,7 +198,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '29d195816663137fce4cc8742cd8f3cf')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a5a547783b1f8eb280c4ae2218a4c31d')"
     ]
   }
 }

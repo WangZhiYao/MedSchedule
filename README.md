@@ -25,20 +25,20 @@ features currently implemented include:
 * **Edit & Delete:** Allows for modifying and deleting existing medication details.
 * **Stock Management:** Easily add to the stock of any medication.
 
-### Medication Records (feature:medication-record)
+### Medication Logs (feature:medication-log)
 
-* **History Log:** Shows all medication records in reverse chronological order, using different
-  colors to indicate the status of each record.
-* **Manual Entry:** Supports manually creating new medication records, including selecting the date,
+* **History Log:** Shows all medication logs in reverse chronological order, using different
+  colors to indicate the status of each log.
+* **Manual Entry:** Supports manually creating new medication logs, including selecting the date,
   time, medications taken, and dosage.
-* **View Details:** Check the details of a single medication record, including a list of all
+* **View Details:** Check the details of a single medication log, including a list of all
   medications taken and any notes.
-* **Delete Record:** Medication records can be deleted if they are no longer needed.
+* **Delete Log:** Medication logs can be deleted if they are no longer needed.
 
 ### Medication Plan (feature:medication-plan) - In-progress
 
 * Set up scheduled medication reminders.
-* Automatically generate medication records based on the plan.
+* Automatically generate medication logs based on the plan.
 
 ## Tech Stack & Architecture
 
@@ -65,7 +65,7 @@ create a robust and maintainable application.
     thread unblocked.
 
 * Data Persistence: Room
-  * Serves as the local database for storing core data like medications and records.
+  * Serves as the local database for storing core data like medications and logs.
 
 * Pagination: Paging 3
   * Efficiently loads and displays large lists of data, such as medication history.
@@ -90,8 +90,8 @@ MedSchedule/
 ├── feature/               # Feature modules
 |   ├── home/              # Home screen feature
 |   ├── medication/        # Medicine cabinet feature
-|   ├── medication-plan/   # Medication plan feature
-|   └── medication-record/ # Medication record feature
+|   ├── medication-log/    # Medication log feature
+|   └── medication-plan/   # Medication plan feature
 |
 └── shared/                # Shared modules
     ├── designsystem/      # Design system (Theme, Colors, Icons, Typography)
@@ -101,7 +101,7 @@ MedSchedule/
 * `app:` The entry point of the application, responsible for assembling all feature modules and
   handling top-level navigation.
 * `feature:` Each feature module is an independent, self-contained functional unit (e.g.,
-  medication, medication-record).
+  medication, medication-log).
 * `core:` Contains the business core of the application.
   * `domain:` Defines the business rules and data models, independent of any specific
     implementation.

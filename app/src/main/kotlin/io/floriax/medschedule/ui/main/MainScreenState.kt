@@ -14,8 +14,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import io.floriax.medschedule.feature.home.navigation.navigateToHome
 import io.floriax.medschedule.feature.medication.navigation.navigateToMedicineCabinet
+import io.floriax.medschedule.feature.medicationlog.navigation.navigateToMedicationLog
 import io.floriax.medschedule.feature.medicationplan.navigation.navigateToMedicationPlan
-import io.floriax.medschedule.feature.medicationrecord.navigation.navigateToMedicationRecord
 import io.floriax.medschedule.navigation.main.MainDestination
 
 /**
@@ -77,8 +77,8 @@ data class MainScreenState(
                 MainDestination.MEDICATION ->
                     navController.navigateToMedicineCabinet(navOptions)
 
-                MainDestination.MEDICATION_RECORD ->
-                    navController.navigateToMedicationRecord(navOptions)
+                MainDestination.medication_log ->
+                    navController.navigateToMedicationLog(navOptions)
             }
         }
     }

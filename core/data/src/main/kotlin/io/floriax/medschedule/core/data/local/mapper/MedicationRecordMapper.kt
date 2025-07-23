@@ -1,13 +1,13 @@
 package io.floriax.medschedule.core.data.local.mapper
 
 import io.floriax.medschedule.core.common.extension.nullIfBlank
-import io.floriax.medschedule.core.data.local.entity.MedicationRecordEntity
-import io.floriax.medschedule.core.data.local.entity.MedicationRecordEntryEntity
-import io.floriax.medschedule.core.data.local.relation.MedicationRecordEntryWithMedication
-import io.floriax.medschedule.core.data.local.relation.MedicationRecordWithEntries
-import io.floriax.medschedule.core.domain.enums.MedicationRecordType
+import io.floriax.medschedule.core.data.local.entity.MedicationLogEntity
+import io.floriax.medschedule.core.data.local.entity.MedicationLogEntryEntity
+import io.floriax.medschedule.core.data.local.relation.MedicationLogEntryWithMedication
+import io.floriax.medschedule.core.data.local.relation.MedicationLogWithEntries
+import io.floriax.medschedule.core.domain.enums.MedicationLogType
 import io.floriax.medschedule.core.domain.enums.MedicationState
-import io.floriax.medschedule.core.domain.model.MedicationRecord
+import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.core.domain.model.TakenMedication
 import java.time.Instant
 import java.time.ZoneId
@@ -18,20 +18,20 @@ import java.time.ZoneId
  * @author WangZhiYao
  * @since 2025/7/1
  */
-fun MedicationRecordWithEntries.toModel(): MedicationRecord =
-    MedicationRecord(
-        id = record.id,
-        medicationTime = Instant.ofEpochMilli(record.medicationTime),
+fun MedicationLogWithEntries.toModel(): MedicationLog =
+    MedicationLog(
+        id = log.id,
+        medicationTime = Instant.ofEpochMilli(log.medicationTime),
         takenMedications = entries.map { entry -> entry.toModel() },
-        state = MedicationState.fromValue(record.state),
-        type = MedicationRecordType.fromValue(record.type),
-        timeZone = ZoneId.of(record.timeZone),
-        notes = record.notes,
-        createdAt = Instant.ofEpochMilli(record.createdAt)
+        state = MedicationState.fromValue(log.state),
+        type = MedicationLogType.fromValue(log.type),
+        timeZone = ZoneId.of(log.timeZone),
+        notes = log.notes,
+        createdAt = Instant.ofEpochMilli(log.createdAt)
     )
 
-fun MedicationRecord.toEntity(): MedicationRecordEntity =
-    MedicationRecordEntity(
+fun MedicationLog.toEntity(): MedicationLogEntity =
+    MedicationLogEntity(
         id = id,
         medicationTime = medicationTime.toEpochMilli(),
         state = state.value,
@@ -41,12 +41,12 @@ fun MedicationRecord.toEntity(): MedicationRecordEntity =
         createdAt = createdAt.toEpochMilli()
     )
 
-fun MedicationRecordEntryWithMedication.toModel(): TakenMedication =
+fun MedicationLogEntryWithMedication.toModel(): TakenMedication =
     TakenMedication(medication.toModel(), entry.dose.toBigDecimal(), entry.deductFromStock)
 
-fun TakenMedication.toEntity(medicationRecordId: Long): MedicationRecordEntryEntity =
-    MedicationRecordEntryEntity(
-        medicationRecordId = medicationRecordId,
+fun TakenMedication.toEntity(medicationLogId: Long): MedicationLogEntryEntity =
+    MedicationLogEntryEntity(
+        medicationLogId = medicationLogId,
         medicationId = medication.id,
         dose = dose.toPlainString(),
         deductFromStock = deductFromStock

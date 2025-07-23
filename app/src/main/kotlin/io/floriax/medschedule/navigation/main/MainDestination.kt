@@ -5,14 +5,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.medication.navigation.MedicineCabinetRoute
+import io.floriax.medschedule.feature.medicationlog.navigation.MedicationLogRoute
 import io.floriax.medschedule.feature.medicationplan.navigation.MedicationPlanRoute
-import io.floriax.medschedule.feature.medicationrecord.navigation.MedicationRecordRoute
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import kotlin.reflect.KClass
 import io.floriax.medschedule.feature.home.R as homeR
 import io.floriax.medschedule.feature.medication.R as medicationR
+import io.floriax.medschedule.feature.medicationlog.R as medicationLogR
 import io.floriax.medschedule.feature.medicationplan.R as medicationPlanR
-import io.floriax.medschedule.feature.medicationrecord.R as medicationRecordR
 
 /**
  *
@@ -40,9 +40,9 @@ enum class MainDestination(
         route = MedicineCabinetRoute::class
     ),
 
-    MEDICATION_RECORD(
-        titleRes = medicationRecordR.string.feature_medication_record_title,
-        route = MedicationRecordRoute::class
+    medication_log(
+        titleRes = medicationLogR.string.feature_medication_log_title,
+        route = MedicationLogRoute::class
     );
 
     val selectedIcon: ImageVector
@@ -50,7 +50,7 @@ enum class MainDestination(
             HOME -> AppIcons.Home
             MEDICATION_PLAN -> AppIcons.CalendarClock
             MEDICATION -> AppIcons.MedicalServices
-            MEDICATION_RECORD -> AppIcons.History
+            medication_log -> AppIcons.History
         }
 
     val unselectedIcon: ImageVector
@@ -58,6 +58,6 @@ enum class MainDestination(
             HOME -> AppIcons.HomeBorder
             MEDICATION_PLAN -> AppIcons.CalendarClockBorder
             MEDICATION -> AppIcons.MedicalServicesBorder
-            MEDICATION_RECORD -> AppIcons.HistoryBorder
+            medication_log -> AppIcons.HistoryBorder
         }
 }

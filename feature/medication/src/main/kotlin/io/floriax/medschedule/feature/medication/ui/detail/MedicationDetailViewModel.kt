@@ -8,10 +8,10 @@ import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.core.common.extension.logger
-import io.floriax.medschedule.core.domain.model.MedicationRecord
+import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.core.domain.usecase.DeleteMedicationUseCase
 import io.floriax.medschedule.core.domain.usecase.ObserveMedicationByIdUseCase
-import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationRecordByMedicationUseCase
+import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationLogByMedicationUseCase
 import io.floriax.medschedule.core.domain.usecase.UpdateMedicationUseCase
 import io.floriax.medschedule.feature.medication.navigation.EditMedicationRoute
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class MedicationDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val observeMedicationByIdUseCase: ObserveMedicationByIdUseCase,
-    observePagedMedicationRecordByMedicationUseCase: ObservePagedMedicationRecordByMedicationUseCase,
+    observePagedMedicationLogByMedicationUseCase: ObservePagedMedicationLogByMedicationUseCase,
     private val deleteMedicationUseCase: DeleteMedicationUseCase,
     private val updateMedicationUseCase: UpdateMedicationUseCase,
     @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
@@ -48,12 +48,12 @@ class MedicationDetailViewModel @Inject constructor(
 
     val medicationId: Long = savedStateHandle.toRoute<EditMedicationRoute>().medicationId
 
-    val medicationRecords: Flow<PagingData<MedicationRecord>> =
-        observePagedMedicationRecordByMedicationUseCase(medicationId)
+    val medicationLogs: Flow<PagingData<MedicationLog>> =
+        observePagedMedicationLogByMedicationUseCase(medicationId)
             .flowOn(ioDispatcher)
             .cachedIn(viewModelScope)
             .catch { ex ->
-                logger.e(ex, "Error while observing medication records")
+                logger.e(ex, "Error while observing medication logs")
             }
 
     init {

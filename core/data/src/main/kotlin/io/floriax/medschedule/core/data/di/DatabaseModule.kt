@@ -56,11 +56,11 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideMedicationRecordDao(appDatabase: AppDatabase) = appDatabase.medicationRecordDao()
+    fun provideMedicationLogDao(appDatabase: AppDatabase) = appDatabase.medicationLogDao()
 
     @Provides
     @Singleton
-    fun provideMedicationRecordEntryDao(appDatabase: AppDatabase) =
-        appDatabase.medicationRecordEntryDao()
+    fun provideMedicationLogEntryDao(appDatabase: AppDatabase) =
+        appDatabase.medicationLogEntryDao()
 
 }

@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import io.floriax.medschedule.core.domain.model.Medication
-import io.floriax.medschedule.core.domain.model.MedicationRecord
+import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.feature.medication.ui.MedicineCabinetRoute
 import io.floriax.medschedule.feature.medication.ui.add.AddMedicationRoute
 import io.floriax.medschedule.feature.medication.ui.detail.MedicationDetailRoute
@@ -65,13 +65,13 @@ fun NavGraphBuilder.addMedicationScreen(
 fun NavGraphBuilder.medicationDetailScreen(
     onBackClick: () -> Unit,
     onEditClick: (Medication) -> Unit,
-    onMedicationRecordClick: (MedicationRecord) -> Unit,
+    onMedicationLogClick: (MedicationLog) -> Unit,
 ) {
     composable<MedicationDetailRoute> {
         MedicationDetailRoute(
             onBackClick = onBackClick,
             onEditClick = onEditClick,
-            onMedicationRecordClick = onMedicationRecordClick
+            onMedicationLogClick = onMedicationLogClick
         )
     }
 }

@@ -10,13 +10,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import io.floriax.medschedule.core.domain.model.Medication
-import io.floriax.medschedule.core.domain.model.MedicationRecord
+import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.ext.isRouteInHierarchy
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.home.navigation.homeScreen
 import io.floriax.medschedule.feature.medication.navigation.medicineCabinetScreen
+import io.floriax.medschedule.feature.medicationlog.navigation.medicationLogScreen
 import io.floriax.medschedule.feature.medicationplan.navigation.medicationPlanScreen
-import io.floriax.medschedule.feature.medicationrecord.navigation.medicationRecordScreen
 import io.floriax.medschedule.navigation.main.MainDestination
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 
@@ -31,16 +31,16 @@ fun MainRoute(
     mainScreenState: MainScreenState,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
-    onCreateMedicationRecordClick: () -> Unit,
-    onMedicationRecordClick: (MedicationRecord) -> Unit,
+    onCreateMedicationLogClick: () -> Unit,
+    onMedicationLogClick: (MedicationLog) -> Unit,
 ) {
 
     MainScreen(
         mainScreenState = mainScreenState,
         onAddMedicationClick = onAddMedicationClick,
         onMedicationClick = onMedicationClick,
-        onCreateMedicationRecordClick = onCreateMedicationRecordClick,
-        onMedicationRecordClick = onMedicationRecordClick
+        onCreateMedicationLogClick = onCreateMedicationLogClick,
+        onMedicationLogClick = onMedicationLogClick
     )
 }
 
@@ -49,8 +49,8 @@ private fun MainScreen(
     mainScreenState: MainScreenState,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
-    onCreateMedicationRecordClick: () -> Unit,
-    onMedicationRecordClick: (MedicationRecord) -> Unit,
+    onCreateMedicationLogClick: () -> Unit,
+    onMedicationLogClick: (MedicationLog) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -85,8 +85,8 @@ private fun MainScreen(
             navController = mainScreenState.navController,
             onAddMedicationClick = onAddMedicationClick,
             onMedicationClick = onMedicationClick,
-            onCreateMedicationRecordClick = onCreateMedicationRecordClick,
-            onMedicationRecordClick = onMedicationRecordClick
+            onCreateMedicationLogClick = onCreateMedicationLogClick,
+            onMedicationLogClick = onMedicationLogClick
         )
     }
 }
@@ -96,8 +96,8 @@ private fun MainNavHost(
     navController: NavHostController,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
-    onCreateMedicationRecordClick: () -> Unit,
-    onMedicationRecordClick: (MedicationRecord) -> Unit,
+    onCreateMedicationLogClick: () -> Unit,
+    onMedicationLogClick: (MedicationLog) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -114,9 +114,9 @@ private fun MainNavHost(
             onMedicationClick = onMedicationClick
         )
 
-        medicationRecordScreen(
-            onCreateMedicationRecordClick = onCreateMedicationRecordClick,
-            onMedicationRecordClick = onMedicationRecordClick
+        medicationLogScreen(
+            onCreateMedicationLogClick = onCreateMedicationLogClick,
+            onMedicationLogClick = onMedicationLogClick
         )
     }
 }
@@ -129,8 +129,8 @@ fun MainScreenPreview() {
             mainScreenState = rememberMainScreenState(),
             onAddMedicationClick = {},
             onMedicationClick = {},
-            onCreateMedicationRecordClick = {},
-            onMedicationRecordClick = {}
+            onCreateMedicationLogClick = {},
+            onMedicationLogClick = {}
         )
     }
 }

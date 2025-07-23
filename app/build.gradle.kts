@@ -83,5 +83,5 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:medication-plan"))
     implementation(project(":feature:medication"))
-    implementation(project(":feature:medication-record"))
+    implementation(project(":feature:medication-log"))
 }
