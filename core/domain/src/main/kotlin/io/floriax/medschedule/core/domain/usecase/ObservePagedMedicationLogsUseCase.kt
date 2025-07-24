@@ -16,7 +16,7 @@ class ObservePagedMedicationLogsUseCase @Inject constructor(
     private val medicationLogRepository: MedicationLogRepository
 ) : UseCase {
 
-    fun invoke(): Flow<PagingData<MedicationLog>> =
+    operator fun invoke(): Flow<PagingData<MedicationLog>> =
         medicationLogRepository.observePaged()
 
 }
