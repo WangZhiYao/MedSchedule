@@ -8,7 +8,7 @@
     <string name="screen_medicine_cabinet_click_to_add_medication">点击右下角 "+" 按钮以添加您的第一种药品</string>
     <string name="screen_medicine_cabinet_add_medication">添加药品</string>
     <string name="screen_medicine_cabinet_no_notes">暂无备注</string>
-    <string name="screen_medicine_cabinet_stock_not_set">暂无库存</string>
+    <string name="screen_medicine_cabinet_stock_not_set">库存未设置</string>
 
     <string name="screen_add_medication_title">添加药品</string>
     <string name="screen_add_medication_medication_name_label">药品名称</string>
@@ -42,7 +42,7 @@
 
     <string name="screen_medication_detail_delete_medication_failure">药品删除失败</string>
     <string name="screen_medication_detail_stock">当前库存</string>
-    <string name="screen_medication_detail_stock_not_set">暂无库存</string>
+    <string name="screen_medication_detail_stock_not_set">库存未设置</string>
     <string name="screen_medication_detail_add_stock">添加库存</string>
     <string name="screen_medication_detail_quantity_to_add">本次添加数量</string>
     <string name="screen_medication_detail_quantity_to_add_placeholder">例如：10.5</string>
