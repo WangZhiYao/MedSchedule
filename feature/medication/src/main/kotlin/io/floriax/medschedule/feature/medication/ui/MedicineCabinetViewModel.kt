@@ -8,7 +8,6 @@ import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.core.common.extension.logger
 import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationsUseCase
-import io.floriax.medschedule.core.domain.usecase.invoke
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +23,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class MedicineCabinetViewModel @Inject constructor(
-    private val observePagedMedicationsUseCase: ObservePagedMedicationsUseCase,
+    observePagedMedicationsUseCase: ObservePagedMedicationsUseCase,
     @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) : BaseViewModel<MedicineCabinetUiState, MedicineCabinetSideEffect>() {
 

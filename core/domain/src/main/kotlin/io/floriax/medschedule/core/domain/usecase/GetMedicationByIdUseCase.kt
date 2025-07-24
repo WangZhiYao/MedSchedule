@@ -12,9 +12,9 @@ import javax.inject.Inject
  */
 class GetMedicationByIdUseCase @Inject constructor(
     private val medicationRepository: MedicationRepository
-) : SuspendUseCase<Long, Medication?> {
+) : UseCase {
 
-    override suspend operator fun invoke(params: Long): Medication? =
-        medicationRepository.getById(params)
+    suspend operator fun invoke(id: Long): Medication? =
+        medicationRepository.getById(id)
 
 }
