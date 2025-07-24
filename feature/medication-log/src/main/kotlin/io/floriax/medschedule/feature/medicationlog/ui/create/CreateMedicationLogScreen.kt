@@ -421,11 +421,12 @@ private fun TakenMedicationCard(
                 Box(modifier = Modifier.weight(1f)) {
                     if (takenMedication.deductFromStockEnabled) {
                         LabeledCheckbox(
+                            label = {
+                                Text(text = stringResource(R.string.screen_create_medication_log_deduct_from_stock))
+                            },
                             checked = takenMedication.deductFromStock,
                             onCheckedChange = onDeductFromStockCheckedChange,
-                        ) {
-                            Text(text = stringResource(R.string.screen_create_medication_log_deduct_from_stock))
-                        }
+                        )
                     }
                 }
                 TextButton(
