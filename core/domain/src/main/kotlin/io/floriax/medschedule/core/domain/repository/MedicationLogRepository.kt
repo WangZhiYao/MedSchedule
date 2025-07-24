@@ -20,6 +20,6 @@ interface MedicationLogRepository {
 
     fun observePagedByMedicationId(medicationId: Long): Flow<PagingData<MedicationLog>>
 
-    suspend fun delete(medicationLog: MedicationLog): Boolean
+    suspend fun delete(medicationLog: MedicationLog, restoreMedicationStore: Boolean): Boolean
 
 }

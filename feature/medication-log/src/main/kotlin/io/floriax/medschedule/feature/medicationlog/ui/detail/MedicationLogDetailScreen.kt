@@ -25,7 +25,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.LocalContext
@@ -46,6 +48,7 @@ import io.floriax.medschedule.shared.ui.BackButton
 import io.floriax.medschedule.shared.ui.DeleteButton
 import io.floriax.medschedule.shared.ui.EditButton
 import io.floriax.medschedule.shared.ui.ErrorIndicator
+import io.floriax.medschedule.shared.ui.LabeledCheckbox
 import io.floriax.medschedule.shared.ui.LoadingIndicator
 import io.floriax.medschedule.shared.ui.ManualTag
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
@@ -86,10 +89,13 @@ fun MedicationLogDetailRoute(
     }
 
     if (state.showDeleteDialog) {
-        DeleteMedicationLogConfirmationDialog(
-            onDismissRequest = { viewModel.toggleDeleteDialog(false) },
-            onConfirmClick = viewModel::attemptDeleteMedicationLog
-        )
+        state.medicationLog?.let { medicationLog ->
+            DeleteMedicationLogConfirmationDialog(
+                medicationLog = medicationLog,
+                onDismissRequest = { viewModel.toggleDeleteDialog(false) },
+                onConfirmClick = viewModel::attemptDeleteMedicationLog
+            )
+        }
     }
 
     MedicationLogDetailScreen(
@@ -304,13 +310,21 @@ private fun NotesSection(
 
 @Composable
 private fun DeleteMedicationLogConfirmationDialog(
+    medicationLog: MedicationLog,
     onDismissRequest: () -> Unit,
-    onConfirmClick: () -> Unit
+    onConfirmClick: (Boolean) -> Unit
 ) {
+
+    val hasMedicationDeductFromStock = medicationLog.takenMedications.any { takenMedication ->
+        takenMedication.deductFromStock
+    }
+
+    var restoreMedicationStore by remember { mutableStateOf(hasMedicationDeductFromStock) }
+
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            TextButton(onClick = onConfirmClick) {
+            TextButton(onClick = { onConfirmClick(restoreMedicationStore) }) {
                 Text(
                     text = stringResource(sharedUiR.string.shared_ui_confirm),
                     color = MaterialTheme.colorScheme.error
@@ -324,7 +338,19 @@ private fun DeleteMedicationLogConfirmationDialog(
         },
         title = { Text(text = stringResource(R.string.dialog_delete_medication_log_confirmation_title)) },
         text = {
-            Text(text = stringResource(R.string.dialog_delete_medication_log_confirmation_content))
+            Column {
+                Text(text = stringResource(R.string.dialog_delete_medication_log_confirmation_content))
+                if (hasMedicationDeductFromStock) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LabeledCheckbox(
+                        label = {
+                            Text(text = stringResource(R.string.dialog_delete_medication_log_confirmation_restore_medication_stock))
+                        },
+                        checked = restoreMedicationStore,
+                        onCheckedChange = { checked -> restoreMedicationStore = checked }
+                    )
+                }
+            }
         }
     )
 }
@@ -365,7 +391,13 @@ private fun MedicationLogDetailScreenPreview() {
     )
 
     AppTheme {
-        MedicationLogDetailScreen(
+        DeleteMedicationLogConfirmationDialog(
+            medicationLog = medicationLog,
+            onDismissRequest = {},
+            onConfirmClick = {}
+        )
+
+        /*MedicationLogDetailScreen(
             state = MedicationLogDetailUiState(
                 loading = false,
                 medicationLog = medicationLog
@@ -374,6 +406,6 @@ private fun MedicationLogDetailScreenPreview() {
             onBackClick = {},
             onEditClick = {},
             onDeleteClick = {},
-        )
+        )*/
     }
 }

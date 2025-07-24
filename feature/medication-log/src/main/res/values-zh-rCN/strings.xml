@@ -37,5 +37,6 @@
 
     <string name="dialog_delete_medication_log_confirmation_title">删除用药记录？</string>
     <string name="dialog_delete_medication_log_confirmation_content">此操作将永久删除该条用药记录，无法恢复。你确定要继续吗？</string>
+    <string name="dialog_delete_medication_log_confirmation_restore_medication_stock">恢复药品库存</string>
 
 </resources>

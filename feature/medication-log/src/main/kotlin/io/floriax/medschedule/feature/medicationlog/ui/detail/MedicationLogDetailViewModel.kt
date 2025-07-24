@@ -69,7 +69,7 @@ class MedicationLogDetailViewModel @Inject constructor(
         }
     }
 
-    fun attemptDeleteMedicationLog() {
+    fun attemptDeleteMedicationLog(restoreMedicationStore: Boolean) {
         reduce {
             copy(showDeleteDialog = false)
         }
@@ -77,7 +77,7 @@ class MedicationLogDetailViewModel @Inject constructor(
             val medicationLog = currentState.medicationLog ?: return@launch
             runCatching {
                 withContext(ioDispatcher) {
-                    deleteMedicationLogUseCase(medicationLog)
+                    deleteMedicationLogUseCase(medicationLog, restoreMedicationStore)
                 }
             }
                 .onSuccess {

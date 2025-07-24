@@ -1,9 +1,9 @@
 package io.floriax.medschedule.core.data.repository
 
-import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.map
+import io.floriax.medschedule.core.data.extension.mapItems
+import io.floriax.medschedule.core.data.extension.pager
 import io.floriax.medschedule.core.data.local.dao.MedicationDao
 import io.floriax.medschedule.core.data.local.mapper.toEntity
 import io.floriax.medschedule.core.data.local.mapper.toModel
@@ -25,14 +25,11 @@ class MedicationRepositoryImpl @Inject constructor(
 ) : MedicationRepository {
 
     override fun observePaged(): Flow<PagingData<Medication>> =
-        Pager(pagingConfig) {
+        pager(pagingConfig) {
             medicationDao.observePaged()
         }
-            .flow
-            .map { entityList ->
-                entityList.map { entity ->
-                    entity.toModel()
-                }
+            .mapItems { entity ->
+                entity.toModel()
             }
 
     override suspend fun delete(medication: Medication): Boolean =

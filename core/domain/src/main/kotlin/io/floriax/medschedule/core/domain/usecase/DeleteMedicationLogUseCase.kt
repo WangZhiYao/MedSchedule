@@ -14,7 +14,9 @@ class DeleteMedicationLogUseCase @Inject constructor(
     private val medicationLogRepository: MedicationLogRepository
 ) : UseCase {
 
-    suspend operator fun invoke(medicationLog: MedicationLog): Boolean =
-        medicationLogRepository.delete(medicationLog)
+    suspend operator fun invoke(
+        medicationLog: MedicationLog,
+        restoreMedicationStore: Boolean
+    ): Boolean = medicationLogRepository.delete(medicationLog, restoreMedicationStore)
 
 }
