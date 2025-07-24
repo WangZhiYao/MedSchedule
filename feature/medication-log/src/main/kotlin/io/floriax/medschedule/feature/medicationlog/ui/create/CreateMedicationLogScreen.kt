@@ -2,6 +2,7 @@ package io.floriax.medschedule.feature.medicationlog.ui.create
 
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -417,12 +418,15 @@ private fun TakenMedicationCard(
                 singleLine = true
             )
             Row {
-                LabeledCheckbox(
-                    checked = takenMedication.deductFromStock,
-                    onCheckedChange = onDeductFromStockCheckedChange,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = stringResource(R.string.screen_create_medication_log_deduct_from_stock))
+                Box(modifier = Modifier.weight(1f)) {
+                    if (takenMedication.deductFromStockEnabled) {
+                        LabeledCheckbox(
+                            checked = takenMedication.deductFromStock,
+                            onCheckedChange = onDeductFromStockCheckedChange,
+                        ) {
+                            Text(text = stringResource(R.string.screen_create_medication_log_deduct_from_stock))
+                        }
+                    }
                 }
                 TextButton(
                     onClick = onRemoveClick,

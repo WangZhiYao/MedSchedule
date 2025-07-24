@@ -37,6 +37,9 @@ data class TakenMedicationInput(
         get() = medication.stock != null && doseString.isNotBlank()
                 && doseString.toBigDecimal() > medication.stock
 
+    val deductFromStockEnabled: Boolean
+        get() = medication.stock != null
+
     val isDoseInvalid: Boolean
         get() = isDoseEmpty || isStockExceeded
 
@@ -47,6 +50,6 @@ data class TakenMedicationInput(
         TakenMedication(
             medication = medication,
             dose = doseString.toBigDecimal(),
-            deductFromStock = deductFromStock
+            deductFromStock = deductFromStockEnabled && deductFromStock
         )
 }
