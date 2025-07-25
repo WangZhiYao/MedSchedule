@@ -280,7 +280,6 @@ private fun TakenMedicationItem(
             text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}",
             modifier = Modifier.alignBy(LastBaseline),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodyMedium
         )
     }
 }
