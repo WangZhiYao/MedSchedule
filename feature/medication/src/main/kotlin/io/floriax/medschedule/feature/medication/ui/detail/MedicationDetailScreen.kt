@@ -250,7 +250,7 @@ private fun Header(
             text = stringResource(R.string.screen_medication_detail_medication_logs),
             modifier = Modifier.padding(horizontal = 16.dp),
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp)
+            style = MaterialTheme.typography.titleMedium
         )
 
         Spacer(modifier = Modifier.height(4.dp))
