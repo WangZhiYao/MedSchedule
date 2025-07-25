@@ -303,7 +303,7 @@ private fun TakenMedicationItem(
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
-            text = "${takenMedication.dose} ${takenMedication.medication.doseUnit}",
+            text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}",
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
