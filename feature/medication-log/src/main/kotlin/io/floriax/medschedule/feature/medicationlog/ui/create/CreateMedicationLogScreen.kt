@@ -32,7 +32,6 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -63,6 +62,7 @@ import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
 import io.floriax.medschedule.shared.ui.component.DatePickerDialog
 import io.floriax.medschedule.shared.ui.component.LabeledCheckbox
+import io.floriax.medschedule.shared.ui.component.LabeledOutlinedTextField
 import io.floriax.medschedule.shared.ui.component.TimePickerDialog
 import io.floriax.medschedule.shared.ui.extension.UpToTodaySelectableDates
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
@@ -246,7 +246,7 @@ private fun CreateMedicationLogScreen(
             }
 
             item {
-                OutlinedTextField(
+                LabeledOutlinedTextField(
                     value = state.notes,
                     onValueChange = onNotesChange,
                     modifier = Modifier.fillMaxWidth(),
@@ -300,7 +300,7 @@ private fun LazyListScope.dateTimeRow(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            OutlinedTextField(
+            LabeledOutlinedTextField(
                 value = selectedDate.formatLocalized(),
                 onValueChange = {},
                 modifier = Modifier.weight(1.4f),
@@ -324,7 +324,7 @@ private fun LazyListScope.dateTimeRow(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            OutlinedTextField(
+            LabeledOutlinedTextField(
                 value = selectedTime.formatLocalized(),
                 onValueChange = {},
                 modifier = Modifier.weight(1f),
@@ -388,7 +388,7 @@ private fun TakenMedicationCard(
                     .basicMarquee(),
                 style = MaterialTheme.typography.titleMedium
             )
-            OutlinedTextField(
+            LabeledOutlinedTextField(
                 value = takenMedication.doseString,
                 onValueChange = onDoseChange,
                 modifier = Modifier.fillMaxWidth(),

@@ -1,5 +1,6 @@
 package io.floriax.medschedule.feature.medication.ui.edit
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
+import io.floriax.medschedule.shared.ui.component.LabeledOutlinedTextField
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import io.floriax.medschedule.shared.ui.R as sharedUiR
@@ -173,10 +174,10 @@ private fun EditMedicationContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-            .padding(horizontal = 16.dp)
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        OutlinedTextField(
+        LabeledOutlinedTextField(
             value = state.medicationName,
             onValueChange = onMedicationNameChange,
             modifier = Modifier
@@ -192,7 +193,7 @@ private fun EditMedicationContent(
             singleLine = true
         )
 
-        OutlinedTextField(
+        LabeledOutlinedTextField(
             value = state.stockString,
             onValueChange = onStockStringChange,
             modifier = Modifier
@@ -208,7 +209,7 @@ private fun EditMedicationContent(
             singleLine = true
         )
 
-        OutlinedTextField(
+        LabeledOutlinedTextField(
             value = state.doseUnit,
             onValueChange = onDoseUnitChange,
             modifier = Modifier
@@ -224,7 +225,7 @@ private fun EditMedicationContent(
             singleLine = true
         )
 
-        OutlinedTextField(
+        LabeledOutlinedTextField(
             value = state.notes,
             onValueChange = onNotesChange,
             modifier = Modifier.fillMaxWidth(),
