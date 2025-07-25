@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MedicationDao : BaseDao<MedicationEntity> {
 
-    @Query("SELECT * FROM medication")
+    @Query("SELECT * FROM medication WHERE active = 1 ORDER BY name ASC")
     fun observePaged(): PagingSource<Int, MedicationEntity>
 
     @Query("SELECT * FROM medication WHERE id = :id")
@@ -27,6 +27,9 @@ interface MedicationDao : BaseDao<MedicationEntity> {
 
     @Query("SELECT * FROM medication WHERE id = :id")
     fun observeById(id: Long): Flow<MedicationEntity?>
+
+    override suspend fun delete(item: MedicationEntity): Int =
+        update(item.copy(active = false))
 
     @Update
     suspend fun updateBatch(items: List<MedicationEntity>)

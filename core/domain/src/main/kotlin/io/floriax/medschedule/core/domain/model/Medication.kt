@@ -15,5 +15,6 @@ data class Medication(
     val stock: BigDecimal?,
     val doseUnit: String,
     val notes: String?,
+    val active: Boolean = true,
     val createdAt: Instant = Instant.now()
 )
