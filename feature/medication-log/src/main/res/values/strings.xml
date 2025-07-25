@@ -25,7 +25,7 @@
     <string name="screen_create_medication_log_create_medication_log_failure">Failed to create medication log</string>
 
     <string name="dialog_add_medication_title">No Medications Found</string>
-    <string name="dialog_add_medication_content">Your medicine cabinet is currently empty.\nPlease add a medication to continue.</string>
+    <string name="dialog_add_medication_content">Your have no medications currently.\nPlease add a medication to continue.</string>
     <string name="dialog_add_medication_confirm">Add Medication</string>
 
     <string name="screen_medication_log_detail_title">Medication Log Detail</string>

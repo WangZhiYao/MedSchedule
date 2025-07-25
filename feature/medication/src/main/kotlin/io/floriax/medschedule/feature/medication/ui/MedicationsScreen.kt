@@ -64,17 +64,17 @@ import kotlinx.coroutines.flow.flowOf
  * @since 2025/6/26
  */
 @Composable
-fun MedicineCabinetRoute(
+fun MedicationsRoute(
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
-    viewModel: MedicineCabinetViewModel = hiltViewModel(),
+    viewModel: MedicationsViewModel = hiltViewModel(),
 ) {
 
     val state by viewModel.collectState()
 
     val medicationPagingItems = viewModel.pagedMedications.collectAsLazyPagingItems()
 
-    MedicineCabinetScreen(
+    MedicationsScreen(
         state = state,
         medicationPagingItems = medicationPagingItems,
         onAddMedicationClick = onAddMedicationClick,
@@ -83,8 +83,8 @@ fun MedicineCabinetRoute(
 }
 
 @Composable
-private fun MedicineCabinetScreen(
-    state: MedicineCabinetUiState,
+private fun MedicationsScreen(
+    state: MedicationsUiState,
     medicationPagingItems: LazyPagingItems<Medication>,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
@@ -100,7 +100,7 @@ private fun MedicineCabinetScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            MedicineCabinetTopBar()
+            MedicationsTopBar()
         },
         floatingActionButton = {
             AnimatedVisibility(
@@ -111,13 +111,13 @@ private fun MedicineCabinetScreen(
                 FloatingActionButton(onClick = onAddMedicationClick) {
                     Icon(
                         imageVector = AppIcons.Add,
-                        contentDescription = stringResource(R.string.screen_medicine_cabinet_add_medication)
+                        contentDescription = stringResource(R.string.screen_medications_add_medication)
                     )
                 }
             }
         }
     ) { paddingValues ->
-        MedicineCabinetContent(
+        MedicationsContent(
             state = state,
             listState = listState,
             medicationPagingItems = medicationPagingItems,
@@ -129,19 +129,19 @@ private fun MedicineCabinetScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MedicineCabinetTopBar(
+private fun MedicationsTopBar(
     modifier: Modifier = Modifier
 ) {
     MedScheduleTopAppBar(
-        titleRes = R.string.screen_medicine_cabinet_title,
-        subtitleRes = R.string.screen_medicine_cabinet_subtitle,
+        titleRes = R.string.screen_medications_title,
+        subtitleRes = R.string.screen_medications_subtitle,
         modifier = modifier.fillMaxWidth()
     )
 }
 
 @Composable
-private fun MedicineCabinetContent(
-    state: MedicineCabinetUiState,
+private fun MedicationsContent(
+    state: MedicationsUiState,
     listState: LazyListState,
     medicationPagingItems: LazyPagingItems<Medication>,
     onMedicationClick: (Medication) -> Unit,
@@ -186,13 +186,13 @@ private fun EmptyMedicationList(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(R.string.screen_medicine_cabinet_empty_medication),
+            text = stringResource(R.string.screen_medications_empty_medication),
             color = MaterialTheme.colorScheme.outline,
             style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = stringResource(R.string.screen_medicine_cabinet_click_to_add_medication),
+            text = stringResource(R.string.screen_medications_click_to_add_medication),
             color = MaterialTheme.colorScheme.outline,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
@@ -253,7 +253,7 @@ private fun MedicationCard(
 
                 Text(
                     text = medication.notes.ifNullOrBlank {
-                        stringResource(R.string.screen_medicine_cabinet_no_notes)
+                        stringResource(R.string.screen_medications_no_notes)
                     },
                     color = MaterialTheme.colorScheme.outline,
                     overflow = TextOverflow.Ellipsis,
@@ -293,7 +293,7 @@ private fun MedicationCard(
                         }
                     } else {
                         Text(
-                            text = stringResource(R.string.screen_medicine_cabinet_stock_not_set),
+                            text = stringResource(R.string.screen_medications_stock_not_set),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -334,12 +334,12 @@ private fun MedicationCardPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun MedicineCabinetScreenPreview() {
+private fun MedicationsScreenPreview() {
     AppTheme {
         val pagingData = PagingData.from(emptyList<Medication>())
         val medicationPagingItems = flowOf(pagingData).collectAsLazyPagingItems()
-        MedicineCabinetScreen(
-            state = MedicineCabinetUiState(),
+        MedicationsScreen(
+            state = MedicationsUiState(),
             medicationPagingItems = medicationPagingItems,
             onAddMedicationClick = {},
             onMedicationClick = {}

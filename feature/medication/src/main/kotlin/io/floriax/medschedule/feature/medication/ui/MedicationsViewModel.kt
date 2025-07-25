@@ -22,15 +22,15 @@ import javax.inject.Inject
  * @since 2025/6/27
  */
 @HiltViewModel
-class MedicineCabinetViewModel @Inject constructor(
+class MedicationsViewModel @Inject constructor(
     observePagedMedicationsUseCase: ObservePagedMedicationsUseCase,
     @param:IODispatcher private val ioDispatcher: CoroutineDispatcher
-) : BaseViewModel<MedicineCabinetUiState, MedicineCabinetSideEffect>() {
+) : BaseViewModel<MedicationsUiState, MedicationsSideEffect>() {
 
-    private val logger by logger<MedicineCabinetViewModel>()
+    private val logger by logger<MedicationsViewModel>()
 
-    override val initialState: MedicineCabinetUiState
-        get() = MedicineCabinetUiState()
+    override val initialState: MedicationsUiState
+        get() = MedicationsUiState()
 
     val pagedMedications: Flow<PagingData<Medication>> =
         observePagedMedicationsUseCase()

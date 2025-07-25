@@ -25,7 +25,7 @@
     <string name="screen_create_medication_log_create_medication_log_failure">创建用药记录失败</string>
 
     <string name="dialog_add_medication_title">暂无药品</string>
-    <string name="dialog_add_medication_content">您的药箱当前为空。\n请先添加一条药品信息以继续。</string>
+    <string name="dialog_add_medication_content">您暂时没有药品。\n请先添加一条药品信息以继续。</string>
     <string name="dialog_add_medication_confirm">添加药品</string>
 
     <string name="screen_medication_log_detail_title">用药记录详情</string>

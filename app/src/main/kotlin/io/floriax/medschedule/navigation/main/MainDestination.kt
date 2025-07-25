@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
-import io.floriax.medschedule.feature.medication.navigation.MedicineCabinetRoute
+import io.floriax.medschedule.feature.medication.navigation.MedicationsRoute
 import io.floriax.medschedule.feature.medicationlog.navigation.MedicationLogRoute
 import io.floriax.medschedule.feature.medicationplan.navigation.MedicationPlanRoute
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
@@ -37,7 +37,7 @@ enum class MainDestination(
 
     MEDICATION(
         titleRes = medicationR.string.feature_medication_title,
-        route = MedicineCabinetRoute::class
+        route = MedicationsRoute::class
     ),
 
     medication_log(

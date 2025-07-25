@@ -14,7 +14,7 @@ high-quality, maintainable, and scalable code.
 The project aims to provide a complete and seamless medication management experience. The core
 features currently implemented include:
 
-### Medicine Cabinet (feature:medication)
+### Medications (feature:medication)
 
 * **Medication List:** Displays all medications in a clean card format, showing name, notes, and
   stock information.
@@ -89,7 +89,7 @@ MedSchedule/
 |
 ├── feature/               # Feature modules
 |   ├── home/              # Home screen feature
-|   ├── medication/        # Medicine cabinet feature
+|   ├── medication/        # Medication feature
 |   ├── medication-log/    # Medication log feature
 |   └── medication-plan/   # Medication plan feature
 |

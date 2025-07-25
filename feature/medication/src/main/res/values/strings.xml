@@ -2,13 +2,13 @@
 <resources>
     <string name="feature_medication_title">Meds</string>
 
-    <string name="screen_medicine_cabinet_title">Medicine Cabinet</string>
-    <string name="screen_medicine_cabinet_subtitle">Keep track of your medications and their stock</string>
-    <string name="screen_medicine_cabinet_empty_medication">Your medicine cabinet is empty</string>
-    <string name="screen_medicine_cabinet_click_to_add_medication">Start by tapping the "+" button to add your first medication</string>
-    <string name="screen_medicine_cabinet_add_medication">Add Medication</string>
-    <string name="screen_medicine_cabinet_no_notes">No notes</string>
-    <string name="screen_medicine_cabinet_stock_not_set">Stock not set</string>
+    <string name="screen_medications_title">My Medications</string>
+    <string name="screen_medications_subtitle">Keep track of your medications and their stock</string>
+    <string name="screen_medications_empty_medication">Your have no medications</string>
+    <string name="screen_medications_click_to_add_medication">Start by tapping the "+" button to add your first medication</string>
+    <string name="screen_medications_add_medication">Add Medication</string>
+    <string name="screen_medications_no_notes">No notes</string>
+    <string name="screen_medications_stock_not_set">Stock not set</string>
 
     <string name="screen_add_medication_title">Add Medication</string>
     <string name="screen_add_medication_medication_name_label">Medication name</string>
