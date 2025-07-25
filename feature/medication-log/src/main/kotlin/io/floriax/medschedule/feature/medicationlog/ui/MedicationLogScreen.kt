@@ -54,11 +54,11 @@ import io.floriax.medschedule.core.domain.enums.MedicationState
 import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medicationlog.R
-import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
-import io.floriax.medschedule.shared.ui.LoadingIndicator
-import io.floriax.medschedule.shared.ui.ManualTag
+import io.floriax.medschedule.shared.ui.component.LoadingIndicator
+import io.floriax.medschedule.shared.ui.component.ManualTag
+import io.floriax.medschedule.shared.ui.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.ui.extension.formatLocalDateTime
 import kotlinx.coroutines.flow.flowOf
 

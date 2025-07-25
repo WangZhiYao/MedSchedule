@@ -49,11 +49,11 @@ import androidx.paging.compose.itemKey
 import io.floriax.medschedule.core.common.extension.ifNullOrBlank
 import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medication.R
-import io.floriax.medschedule.shared.designsystem.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
-import io.floriax.medschedule.shared.ui.ErrorIndicator
-import io.floriax.medschedule.shared.ui.LoadingIndicator
+import io.floriax.medschedule.shared.ui.component.ErrorIndicator
+import io.floriax.medschedule.shared.ui.component.LoadingIndicator
+import io.floriax.medschedule.shared.ui.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.ui.extension.collectState
 import kotlinx.coroutines.flow.flowOf
 

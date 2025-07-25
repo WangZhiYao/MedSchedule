@@ -1,4 +1,4 @@
-package io.floriax.medschedule.shared.ui
+package io.floriax.medschedule.shared.ui.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Checkbox

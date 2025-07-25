@@ -60,10 +60,10 @@ import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medicationlog.R
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
-import io.floriax.medschedule.shared.ui.BackButton
-import io.floriax.medschedule.shared.ui.DatePickerDialog
-import io.floriax.medschedule.shared.ui.LabeledCheckbox
-import io.floriax.medschedule.shared.ui.TimePickerDialog
+import io.floriax.medschedule.shared.ui.component.BackButton
+import io.floriax.medschedule.shared.ui.component.DatePickerDialog
+import io.floriax.medschedule.shared.ui.component.LabeledCheckbox
+import io.floriax.medschedule.shared.ui.component.TimePickerDialog
 import io.floriax.medschedule.shared.ui.extension.UpToTodaySelectableDates
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState

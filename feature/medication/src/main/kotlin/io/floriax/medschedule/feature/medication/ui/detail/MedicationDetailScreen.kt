@@ -51,7 +51,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -67,11 +66,11 @@ import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
-import io.floriax.medschedule.shared.ui.BackButton
-import io.floriax.medschedule.shared.ui.DeleteButton
-import io.floriax.medschedule.shared.ui.EditButton
-import io.floriax.medschedule.shared.ui.ErrorIndicator
-import io.floriax.medschedule.shared.ui.LoadingIndicator
+import io.floriax.medschedule.shared.ui.component.BackButton
+import io.floriax.medschedule.shared.ui.component.DeleteButton
+import io.floriax.medschedule.shared.ui.component.EditButton
+import io.floriax.medschedule.shared.ui.component.ErrorIndicator
+import io.floriax.medschedule.shared.ui.component.LoadingIndicator
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import io.floriax.medschedule.shared.ui.extension.formatFullLocalDateTime

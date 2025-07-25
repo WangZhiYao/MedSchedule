@@ -1,4 +1,4 @@
-package io.floriax.medschedule.shared.ui
+package io.floriax.medschedule.shared.ui.component
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
+import io.floriax.medschedule.shared.ui.R
 
 /**
  *

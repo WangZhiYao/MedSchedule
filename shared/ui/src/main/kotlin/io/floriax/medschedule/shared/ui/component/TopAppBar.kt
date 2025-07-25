@@ -1,5 +1,6 @@
-package io.floriax.medschedule.shared.designsystem.component
+package io.floriax.medschedule.shared.ui.component
 
+import android.R
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -51,7 +52,7 @@ fun MedScheduleTopAppBar(
 @Composable
 private fun MedScheduleTopAppBarPreview() {
     MedScheduleTopAppBar(
-        titleRes = android.R.string.untitled,
-        subtitleRes = android.R.string.untitled
+        titleRes = R.string.untitled,
+        subtitleRes = R.string.untitled
     )
 }

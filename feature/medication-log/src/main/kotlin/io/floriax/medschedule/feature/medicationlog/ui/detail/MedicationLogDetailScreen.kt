@@ -44,13 +44,13 @@ import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medicationlog.R
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
-import io.floriax.medschedule.shared.ui.BackButton
-import io.floriax.medschedule.shared.ui.DeleteButton
-import io.floriax.medschedule.shared.ui.EditButton
-import io.floriax.medschedule.shared.ui.ErrorIndicator
-import io.floriax.medschedule.shared.ui.LabeledCheckbox
-import io.floriax.medschedule.shared.ui.LoadingIndicator
-import io.floriax.medschedule.shared.ui.ManualTag
+import io.floriax.medschedule.shared.ui.component.BackButton
+import io.floriax.medschedule.shared.ui.component.DeleteButton
+import io.floriax.medschedule.shared.ui.component.EditButton
+import io.floriax.medschedule.shared.ui.component.ErrorIndicator
+import io.floriax.medschedule.shared.ui.component.LabeledCheckbox
+import io.floriax.medschedule.shared.ui.component.LoadingIndicator
+import io.floriax.medschedule.shared.ui.component.ManualTag
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import io.floriax.medschedule.shared.ui.extension.formatFullLocalDateTime
@@ -391,13 +391,7 @@ private fun MedicationLogDetailScreenPreview() {
     )
 
     AppTheme {
-        DeleteMedicationLogConfirmationDialog(
-            medicationLog = medicationLog,
-            onDismissRequest = {},
-            onConfirmClick = {}
-        )
-
-        /*MedicationLogDetailScreen(
+        MedicationLogDetailScreen(
             state = MedicationLogDetailUiState(
                 loading = false,
                 medicationLog = medicationLog
@@ -406,6 +400,6 @@ private fun MedicationLogDetailScreenPreview() {
             onBackClick = {},
             onEditClick = {},
             onDeleteClick = {},
-        )*/
+        )
     }
 }

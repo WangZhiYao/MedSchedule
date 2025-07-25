@@ -1,4 +1,4 @@
-package io.floriax.medschedule.shared.ui
+package io.floriax.medschedule.shared.ui.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import io.floriax.medschedule.shared.ui.R
 import io.floriax.medschedule.shared.ui.extension.toLocalDateAtZone
 import io.floriax.medschedule.shared.ui.extension.toStartOfDayAtUtc
 import java.time.LocalDate
