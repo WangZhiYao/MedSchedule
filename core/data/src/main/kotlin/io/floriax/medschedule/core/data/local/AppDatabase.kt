@@ -5,9 +5,14 @@ import androidx.room.RoomDatabase
 import io.floriax.medschedule.core.data.local.dao.MedicationDao
 import io.floriax.medschedule.core.data.local.dao.MedicationLogDao
 import io.floriax.medschedule.core.data.local.dao.MedicationLogEntryDao
+import io.floriax.medschedule.core.data.local.dao.MedicationPlanDao
+import io.floriax.medschedule.core.data.local.entity.MedicationDoseEntity
 import io.floriax.medschedule.core.data.local.entity.MedicationEntity
+import io.floriax.medschedule.core.data.local.entity.MedicationIntakeEntity
 import io.floriax.medschedule.core.data.local.entity.MedicationLogEntity
 import io.floriax.medschedule.core.data.local.entity.MedicationLogEntryEntity
+import io.floriax.medschedule.core.data.local.entity.MedicationPlanEntity
+import io.floriax.medschedule.core.data.local.entity.MedicationScheduleEntity
 
 /**
  *
@@ -18,6 +23,10 @@ import io.floriax.medschedule.core.data.local.entity.MedicationLogEntryEntity
 @Database(
     entities = [
         MedicationEntity::class,
+        MedicationPlanEntity::class,
+        MedicationScheduleEntity::class,
+        MedicationIntakeEntity::class,
+        MedicationDoseEntity::class,
         MedicationLogEntity::class,
         MedicationLogEntryEntity::class
     ],
@@ -26,6 +35,8 @@ import io.floriax.medschedule.core.data.local.entity.MedicationLogEntryEntity
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun medicationDao(): MedicationDao
+
+    abstract fun medicationPlanDao(): MedicationPlanDao
 
     abstract fun medicationLogDao(): MedicationLogDao
 
