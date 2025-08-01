@@ -117,7 +117,7 @@ MedSchedule/
     ```bash
     git clone https://github.com/wangzhiyao/MedSchedule.git
     ```
-2. Open the project in `Android Studio Narwhal | 2025.1.1` or a newer version.
+2. Open the project in `Android Studio Narwhal | 2025.1.2` or a newer version.
 3. Wait for Gradle to sync and build the project.
 4. Run the app module on an emulator or a physical device.
 
