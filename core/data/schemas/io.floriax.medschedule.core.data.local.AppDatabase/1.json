@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "736ecb284a94e258db70926aeecd5184",
+    "identityHash": "e19b68c3df8c598e8a859b2477a6cb79",
     "entities": [
       {
         "tableName": "medication",
@@ -99,7 +99,7 @@
       },
       {
         "tableName": "medication_schedule",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `medication_plan_id` INTEGER NOT NULL, `schedule_type` INTEGER NOT NULL, `start_date` TEXT, `end_date` TEXT, `one_time_date` TEXT, `days_of_week` TEXT, `days_of_month` TEXT, `annual_month_days` TEXT, `interval_days` INTEGER, `cycle_length_in_days` INTEGER, FOREIGN KEY(`medication_plan_id`) REFERENCES `medication_plan`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `medication_plan_id` INTEGER NOT NULL, `schedule_type` INTEGER NOT NULL, `start_date` TEXT, `end_date` TEXT, `one_time_schedule_date` TEXT, `days_of_week` TEXT, `days_of_month` TEXT, `annual_month_days` TEXT, `interval_days` INTEGER, `cycle_length_in_days` INTEGER, FOREIGN KEY(`medication_plan_id`) REFERENCES `medication_plan`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -130,8 +130,8 @@
             "affinity": "TEXT"
           },
           {
-            "fieldPath": "oneTimeDate",
-            "columnName": "one_time_date",
+            "fieldPath": "oneTimeScheduleDate",
+            "columnName": "one_time_schedule_date",
             "affinity": "TEXT"
           },
           {
@@ -478,7 +478,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '736ecb284a94e258db70926aeecd5184')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e19b68c3df8c598e8a859b2477a6cb79')"
     ]
   }
 }

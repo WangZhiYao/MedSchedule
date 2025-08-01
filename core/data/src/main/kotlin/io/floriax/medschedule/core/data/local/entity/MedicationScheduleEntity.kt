@@ -80,8 +80,8 @@ data class MedicationScheduleEntity(
      *
      * @sample "2024-03-20"
      */
-    @ColumnInfo(name = "one_time_date")
-    val oneTimeDate: String?,
+    @ColumnInfo(name = "one_time_schedule_date")
+    val oneTimeScheduleDate: String?,
 
     /**
      * 每周重复计划的指定星期几
