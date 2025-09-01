@@ -50,7 +50,6 @@ class MedicationDetailViewModel @Inject constructor(
 
     val medicationLogs: Flow<PagingData<MedicationLog>> =
         observePagedMedicationLogByMedicationUseCase(medicationId)
-            .flowOn(ioDispatcher)
             .cachedIn(viewModelScope)
             .catch { ex ->
                 logger.e(ex, "Error while observing medication logs")

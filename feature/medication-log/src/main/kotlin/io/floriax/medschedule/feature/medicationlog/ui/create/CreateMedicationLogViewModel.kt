@@ -16,7 +16,6 @@ import io.floriax.medschedule.core.domain.usecase.ObservePagedMedicationsUseCase
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
@@ -45,7 +44,6 @@ class CreateMedicationLogViewModel @Inject constructor(
 
     val pagedMedications: Flow<PagingData<Medication>> =
         observePagedMedicationsUseCase()
-            .flowOn(ioDispatcher)
             .cachedIn(viewModelScope)
 
     fun toggleDatePickerDialog(show: Boolean) {
