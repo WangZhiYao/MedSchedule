@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import io.floriax.medschedule.core.common.extension.ifNullOrBlank
 import io.floriax.medschedule.core.domain.enums.MedicationLogType
 import io.floriax.medschedule.core.domain.enums.MedicationState
