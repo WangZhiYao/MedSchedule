@@ -18,7 +18,6 @@ import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -58,7 +57,6 @@ class MedicationDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             observeMedicationByIdUseCase(medicationId)
-                .flowOn(ioDispatcher)
                 .onStart {
                     reduce {
                         copy(loading = true, error = false)

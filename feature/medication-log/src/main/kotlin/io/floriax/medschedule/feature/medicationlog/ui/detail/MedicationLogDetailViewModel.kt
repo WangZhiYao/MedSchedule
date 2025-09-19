@@ -12,7 +12,6 @@ import io.floriax.medschedule.feature.medicationlog.navigation.MedicationLogDeta
 import io.floriax.medschedule.shared.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -43,7 +42,6 @@ class MedicationLogDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             observeMedicationLogByIdUseCase(medicationLogId)
-                .flowOn(ioDispatcher)
                 .onStart {
                     reduce { copy(loading = true) }
                 }
