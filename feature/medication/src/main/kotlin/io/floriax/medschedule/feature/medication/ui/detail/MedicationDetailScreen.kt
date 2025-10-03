@@ -26,6 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -69,7 +70,6 @@ import io.floriax.medschedule.shared.ui.component.BackButton
 import io.floriax.medschedule.shared.ui.component.DeleteButton
 import io.floriax.medschedule.shared.ui.component.EditButton
 import io.floriax.medschedule.shared.ui.component.ErrorIndicator
-import io.floriax.medschedule.shared.ui.component.LabeledOutlinedTextField
 import io.floriax.medschedule.shared.ui.component.LoadingIndicator
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
@@ -597,7 +597,7 @@ private fun AddStockBottomSheet(
                 style = MaterialTheme.typography.titleLarge
             )
 
-            LabeledOutlinedTextField(
+            OutlinedTextField(
                 value = stockString,
                 onValueChange = { value -> stockString = value },
                 label = { Text(text = stringResource(R.string.screen_medication_detail_quantity_to_add)) },

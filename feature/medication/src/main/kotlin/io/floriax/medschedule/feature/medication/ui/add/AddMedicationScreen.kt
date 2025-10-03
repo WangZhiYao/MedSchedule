@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -28,7 +29,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
-import io.floriax.medschedule.shared.ui.component.LabeledOutlinedTextField
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import io.floriax.medschedule.shared.ui.R as sharedUiR
@@ -166,7 +166,7 @@ private fun AddMedicationContent(
         modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        LabeledOutlinedTextField(
+        OutlinedTextField(
             value = state.medicationName,
             onValueChange = onMedicationNameChange,
             modifier = Modifier
@@ -182,7 +182,7 @@ private fun AddMedicationContent(
             singleLine = true
         )
 
-        LabeledOutlinedTextField(
+        OutlinedTextField(
             value = state.stockString,
             onValueChange = onStockStringChange,
             modifier = Modifier
@@ -198,7 +198,7 @@ private fun AddMedicationContent(
             singleLine = true
         )
 
-        LabeledOutlinedTextField(
+        OutlinedTextField(
             value = state.doseUnit,
             onValueChange = onDoseUnitChange,
             modifier = Modifier
@@ -214,7 +214,7 @@ private fun AddMedicationContent(
             singleLine = true
         )
 
-        LabeledOutlinedTextField(
+        OutlinedTextField(
             value = state.notes,
             onValueChange = onNotesChange,
             modifier = Modifier.fillMaxWidth(),
