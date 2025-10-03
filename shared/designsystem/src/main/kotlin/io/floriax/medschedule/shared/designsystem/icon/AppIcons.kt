@@ -14,6 +14,7 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.CalendarToday
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
@@ -69,6 +70,7 @@ object AppIcons {
         @Composable
         get() = ImageVector.vectorResource(R.drawable.ic_history_w200_24dp)
 
+    val Check = Icons.Rounded.Check
     val CheckCircle = Icons.Rounded.CheckCircle
     val RemoveCircle = Icons.Rounded.RemoveCircle
     val Error = Icons.Rounded.Error

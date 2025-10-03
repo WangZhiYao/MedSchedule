@@ -23,6 +23,7 @@ fun NavController.navigateToMain(navOptions: NavOptions) =
     navigate(route = MainRoute, navOptions = navOptions)
 
 fun NavGraphBuilder.mainScreen(
+    onCreateMedicationPlanClick: () -> Unit,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Medication) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
@@ -32,6 +33,7 @@ fun NavGraphBuilder.mainScreen(
         val mainScreenState = rememberMainScreenState()
         MainRoute(
             mainScreenState = mainScreenState,
+            onCreateMedicationPlanClick = onCreateMedicationPlanClick,
             onAddMedicationClick = onAddMedicationClick,
             onMedicationClick = onMedicationClick,
             onCreateMedicationLogClick = onCreateMedicationLogClick,
