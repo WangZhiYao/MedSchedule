@@ -64,10 +64,10 @@ import io.floriax.medschedule.shared.ui.component.DatePickerDialog
 import io.floriax.medschedule.shared.ui.component.LabeledCheckbox
 import io.floriax.medschedule.shared.ui.component.LabeledOutlinedTextField
 import io.floriax.medschedule.shared.ui.component.TimePickerDialog
-import io.floriax.medschedule.shared.ui.extension.UpToTodaySelectableDates
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import io.floriax.medschedule.shared.ui.extension.formatLocalized
+import io.floriax.medschedule.shared.ui.util.UpToTodaySelectableDates
 import java.time.LocalDate
 import java.time.LocalTime
 import io.floriax.medschedule.shared.ui.R as sharedUiR
