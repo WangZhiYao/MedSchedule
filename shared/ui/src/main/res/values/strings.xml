@@ -4,6 +4,9 @@
     <string name="shared_ui_save">Save</string>
     <string name="shared_ui_more">More</string>
     <string name="shared_ui_edit">Edit</string>
+    <string name="shared_ui_check">Check</string>
+    <string name="shared_ui_previous">Previous</string>
+    <string name="shared_ui_next">Next</string>
     <string name="shared_ui_delete">Delete</string>
     <string name="shared_ui_confirm">Confirm</string>
     <string name="shared_ui_cancel">Cancel</string>
