@@ -32,6 +32,21 @@ class CreateMedicationPlanViewModel @Inject constructor(
 
     fun onNextStepClick() {
         currentState.currentStep.next()?.let { step ->
+            when (step) {
+                CreateMedicationPlanStep.SCHEDULE_TYPE -> {
+                    val nameError = if (currentState.name.isBlank()) NameError.Empty else null
+                    reduce {
+                        copy(nameError = nameError)
+                    }
+                    if (nameError != null) {
+                        return
+                    }
+                }
+
+                CreateMedicationPlanStep.DOSAGE -> {}
+                CreateMedicationPlanStep.SAVE -> {}
+                else -> {}
+            }
             reduce {
                 copy(
                     currentStep = step,
@@ -39,6 +54,18 @@ class CreateMedicationPlanViewModel @Inject constructor(
                     showSaveButton = step.canShowSave()
                 )
             }
+        }
+    }
+
+    fun onNameChange(name: String) {
+        reduce {
+            copy(name = name, nameError = if (name.isBlank()) NameError.Empty else null)
+        }
+    }
+
+    fun onNotesChange(notes: String) {
+        reduce {
+            copy(notes = notes)
         }
     }
 }

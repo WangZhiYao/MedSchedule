@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import io.floriax.medschedule.feature.medicationplan.R
+import io.floriax.medschedule.feature.medicationplan.ui.create.steps.BasicInfoStep
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
@@ -51,7 +52,9 @@ fun CreateMedicationPlanRoute(
         uiState = uiState,
         onBackClick = onBackClick,
         onPreviousClick = viewModel::onPreviousStepClick,
-        onNextClick = viewModel::onNextStepClick
+        onNextClick = viewModel::onNextStepClick,
+        onNameChange = viewModel::onNameChange,
+        onNotesChange = viewModel::onNotesChange
     )
 }
 
@@ -61,6 +64,8 @@ private fun CreateMedicationPlanScreen(
     onBackClick: () -> Unit,
     onPreviousClick: () -> Unit,
     onNextClick: () -> Unit,
+    onNameChange: (String) -> Unit,
+    onNotesChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -78,6 +83,8 @@ private fun CreateMedicationPlanScreen(
     ) { paddingValues ->
         CreateMedicationPlanContent(
             uiState = uiState,
+            onNameChange = onNameChange,
+            onNotesChange = onNotesChange,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -103,6 +110,8 @@ private fun CreateMedicationPlanTopBar(
 @Composable
 private fun CreateMedicationPlanContent(
     uiState: CreateMedicationPlanUiState,
+    onNameChange: (String) -> Unit,
+    onNotesChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val progress =
@@ -131,7 +140,13 @@ private fun CreateMedicationPlanContent(
             }
         ) { targetStep ->
             when (targetStep) {
-                CreateMedicationPlanStep.BASIC_INFO -> BasicInfoStep(modifier = Modifier.fillMaxSize())
+                CreateMedicationPlanStep.BASIC_INFO -> BasicInfoStep(
+                    name = uiState.name,
+                    onNameChange = onNameChange,
+                    nameError = uiState.nameError,
+                    notes = uiState.notes,
+                    onNotesChange = onNotesChange
+                )
                 CreateMedicationPlanStep.SCHEDULE_TYPE -> ScheduleTypeStep(modifier = Modifier.fillMaxSize())
                 CreateMedicationPlanStep.DOSAGE -> DosageStep(modifier = Modifier.fillMaxSize())
                 CreateMedicationPlanStep.SAVE -> SaveStep(modifier = Modifier.fillMaxSize())
@@ -173,11 +188,6 @@ private fun CreateMedicationPlanBottomBar(
 }
 
 @Composable
-private fun BasicInfoStep(modifier: Modifier = Modifier) {
-
-}
-
-@Composable
 private fun ScheduleTypeStep(modifier: Modifier = Modifier) {
 
 }
@@ -200,7 +210,9 @@ private fun CreateMedicationPlanPreview() {
             uiState = CreateMedicationPlanUiState(),
             onBackClick = {},
             onPreviousClick = {},
-            onNextClick = {}
+            onNextClick = {},
+            onNameChange = {},
+            onNotesChange = {}
         )
     }
 }
