@@ -9,7 +9,7 @@
     <string name="screen_create_medication_plan_title">Create Medication Plan</string>
     <string name="screen_create_medication_plan_basic_info_title">Basic Information</string>
     <string name="screen_create_medication_plan_basic_info_plan_name">Plan Name</string>
-    <string name="screen_create_medication_plan_basic_info_plan_name_error_empty">Plan name cannot be empty</string>
+    <string name="screen_create_medication_plan_error_basic_info_plan_name_empty">Plan name cannot be empty</string>
     <string name="screen_create_medication_plan_basic_info_notes">Notes (Optional)</string>
 
 </resources>

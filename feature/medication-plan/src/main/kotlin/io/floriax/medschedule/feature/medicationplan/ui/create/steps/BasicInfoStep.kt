@@ -53,7 +53,7 @@ fun BasicInfoStep(
             label = { Text(text = stringResource(R.string.screen_create_medication_plan_basic_info_plan_name)) },
             supportingText = {
                 val message = when (nameError) {
-                    NameError.Empty -> stringResource(R.string.screen_create_medication_plan_basic_info_plan_name_error_empty)
+                    NameError.Empty -> stringResource(R.string.screen_create_medication_plan_error_basic_info_plan_name_empty)
                     null -> ""
                 }
                 Text(text = message)
