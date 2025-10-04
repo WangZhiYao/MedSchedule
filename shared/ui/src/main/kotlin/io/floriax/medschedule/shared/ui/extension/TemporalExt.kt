@@ -11,6 +11,7 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /**
  *
@@ -35,11 +36,17 @@ fun Instant.formatLocalDateTime(context: Context): String {
     val formattedDate = when {
         targetDate == today -> null
         targetDate == today.minusDays(1) -> context.getString(R.string.shared_ui_date_yesterday)
-        targetDate.year == today.year ->
-            targetDate.format(DateTimeFormatter.ofPattern(context.getString(R.string.shared_ui_date_pattern_short)))
+        targetDate.year == today.year -> {
+            val skeleton = context.getString(R.string.shared_ui_date_skeleton_short)
+            val pattern = DateFormat.getBestDateTimePattern(
+                context.resources.configuration.locales[0],
+                skeleton
+            )
+            targetDate.format(DateTimeFormatter.ofPattern(pattern))
+        }
 
         else ->
-            targetDate.format(DateTimeFormatter.ofPattern(context.getString(R.string.shared_ui_date_pattern_long)))
+            targetDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
     }
 
     return formattedDate?.let { "$it $formattedTime" } ?: formattedTime
@@ -66,7 +73,7 @@ fun LocalDate.formatLocalized(): String {
 
 fun LocalDate.formatLocalized(context: Context): String {
     val formatter =
-        DateTimeFormatter.ofPattern(context.getString(R.string.shared_ui_date_pattern_long))
+        DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
     return this.format(formatter)
 }
 

@@ -15,8 +15,7 @@
     <string name="shared_ui_time_12">h:mm a</string>
     <string name="shared_ui_time_24" translatable="false">H:mm</string>
     <string name="shared_ui_date_yesterday">Yesterday</string>
-    <string name="shared_ui_date_pattern_short">MMMM d</string>
-    <string name="shared_ui_date_pattern_long">MMM d, yyyy</string>
+    <string name="shared_ui_date_skeleton_short" translatable="false">MMMMd</string>
 
     <string name="shared_ui_dialog_time_picker">Select Time</string>
 
