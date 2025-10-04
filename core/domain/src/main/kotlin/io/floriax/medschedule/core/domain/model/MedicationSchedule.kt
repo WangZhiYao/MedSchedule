@@ -39,7 +39,7 @@ sealed class MedicationSchedule {
          *
          * @property intakes 每天的服药安排（每天都一样）
          */
-        sealed class Daily(
+        data class Daily(
             override val startDate: LocalDate,
             override val endDate: LocalDate?,
             val intakes: List<MedicationIntake>
@@ -51,7 +51,7 @@ sealed class MedicationSchedule {
          * @property daysOfWeek 指定在一周中的哪几天重复，例如 [DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY]
          * @property intakes 在指定日期的服药安排
          */
-        sealed class Weekly(
+        data class Weekly(
             override val startDate: LocalDate,
             override val endDate: LocalDate?,
             val daysOfWeek: Set<DayOfWeek>,
@@ -64,7 +64,7 @@ sealed class MedicationSchedule {
          * @property daysOfMonth 指定在一个月中的哪几天重复 (1-31)。注意处理大小月和闰年问题。
          * @property intakes 在指定日期的服药安排
          */
-        sealed class Monthly(
+        data class Monthly(
             override val startDate: LocalDate,
             override val endDate: LocalDate?,
             val daysOfMonth: Set<Int>,
