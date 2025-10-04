@@ -11,6 +11,7 @@
     <string name="shared_ui_confirm">Confirm</string>
     <string name="shared_ui_cancel">Cancel</string>
     <string name="shared_ui_error">Error</string>
+    <string name="shared_ui_remove">Remove</string>
 
     <string name="shared_ui_time_12">h:mm a</string>
     <string name="shared_ui_time_24" translatable="false">H:mm</string>
