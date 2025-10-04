@@ -16,12 +16,8 @@ enum class MedicationScheduleType(val value: Int) {
 
     WEEKLY(3),
 
-    MONTHLY(4),
+    INTERVAL(4),
 
-    ANNUALLY(5),
-
-    INTERVAL(6),
-
-    CUSTOM_CYCLE(7)
+    CUSTOM_CYCLE(5)
 
 }
