@@ -21,4 +21,11 @@
 
     <string name="shared_ui_tag_manual">Manual</string>
 
+    <string name="shared_ui_medication_schedule_type_unknown">Unknown</string>
+    <string name="shared_ui_medication_schedule_type_one_time">One-Time</string>
+    <string name="shared_ui_medication_schedule_type_daily">Daily</string>
+    <string name="shared_ui_medication_schedule_type_weekly">Weekly</string>
+    <string name="shared_ui_medication_schedule_type_interval">Interval</string>
+    <string name="shared_ui_medication_schedule_type_custom_cycle">Custom Cycle</string>
+
 </resources>

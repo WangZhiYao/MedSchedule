@@ -53,6 +53,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    implementation(project(":core:domain"))
     api(project(":shared:designsystem"))
 
     api(libs.androidx.core.ktx)

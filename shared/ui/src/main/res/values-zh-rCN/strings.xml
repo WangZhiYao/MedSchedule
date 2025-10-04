@@ -20,4 +20,11 @@
 
     <string name="shared_ui_tag_manual">手动记录</string>
 
+    <string name="shared_ui_medication_schedule_type_unknown">未知</string>
+    <string name="shared_ui_medication_schedule_type_one_time">一次性计划</string>
+    <string name="shared_ui_medication_schedule_type_daily">每日</string>
+    <string name="shared_ui_medication_schedule_type_weekly">每周</string>
+    <string name="shared_ui_medication_schedule_type_interval">间隔</string>
+    <string name="shared_ui_medication_schedule_type_custom_cycle">自定义周期</string>
+
 </resources>
