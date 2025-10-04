@@ -11,5 +11,22 @@
     <string name="screen_create_medication_plan_basic_info_plan_name">计划名称</string>
     <string name="screen_create_medication_plan_error_basic_info_plan_name_empty">计划名称不能为空</string>
     <string name="screen_create_medication_plan_basic_info_notes">备注 (可选)</string>
+    <string name="screen_create_medication_plan_medication_schedule_type_title">用药计划类型</string>
+    <string name="screen_create_medication_plan_schedule_type_title">计划类型</string>
+    <string name="screen_create_medication_plan_schedule_date_title">计划日期</string>
+    <string name="screen_create_medication_plan_start_date">开始日期</string>
+    <string name="screen_create_medication_plan_end_date">结束日期 (可选)</string>
+    <string name="screen_create_medication_plan_weekly_title">每周重复</string>
+    <string name="screen_create_medication_plan_error_weekly_days_empty">请选择至少一天</string>
+    <string name="screen_create_medication_plan_interval_setting_title">间隔设置</string>
+    <string name="screen_create_medication_plan_interval_days_title">间隔天数</string>
+    <string name="screen_create_medication_plan_error_interval_days_empty">间隔天数不能为空</string>
+    <string name="screen_create_medication_plan_error_interval_days_invalid">请输入有效的数字</string>
+    <string name="screen_create_medication_plan_custom_cycle_setting_title">自定义周期设置</string>
+    <string name="screen_create_medication_plan_custom_cycle_days_on_title">服药天数</string>
+    <string name="screen_create_medication_plan_custom_cycle_days_off_title">暂停天数</string>
+    <string name="screen_create_medication_plan_error_custom_cycle_days_on_empty">服药天数不能为空</string>
+    <string name="screen_create_medication_plan_error_custom_cycle_days_off_empty">暂停天数不能为空</string>
+    <string name="screen_create_medication_plan_error_custom_cycle_days_invalid">总周期天数必须大于0</string>
 
 </resources>

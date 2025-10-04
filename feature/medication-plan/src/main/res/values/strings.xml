@@ -11,5 +11,22 @@
     <string name="screen_create_medication_plan_basic_info_plan_name">Plan Name</string>
     <string name="screen_create_medication_plan_error_basic_info_plan_name_empty">Plan name cannot be empty</string>
     <string name="screen_create_medication_plan_basic_info_notes">Notes (Optional)</string>
+    <string name="screen_create_medication_plan_medication_schedule_type_title">Medication Schedule Type</string>
+    <string name="screen_create_medication_plan_schedule_type_title">Schedule Type</string>
+    <string name="screen_create_medication_plan_schedule_date_title">Schedule Date</string>
+    <string name="screen_create_medication_plan_start_date">Start Date</string>
+    <string name="screen_create_medication_plan_end_date">End Date (Optional)</string>
+    <string name="screen_create_medication_plan_weekly_title">Repeat on</string>
+    <string name="screen_create_medication_plan_error_weekly_days_empty">Please select at least one day</string>
+    <string name="screen_create_medication_plan_interval_setting_title">Interval Setting</string>
+    <string name="screen_create_medication_plan_interval_days_title">Interval Days</string>
+    <string name="screen_create_medication_plan_error_interval_days_empty">Interval days cannot be empty</string>
+    <string name="screen_create_medication_plan_error_interval_days_invalid">Please enter a valid number</string>
+    <string name="screen_create_medication_plan_custom_cycle_setting_title">Custom Cycle Setting</string>
+    <string name="screen_create_medication_plan_custom_cycle_days_on_title">Days on</string>
+    <string name="screen_create_medication_plan_custom_cycle_days_off_title">Days off</string>
+    <string name="screen_create_medication_plan_error_custom_cycle_days_on_empty">Days on cannot be empty</string>
+    <string name="screen_create_medication_plan_error_custom_cycle_days_off_empty">Days off cannot be empty</string>
+    <string name="screen_create_medication_plan_error_custom_cycle_days_invalid">The total number of days in a cycle must be greater than 0</string>
 
 </resources>

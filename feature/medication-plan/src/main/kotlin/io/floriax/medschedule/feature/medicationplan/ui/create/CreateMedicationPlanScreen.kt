@@ -27,12 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import io.floriax.medschedule.core.domain.enums.MedicationScheduleType
 import io.floriax.medschedule.feature.medicationplan.R
 import io.floriax.medschedule.feature.medicationplan.ui.create.steps.BasicInfoStep
+import io.floriax.medschedule.feature.medicationplan.ui.create.steps.ScheduleTypeStep
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
 import io.floriax.medschedule.shared.ui.extension.collectState
+import java.time.DayOfWeek
+import java.time.LocalDate
 import io.floriax.medschedule.shared.ui.R as sharedUiR
 
 /**
@@ -54,7 +58,15 @@ fun CreateMedicationPlanRoute(
         onPreviousClick = viewModel::onPreviousStepClick,
         onNextClick = viewModel::onNextStepClick,
         onNameChange = viewModel::onNameChange,
-        onNotesChange = viewModel::onNotesChange
+        onNotesChange = viewModel::onNotesChange,
+        onScheduleTypeChange = viewModel::onScheduleTypeChange,
+        onOneTimeScheduleDateChange = viewModel::onOneTimeScheduleDateChange,
+        onStartDateChange = viewModel::onStartDateChange,
+        onEndDateChange = viewModel::onEndDateChange,
+        onWeeklyDaySelected = viewModel::onWeeklyDaySelected,
+        onIntervalDaysChange = viewModel::onIntervalDaysChange,
+        onCustomCycleDaysOnChange = viewModel::onCustomCycleDaysOnChange,
+        onCustomCycleDaysOffChange = viewModel::onCustomCycleDaysOffChange
     )
 }
 
@@ -66,6 +78,14 @@ private fun CreateMedicationPlanScreen(
     onNextClick: () -> Unit,
     onNameChange: (String) -> Unit,
     onNotesChange: (String) -> Unit,
+    onScheduleTypeChange: (MedicationScheduleType) -> Unit,
+    onOneTimeScheduleDateChange: (LocalDate) -> Unit,
+    onStartDateChange: (LocalDate) -> Unit,
+    onEndDateChange: (LocalDate?) -> Unit,
+    onWeeklyDaySelected: (DayOfWeek) -> Unit,
+    onIntervalDaysChange: (String) -> Unit,
+    onCustomCycleDaysOnChange: (String) -> Unit,
+    onCustomCycleDaysOffChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -85,6 +105,14 @@ private fun CreateMedicationPlanScreen(
             uiState = uiState,
             onNameChange = onNameChange,
             onNotesChange = onNotesChange,
+            onScheduleTypeChange = onScheduleTypeChange,
+            onOneTimeScheduleDateChange = onOneTimeScheduleDateChange,
+            onStartDateChange = onStartDateChange,
+            onEndDateChange = onEndDateChange,
+            onWeeklyDaySelected = onWeeklyDaySelected,
+            onIntervalDaysChange = onIntervalDaysChange,
+            onCustomCycleDaysOnChange = onCustomCycleDaysOnChange,
+            onCustomCycleDaysOffChange = onCustomCycleDaysOffChange,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -112,6 +140,14 @@ private fun CreateMedicationPlanContent(
     uiState: CreateMedicationPlanUiState,
     onNameChange: (String) -> Unit,
     onNotesChange: (String) -> Unit,
+    onScheduleTypeChange: (MedicationScheduleType) -> Unit,
+    onOneTimeScheduleDateChange: (LocalDate) -> Unit,
+    onStartDateChange: (LocalDate) -> Unit,
+    onEndDateChange: (LocalDate?) -> Unit,
+    onWeeklyDaySelected: (DayOfWeek) -> Unit,
+    onIntervalDaysChange: (String) -> Unit,
+    onCustomCycleDaysOnChange: (String) -> Unit,
+    onCustomCycleDaysOffChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val progress =
@@ -147,7 +183,30 @@ private fun CreateMedicationPlanContent(
                     notes = uiState.notes,
                     onNotesChange = onNotesChange
                 )
-                CreateMedicationPlanStep.SCHEDULE_TYPE -> ScheduleTypeStep(modifier = Modifier.fillMaxSize())
+
+                CreateMedicationPlanStep.SCHEDULE_TYPE -> ScheduleTypeStep(
+                    scheduleTypes = uiState.scheduleTypes,
+                    selectedScheduleType = uiState.selectedScheduleType,
+                    onScheduleTypeChange = onScheduleTypeChange,
+                    oneTimeScheduleDate = uiState.oneTimeScheduleDate,
+                    onOneTimeScheduleDateChange = onOneTimeScheduleDateChange,
+                    startDate = uiState.startDate,
+                    onStartDateChange = onStartDateChange,
+                    endDate = uiState.endDate,
+                    onEndDateChange = onEndDateChange,
+                    weeklySelectedDays = uiState.weeklySelectedDays,
+                    onWeeklyDaySelected = onWeeklyDaySelected,
+                    weekDaysError = uiState.weeklyDaysError,
+                    intervalDays = uiState.intervalDays,
+                    onIntervalDaysChange = onIntervalDaysChange,
+                    intervalDaysError = uiState.intervalDaysError,
+                    customCycleDaysOn = uiState.customCycleDaysOn,
+                    onCustomCycleDaysOnChange = onCustomCycleDaysOnChange,
+                    customCycleDaysOff = uiState.customCycleDaysOff,
+                    onCustomCycleDaysOffChange = onCustomCycleDaysOffChange,
+                    customCycleDaysError = uiState.customCycleDaysError,
+                )
+
                 CreateMedicationPlanStep.DOSAGE -> DosageStep(modifier = Modifier.fillMaxSize())
                 CreateMedicationPlanStep.SAVE -> SaveStep(modifier = Modifier.fillMaxSize())
             }
@@ -188,11 +247,6 @@ private fun CreateMedicationPlanBottomBar(
 }
 
 @Composable
-private fun ScheduleTypeStep(modifier: Modifier = Modifier) {
-
-}
-
-@Composable
 private fun DosageStep(modifier: Modifier = Modifier) {
 
 }
@@ -212,7 +266,15 @@ private fun CreateMedicationPlanPreview() {
             onPreviousClick = {},
             onNextClick = {},
             onNameChange = {},
-            onNotesChange = {}
+            onNotesChange = {},
+            onScheduleTypeChange = {},
+            onOneTimeScheduleDateChange = {},
+            onStartDateChange = {},
+            onEndDateChange = {},
+            onWeeklyDaySelected = {},
+            onIntervalDaysChange = {},
+            onCustomCycleDaysOnChange = {},
+            onCustomCycleDaysOffChange = {}
         )
     }
 }
