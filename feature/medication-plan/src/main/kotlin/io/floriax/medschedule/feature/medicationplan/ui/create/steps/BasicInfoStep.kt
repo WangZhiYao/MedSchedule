@@ -1,6 +1,5 @@
 package io.floriax.medschedule.feature.medicationplan.ui.create.steps
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,25 +37,27 @@ fun BasicInfoStep(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
         Text(
             text = stringResource(R.string.screen_create_medication_plan_basic_info_title),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
 
         OutlinedTextField(
             value = name,
             onValueChange = onNameChange,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
             label = { Text(text = stringResource(R.string.screen_create_medication_plan_basic_info_plan_name)) },
             supportingText = {
-                val message = when (nameError) {
-                    NameError.Empty -> stringResource(R.string.screen_create_medication_plan_error_basic_info_plan_name_empty)
-                    null -> ""
+                if (nameError != null) {
+                    val message = when (nameError) {
+                        NameError.Empty -> stringResource(R.string.screen_create_medication_plan_error_basic_info_plan_name_empty)
+                    }
+                    Text(text = message)
                 }
-                Text(text = message)
             },
             isError = nameError != null,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
