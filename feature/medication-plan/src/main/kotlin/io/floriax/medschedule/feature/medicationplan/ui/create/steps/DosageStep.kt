@@ -87,6 +87,7 @@ fun DosageStep(
             Text(
                 text = stringResource(R.string.screen_create_medication_plan_dosage_title),
                 style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             if (intakesError is IntakesError.Empty) {
@@ -172,8 +173,7 @@ private fun IntakeBlock(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = intake.time.formatLocalized(),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
                     color = if (intake.timeError != null) MaterialTheme.colorScheme.error else Color.Unspecified
                 )
                 if (intake.timeError is TimeError.Duplicate) {
