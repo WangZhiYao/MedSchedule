@@ -2,7 +2,6 @@ package io.floriax.medschedule.core.domain.model
 
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.MonthDay
 
 /**
  * 用药时间
@@ -55,32 +54,6 @@ sealed class MedicationSchedule {
             override val startDate: LocalDate,
             override val endDate: LocalDate?,
             val daysOfWeek: Set<DayOfWeek>,
-            val intakes: List<MedicationIntake>
-        ) : Repetitive(startDate, endDate)
-
-        /**
-         * 每月重复
-         *
-         * @property daysOfMonth 指定在一个月中的哪几天重复 (1-31)。注意处理大小月和闰年问题。
-         * @property intakes 在指定日期的服药安排
-         */
-        data class Monthly(
-            override val startDate: LocalDate,
-            override val endDate: LocalDate?,
-            val daysOfMonth: Set<Int>,
-            val intakes: List<MedicationIntake>
-        ) : Repetitive(startDate, endDate)
-
-        /**
-         * 每年重复
-         *
-         * @property monthDay 指定在每年的哪一天，例如 MonthDay.of(Month.DECEMBER, 25)
-         * @property intakes 在指定日期的服药安排
-         */
-        data class Annually(
-            override val startDate: LocalDate,
-            override val endDate: LocalDate?,
-            val monthDays: Set<MonthDay>,
             val intakes: List<MedicationIntake>
         ) : Repetitive(startDate, endDate)
 
