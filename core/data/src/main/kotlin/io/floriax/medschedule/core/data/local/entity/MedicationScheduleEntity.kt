@@ -31,14 +31,9 @@ data class MedicationScheduleEntity(
     /**
      * 时间安排类型标识符
      *
-     * 使用整数枚举标识不同的时间安排类型：
-     * - 1: ONE_TIME (一次性计划)
-     * - 2: DAILY (每日重复)
-     * - 3: WEEKLY (每周重复)
-     * - 4: MONTHLY (每月重复)
-     * - 5: ANNUALLY (每年重复)
-     * - 6: INTERVAL (按固定间隔天数重复)
-     * - 7: CUSTOM_CYCLE (自定义周期计划)
+     * 使用整数枚举标识不同的时间安排类型
+     *
+     * @see io.floriax.medschedule.core.domain.enums.MedicationScheduleType
      *
      */
     @ColumnInfo(name = "schedule_type")
