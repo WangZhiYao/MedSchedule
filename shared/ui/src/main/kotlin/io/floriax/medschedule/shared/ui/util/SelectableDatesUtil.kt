@@ -4,7 +4,6 @@ import androidx.compose.material3.SelectableDates
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.temporal.ChronoUnit
 
 /**
  *
@@ -31,8 +30,15 @@ object UpToTodaySelectableDates : SelectableDates {
 
 object FromTodaySelectableDates : SelectableDates {
 
-    override fun isSelectableDate(utcTimeMillis: Long): Boolean =
-        utcTimeMillis >= Instant.now().truncatedTo(ChronoUnit.DAYS).toEpochMilli()
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+        val today = LocalDate.now()
+
+        val selectedDate = Instant.ofEpochMilli(utcTimeMillis)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+
+        return !selectedDate.isBefore(today)
+    }
 
     override fun isSelectableYear(year: Int): Boolean =
         year >= LocalDate.now().year
@@ -73,13 +79,20 @@ class BetweenDatesSelectableDates(
     }
 }
 
-class AfterSpecialDateSelectableDates(val specialDate: LocalDate) : SelectableDates {
+class AfterSpecialDateSelectableDates(
+    val specialDate: LocalDate,
+    val inclusive: Boolean = true
+) : SelectableDates {
 
     override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-        val date = Instant.ofEpochMilli(utcTimeMillis)
+        val selectedDate = Instant.ofEpochMilli(utcTimeMillis)
             .atZone(ZoneId.systemDefault())
             .toLocalDate()
-        return date.isAfter(specialDate)
+
+        if (inclusive) {
+            return !selectedDate.isBefore(specialDate)
+        }
+        return selectedDate.isAfter(specialDate)
     }
 
     override fun isSelectableYear(year: Int): Boolean {
