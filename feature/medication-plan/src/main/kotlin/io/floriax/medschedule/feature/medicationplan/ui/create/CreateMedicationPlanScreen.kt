@@ -82,8 +82,8 @@ fun CreateMedicationPlanRoute(
         onTimeChange = viewModel::onTimeChange,
         onAddDoseClick = viewModel::onAddDoseClick,
         onRemoveDoseClick = viewModel::onRemoveDoseClick,
-        onDoseAmountChange = viewModel::onDoseAmountChange,
-        onDoseMedicationSelected = viewModel::onDoseMedicationSelected
+        onDoseMedicationSelected = viewModel::onDoseMedicationSelected,
+        onDoseAmountChange = viewModel::onDoseAmountChange
     )
 }
 
@@ -109,8 +109,8 @@ private fun CreateMedicationPlanScreen(
     onTimeChange: (IntakeInput, LocalTime) -> Unit,
     onAddDoseClick: (IntakeInput) -> Unit,
     onRemoveDoseClick: (IntakeInput, DoseInput) -> Unit,
-    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
     onDoseMedicationSelected: (IntakeInput, DoseInput, Medication) -> Unit,
+    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -144,8 +144,8 @@ private fun CreateMedicationPlanScreen(
             onTimeChange = onTimeChange,
             onAddDoseClick = onAddDoseClick,
             onRemoveDoseClick = onRemoveDoseClick,
-            onDoseAmountChange = onDoseAmountChange,
             onDoseMedicationSelected = onDoseMedicationSelected,
+            onDoseAmountChange = onDoseAmountChange,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -187,8 +187,8 @@ private fun CreateMedicationPlanContent(
     onTimeChange: (IntakeInput, LocalTime) -> Unit,
     onAddDoseClick: (IntakeInput) -> Unit,
     onRemoveDoseClick: (IntakeInput, DoseInput) -> Unit,
-    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
     onDoseMedicationSelected: (IntakeInput, DoseInput, Medication) -> Unit,
+    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val progress =
@@ -257,8 +257,8 @@ private fun CreateMedicationPlanContent(
                     onTimeChange = onTimeChange,
                     onAddDoseClick = onAddDoseClick,
                     onRemoveDoseClick = onRemoveDoseClick,
-                    onDoseAmountChange = onDoseAmountChange,
-                    onDoseMedicationSelected = onDoseMedicationSelected
+                    onDoseMedicationSelected = onDoseMedicationSelected,
+                    onDoseAmountChange = onDoseAmountChange
                 )
 
                 CreateMedicationPlanStep.SAVE -> SaveStep(modifier = Modifier.fillMaxSize())

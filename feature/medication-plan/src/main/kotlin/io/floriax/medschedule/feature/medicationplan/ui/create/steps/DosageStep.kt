@@ -74,8 +74,8 @@ fun DosageStep(
     onTimeChange: (IntakeInput, LocalTime) -> Unit,
     onAddDoseClick: (IntakeInput) -> Unit,
     onRemoveDoseClick: (IntakeInput, DoseInput) -> Unit,
-    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
     onDoseMedicationSelected: (IntakeInput, DoseInput, Medication) -> Unit,
+    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -108,14 +108,10 @@ fun DosageStep(
                 onTimeChange = { newTime -> onTimeChange(intake, newTime) },
                 onAddDoseClick = { onAddDoseClick(intake) },
                 onRemoveDoseClick = { dose -> onRemoveDoseClick(intake, dose) },
-                onDoseAmountChange = { dose, amount -> onDoseAmountChange(intake, dose, amount) },
                 onDoseMedicationSelected = { dose, medication ->
-                    onDoseMedicationSelected(
-                        intake,
-                        dose,
-                        medication
-                    )
-                }
+                    onDoseMedicationSelected(intake, dose, medication)
+                },
+                onDoseAmountChange = { dose, amount -> onDoseAmountChange(intake, dose, amount) }
             )
             if (index < intakes.size - 1) {
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -143,8 +139,8 @@ private fun IntakeBlock(
     onTimeChange: (LocalTime) -> Unit,
     onAddDoseClick: () -> Unit,
     onRemoveDoseClick: (DoseInput) -> Unit,
-    onDoseAmountChange: (DoseInput, String) -> Unit,
     onDoseMedicationSelected: (DoseInput, Medication) -> Unit,
+    onDoseAmountChange: (DoseInput, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showTimePicker by remember { mutableStateOf(false) }
@@ -215,13 +211,10 @@ private fun IntakeBlock(
                     availableMedications = availableMedications,
                     dose = dose,
                     onRemoveClick = { onRemoveDoseClick(dose) },
-                    onAmountChange = { amount -> onDoseAmountChange(dose, amount) },
                     onMedicationSelected = { medication ->
-                        onDoseMedicationSelected(
-                            dose,
-                            medication
-                        )
-                    }
+                        onDoseMedicationSelected(dose, medication)
+                    },
+                    onAmountChange = { amount -> onDoseAmountChange(dose, amount) }
                 )
             }
 
@@ -243,8 +236,8 @@ private fun DoseItem(
     availableMedications: List<Medication>,
     dose: DoseInput,
     onRemoveClick: () -> Unit,
-    onAmountChange: (String) -> Unit,
     onMedicationSelected: (Medication) -> Unit,
+    onAmountChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
