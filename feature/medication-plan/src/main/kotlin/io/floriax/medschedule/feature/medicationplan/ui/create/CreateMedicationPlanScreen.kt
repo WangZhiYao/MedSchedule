@@ -27,16 +27,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import io.floriax.medschedule.core.domain.enums.MedicationScheduleType
+import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medicationplan.R
 import io.floriax.medschedule.feature.medicationplan.ui.create.steps.BasicInfoStep
+import io.floriax.medschedule.feature.medicationplan.ui.create.steps.DosageStep
 import io.floriax.medschedule.feature.medicationplan.ui.create.steps.ScheduleTypeStep
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
 import io.floriax.medschedule.shared.ui.extension.collectState
+import kotlinx.coroutines.flow.flowOf
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalTime
 import io.floriax.medschedule.shared.ui.R as sharedUiR
 
 /**
@@ -52,8 +59,11 @@ fun CreateMedicationPlanRoute(
 ) {
     val uiState by viewModel.collectState()
 
+    val medications = viewModel.medications.collectAsLazyPagingItems()
+
     CreateMedicationPlanScreen(
         uiState = uiState,
+        medications = medications,
         onBackClick = onBackClick,
         onPreviousClick = viewModel::onPreviousStepClick,
         onNextClick = viewModel::onNextStepClick,
@@ -66,13 +76,21 @@ fun CreateMedicationPlanRoute(
         onWeeklyDaySelected = viewModel::onWeeklyDaySelected,
         onIntervalDaysChange = viewModel::onIntervalDaysChange,
         onCustomCycleDaysOnChange = viewModel::onCustomCycleDaysOnChange,
-        onCustomCycleDaysOffChange = viewModel::onCustomCycleDaysOffChange
+        onCustomCycleDaysOffChange = viewModel::onCustomCycleDaysOffChange,
+        onAddIntakeClick = viewModel::onAddIntakeClick,
+        onRemoveIntakeClick = viewModel::onRemoveIntakeClick,
+        onTimeChange = viewModel::onTimeChange,
+        onAddDoseClick = viewModel::onAddDoseClick,
+        onRemoveDoseClick = viewModel::onRemoveDoseClick,
+        onDoseAmountChange = viewModel::onDoseAmountChange,
+        onDoseMedicationSelected = viewModel::onDoseMedicationSelected
     )
 }
 
 @Composable
 private fun CreateMedicationPlanScreen(
     uiState: CreateMedicationPlanUiState,
+    medications: LazyPagingItems<Medication>,
     onBackClick: () -> Unit,
     onPreviousClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -86,6 +104,13 @@ private fun CreateMedicationPlanScreen(
     onIntervalDaysChange: (String) -> Unit,
     onCustomCycleDaysOnChange: (String) -> Unit,
     onCustomCycleDaysOffChange: (String) -> Unit,
+    onAddIntakeClick: () -> Unit,
+    onRemoveIntakeClick: (IntakeInput) -> Unit,
+    onTimeChange: (IntakeInput, LocalTime) -> Unit,
+    onAddDoseClick: (IntakeInput) -> Unit,
+    onRemoveDoseClick: (IntakeInput, DoseInput) -> Unit,
+    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
+    onDoseMedicationSelected: (IntakeInput, DoseInput, Medication) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -103,6 +128,7 @@ private fun CreateMedicationPlanScreen(
     ) { paddingValues ->
         CreateMedicationPlanContent(
             uiState = uiState,
+            medications = medications,
             onNameChange = onNameChange,
             onNotesChange = onNotesChange,
             onScheduleTypeChange = onScheduleTypeChange,
@@ -113,6 +139,13 @@ private fun CreateMedicationPlanScreen(
             onIntervalDaysChange = onIntervalDaysChange,
             onCustomCycleDaysOnChange = onCustomCycleDaysOnChange,
             onCustomCycleDaysOffChange = onCustomCycleDaysOffChange,
+            onAddIntakeClick = onAddIntakeClick,
+            onRemoveIntakeClick = onRemoveIntakeClick,
+            onTimeChange = onTimeChange,
+            onAddDoseClick = onAddDoseClick,
+            onRemoveDoseClick = onRemoveDoseClick,
+            onDoseAmountChange = onDoseAmountChange,
+            onDoseMedicationSelected = onDoseMedicationSelected,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -138,6 +171,7 @@ private fun CreateMedicationPlanTopBar(
 @Composable
 private fun CreateMedicationPlanContent(
     uiState: CreateMedicationPlanUiState,
+    medications: LazyPagingItems<Medication>,
     onNameChange: (String) -> Unit,
     onNotesChange: (String) -> Unit,
     onScheduleTypeChange: (MedicationScheduleType) -> Unit,
@@ -148,6 +182,13 @@ private fun CreateMedicationPlanContent(
     onIntervalDaysChange: (String) -> Unit,
     onCustomCycleDaysOnChange: (String) -> Unit,
     onCustomCycleDaysOffChange: (String) -> Unit,
+    onAddIntakeClick: () -> Unit,
+    onRemoveIntakeClick: (IntakeInput) -> Unit,
+    onTimeChange: (IntakeInput, LocalTime) -> Unit,
+    onAddDoseClick: (IntakeInput) -> Unit,
+    onRemoveDoseClick: (IntakeInput, DoseInput) -> Unit,
+    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
+    onDoseMedicationSelected: (IntakeInput, DoseInput, Medication) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val progress =
@@ -207,7 +248,19 @@ private fun CreateMedicationPlanContent(
                     customCycleDaysError = uiState.customCycleDaysError,
                 )
 
-                CreateMedicationPlanStep.DOSAGE -> DosageStep(modifier = Modifier.fillMaxSize())
+                CreateMedicationPlanStep.DOSAGE -> DosageStep(
+                    medications = medications,
+                    intakes = uiState.intakes,
+                    intakesError = uiState.intakesError,
+                    onAddIntakeClick = onAddIntakeClick,
+                    onRemoveIntakeClick = onRemoveIntakeClick,
+                    onTimeChange = onTimeChange,
+                    onAddDoseClick = onAddDoseClick,
+                    onRemoveDoseClick = onRemoveDoseClick,
+                    onDoseAmountChange = onDoseAmountChange,
+                    onDoseMedicationSelected = onDoseMedicationSelected
+                )
+
                 CreateMedicationPlanStep.SAVE -> SaveStep(modifier = Modifier.fillMaxSize())
             }
         }
@@ -247,11 +300,6 @@ private fun CreateMedicationPlanBottomBar(
 }
 
 @Composable
-private fun DosageStep(modifier: Modifier = Modifier) {
-
-}
-
-@Composable
 private fun SaveStep(modifier: Modifier = Modifier) {
 
 }
@@ -259,9 +307,12 @@ private fun SaveStep(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun CreateMedicationPlanPreview() {
+    val medications = flowOf(PagingData.from(emptyList<Medication>())).collectAsLazyPagingItems()
+
     AppTheme {
         CreateMedicationPlanScreen(
             uiState = CreateMedicationPlanUiState(),
+            medications = medications,
             onBackClick = {},
             onPreviousClick = {},
             onNextClick = {},
@@ -274,7 +325,14 @@ private fun CreateMedicationPlanPreview() {
             onWeeklyDaySelected = {},
             onIntervalDaysChange = {},
             onCustomCycleDaysOnChange = {},
-            onCustomCycleDaysOffChange = {}
+            onCustomCycleDaysOffChange = {},
+            onAddIntakeClick = {},
+            onRemoveIntakeClick = {},
+            onTimeChange = { _, _ -> },
+            onAddDoseClick = {},
+            onRemoveDoseClick = { _, _ -> },
+            onDoseAmountChange = { _, _, _ -> },
+            onDoseMedicationSelected = { _, _, _ -> },
         )
     }
 }

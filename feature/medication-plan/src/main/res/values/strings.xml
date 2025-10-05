@@ -28,5 +28,17 @@
     <string name="screen_create_medication_plan_error_custom_cycle_days_on_empty">Days on cannot be empty</string>
     <string name="screen_create_medication_plan_error_custom_cycle_days_off_empty">Days off cannot be empty</string>
     <string name="screen_create_medication_plan_error_custom_cycle_days_invalid">The total number of days in a cycle must be greater than 0</string>
+    <string name="screen_create_medication_plan_dosage_title">Dosage &amp; Time</string>
+    <string name="screen_create_medication_plan_dosage_add_intake_time">Add Intake Time</string>
+    <string name="screen_create_medication_plan_dosage_remove_intake_time">Remove Intake Time</string>
+    <string name="screen_create_medication_plan_dosage_add_medication">Add Medication</string>
+    <string name="screen_create_medication_plan_dosage_select_medication">Select Medication</string>
+    <string name="screen_create_medication_plan_dosage_dose">Dose</string>
+    <string name="screen_create_medication_plan_dosage_remove_medication">Remove Medication</string>
+    <string name="screen_create_medication_plan_error_intakes_empty">Please add at least one intake time</string>
+    <string name="screen_create_medication_plan_error_dose_empty">Medication and dose are required</string>
+    <string name="screen_create_medication_plan_error_dose_invalid">Please enter a valid dose</string>
+    <string name="screen_create_medication_plan_error_intake_time_duplicate">Duplicate time</string>
+    <string name="screen_create_medication_plan_error_doses_empty">Please add at least one medication</string>
 
 </resources>

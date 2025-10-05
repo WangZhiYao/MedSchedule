@@ -28,5 +28,17 @@
     <string name="screen_create_medication_plan_error_custom_cycle_days_on_empty">服药天数不能为空</string>
     <string name="screen_create_medication_plan_error_custom_cycle_days_off_empty">暂停天数不能为空</string>
     <string name="screen_create_medication_plan_error_custom_cycle_days_invalid">总周期天数必须大于0</string>
+    <string name="screen_create_medication_plan_dosage_title">剂量和时间</string>
+    <string name="screen_create_medication_plan_dosage_add_intake_time">添加用药时间</string>
+    <string name="screen_create_medication_plan_dosage_remove_intake_time">移除用药时间</string>
+    <string name="screen_create_medication_plan_dosage_add_medication">添加药品</string>
+    <string name="screen_create_medication_plan_dosage_select_medication">选择药品</string>
+    <string name="screen_create_medication_plan_dosage_dose">剂量</string>
+    <string name="screen_create_medication_plan_dosage_remove_medication">移除药品</string>
+    <string name="screen_create_medication_plan_error_intakes_empty">请至少添加一个用药时间</string>
+    <string name="screen_create_medication_plan_error_dose_empty">药品和剂量为必填项</string>
+    <string name="screen_create_medication_plan_error_dose_invalid">请输入有效的剂量</string>
+    <string name="screen_create_medication_plan_error_intake_time_duplicate">用药时间重复</string>
+    <string name="screen_create_medication_plan_error_doses_empty">请至少添加一种药品</string>
 
 </resources>
