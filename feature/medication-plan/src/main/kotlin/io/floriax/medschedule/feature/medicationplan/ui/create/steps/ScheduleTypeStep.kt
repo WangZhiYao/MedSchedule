@@ -39,11 +39,9 @@ import io.floriax.medschedule.shared.ui.component.DateTextField
 import io.floriax.medschedule.shared.ui.component.WeekDaySelector
 import io.floriax.medschedule.shared.ui.extension.label
 import io.floriax.medschedule.shared.ui.util.AfterSpecialDateSelectableDates
-import io.floriax.medschedule.shared.ui.util.BetweenDatesSelectableDates
 import io.floriax.medschedule.shared.ui.util.FromTodaySelectableDates
 import java.time.DayOfWeek
 import java.time.LocalDate
-
 
 /**
  *
@@ -112,7 +110,7 @@ fun ScheduleTypeStep(
                 startDate = startDate,
                 onStartDateChange = onStartDateChange,
                 endDate = endDate,
-                onEndDateChange = onEndDateChange
+                onEndDateChange = onEndDateChange,
             )
 
             if (selectedScheduleType == MedicationScheduleType.WEEKLY) {
@@ -216,21 +214,16 @@ private fun ScheduleDateRange(
             value = startDate,
             onValueChange = onStartDateChange,
             label = startDateLabel,
-            selectableDates = BetweenDatesSelectableDates(
-                LocalDate.now(),
-                endDate,
-                inclusiveEnd = false
-            ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         DateTextField(
             value = endDate,
             onValueChange = { onEndDateChange(it) },
             label = endDateLabel,
-            selectableDates = AfterSpecialDateSelectableDates(startDate),
+            modifier = Modifier.fillMaxWidth(),
+            selectableDates = AfterSpecialDateSelectableDates(maxOf(startDate, LocalDate.now())),
             onClear = { onEndDateChange(null) },
-            modifier = Modifier.fillMaxWidth()
         )
     }
 }
@@ -392,7 +385,7 @@ private fun ScheduleTypeStepPreview() {
             onCustomCycleDaysOnChange = {},
             customCycleDaysOff = "7",
             onCustomCycleDaysOffChange = {},
-            customCycleDaysError = null
+            customCycleDaysError = null,
         )
     }
 }

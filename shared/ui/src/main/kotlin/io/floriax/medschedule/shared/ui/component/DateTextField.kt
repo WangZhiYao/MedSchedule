@@ -1,5 +1,6 @@
 package io.floriax.medschedule.shared.ui.component
 
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -15,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.ui.R
 import io.floriax.medschedule.shared.ui.extension.formatLocalized
-import io.floriax.medschedule.shared.ui.util.FromTodaySelectableDates
 import java.time.LocalDate
 
 /**
@@ -30,7 +30,7 @@ fun DateTextField(
     onValueChange: (LocalDate) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
-    selectableDates: SelectableDates = FromTodaySelectableDates,
+    selectableDates: SelectableDates = DatePickerDefaults.AllDates,
     onClear: (() -> Unit)? = null,
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
@@ -38,7 +38,7 @@ fun DateTextField(
     if (showDatePicker) {
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
-            currentDate = value ?: LocalDate.now(),
+            currentDate = value,
             selectableDates = selectableDates,
             onDateChange = {
                 onValueChange(it)
