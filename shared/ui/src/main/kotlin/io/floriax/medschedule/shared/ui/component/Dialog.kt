@@ -29,13 +29,13 @@ import java.time.ZoneOffset
 @Composable
 fun DatePickerDialog(
     onDismissRequest: () -> Unit,
-    currentDate: LocalDate,
+    currentDate: LocalDate?,
     selectableDates: SelectableDates,
     onDateChange: (LocalDate) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state = rememberDatePickerState(
-        initialSelectedDateMillis = currentDate.toStartOfDayAtUtc().toEpochMilli(),
+        initialSelectedDateMillis = currentDate?.toStartOfDayAtUtc()?.toEpochMilli(),
         selectableDates = selectableDates
     )
 

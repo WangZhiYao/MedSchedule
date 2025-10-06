@@ -63,4 +63,20 @@ object DatabaseModule {
     fun provideMedicationLogEntryDao(appDatabase: AppDatabase) =
         appDatabase.medicationLogEntryDao()
 
+    @Provides
+    @Singleton
+    fun provideMedicationPlanDao(appDatabase: AppDatabase) = appDatabase.medicationPlanDao()
+
+    @Provides
+    @Singleton
+    fun provideMedicationScheduleDao(appDatabase: AppDatabase) = appDatabase.medicationScheduleDao()
+
+    @Provides
+    @Singleton
+    fun provideMedicationIntakeDao(appDatabase: AppDatabase) = appDatabase.medicationIntakeDao()
+
+    @Provides
+    @Singleton
+    fun provideMedicationDoseDao(appDatabase: AppDatabase) = appDatabase.medicationDoseDao()
+
 }

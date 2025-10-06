@@ -18,12 +18,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -35,10 +39,12 @@ import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medicationplan.R
 import io.floriax.medschedule.feature.medicationplan.ui.create.steps.BasicInfoStep
 import io.floriax.medschedule.feature.medicationplan.ui.create.steps.DosageStep
+import io.floriax.medschedule.feature.medicationplan.ui.create.steps.SaveStep
 import io.floriax.medschedule.feature.medicationplan.ui.create.steps.ScheduleTypeStep
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
+import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import kotlinx.coroutines.flow.flowOf
 import java.time.DayOfWeek
@@ -58,12 +64,27 @@ fun CreateMedicationPlanRoute(
     viewModel: CreateMedicationPlanViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectState()
-
     val medications = viewModel.medications.collectAsLazyPagingItems()
+
+    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            SavePlanFailure -> {
+                snackbarHostState.showSnackbar(
+                    message = context.getString(R.string.screen_create_medication_plan_save_failure)
+                )
+            }
+
+            SavePlanSuccess -> onBackClick()
+        }
+    }
 
     CreateMedicationPlanScreen(
         uiState = uiState,
         medications = medications,
+        snackbarHostState = snackbarHostState,
         onBackClick = onBackClick,
         onPreviousClick = viewModel::onPreviousStepClick,
         onNextClick = viewModel::onNextStepClick,
@@ -91,6 +112,7 @@ fun CreateMedicationPlanRoute(
 private fun CreateMedicationPlanScreen(
     uiState: CreateMedicationPlanUiState,
     medications: LazyPagingItems<Medication>,
+    snackbarHostState: SnackbarHostState,
     onBackClick: () -> Unit,
     onPreviousClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -118,6 +140,7 @@ private fun CreateMedicationPlanScreen(
         topBar = {
             CreateMedicationPlanTopBar(onBackClick = onBackClick)
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             CreateMedicationPlanBottomBar(
                 uiState = uiState,
@@ -261,7 +284,10 @@ private fun CreateMedicationPlanContent(
                     onDoseAmountChange = onDoseAmountChange
                 )
 
-                CreateMedicationPlanStep.SAVE -> SaveStep(modifier = Modifier.fillMaxSize())
+                CreateMedicationPlanStep.SAVE -> SaveStep(
+                    uiState = uiState,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }
@@ -299,11 +325,6 @@ private fun CreateMedicationPlanBottomBar(
     )
 }
 
-@Composable
-private fun SaveStep(modifier: Modifier = Modifier) {
-
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun CreateMedicationPlanPreview() {
@@ -313,6 +334,7 @@ private fun CreateMedicationPlanPreview() {
         CreateMedicationPlanScreen(
             uiState = CreateMedicationPlanUiState(),
             medications = medications,
+            snackbarHostState = remember { SnackbarHostState() },
             onBackClick = {},
             onPreviousClick = {},
             onNextClick = {},

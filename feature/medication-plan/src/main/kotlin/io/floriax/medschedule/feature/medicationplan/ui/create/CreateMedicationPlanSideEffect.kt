@@ -7,3 +7,7 @@ package io.floriax.medschedule.feature.medicationplan.ui.create
  * @since 2025/7/25
  */
 sealed class CreateMedicationPlanSideEffect
+
+data object SavePlanSuccess : CreateMedicationPlanSideEffect()
+
+data object SavePlanFailure : CreateMedicationPlanSideEffect()

@@ -40,5 +40,15 @@
     <string name="screen_create_medication_plan_error_dose_invalid">请输入有效的剂量</string>
     <string name="screen_create_medication_plan_error_intake_time_duplicate">用药时间重复</string>
     <string name="screen_create_medication_plan_error_doses_empty">请至少添加一种药品</string>
+    <string name="screen_create_medication_plan_save_summary_title">摘要</string>
+    <string name="screen_create_medication_plan_save_date">日期: %s</string>
+    <string name="screen_create_medication_plan_save_from_to">从 %1$s 到 %2$s</string>
+    <string name="screen_create_medication_plan_save_forever">永久</string>
+    <string name="screen_create_medication_plan_save_on">于: %s</string>
+    <string name="screen_create_medication_plan_save_every_days">每 %s 天</string>
+    <string name="screen_create_medication_plan_save_cycle">周期: %1$s 天服药, %2$s 天暂停</string>
+    <string name="screen_create_medication_plan_save_intake_at">服药时间 %s</string>
+    <string name="screen_create_medication_plan_save_not_selected">未选择</string>
+    <string name="screen_create_medication_plan_save_failure">保存计划失败</string>
 
 </resources>
