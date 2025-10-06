@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
@@ -180,9 +181,10 @@ class CreateMedicationPlanViewModel @Inject constructor(
 
     private fun validateInterval(): Boolean {
         val days = currentState.intervalDays
+        val daysIntValue = days.toIntOrNull()
         val error = when {
             days.isEmpty() -> IntervalDaysError.Empty
-            days.toIntOrNull() == null -> IntervalDaysError.Invalid
+            daysIntValue == null || daysIntValue <= 0 -> IntervalDaysError.Invalid
             else -> null
         }
         reduce { copy(intervalDaysError = error) }
@@ -192,10 +194,12 @@ class CreateMedicationPlanViewModel @Inject constructor(
     private fun validateCustomCycle(): Boolean {
         val on = currentState.customCycleDaysOn
         val off = currentState.customCycleDaysOff
+        val onIntValue = on.toIntOrNull()
+        val offIntValue = off.toIntOrNull()
         val error = when {
             on.isEmpty() -> CustomCycleDaysError.DaysOnEmpty
             off.isEmpty() -> CustomCycleDaysError.DaysOffEmpty
-            on.toIntOrNull() == null || off.toIntOrNull() == null -> CustomCycleDaysError.Invalid
+            onIntValue == null || onIntValue <= 0 || offIntValue == null || offIntValue <= 0 -> CustomCycleDaysError.Invalid
             else -> null
         }
         reduce { copy(customCycleDaysError = error) }
@@ -249,9 +253,10 @@ class CreateMedicationPlanViewModel @Inject constructor(
     }
 
     private fun validateDose(dose: DoseInput): DoseInput {
+        val doseValue = dose.dose.toBigDecimalOrNull()
         val error = when {
             dose.medication == null || dose.dose.isBlank() -> DoseError.Empty
-            dose.dose.toBigDecimalOrNull() == null -> DoseError.Invalid
+            doseValue == null || doseValue <= BigDecimal.ZERO -> DoseError.Invalid
             else -> null
         }
         return dose.copy(doseError = error)
