@@ -11,6 +11,15 @@ import java.time.LocalDate
  */
 sealed class MedicationSchedule {
 
+    val allIntakes: List<MedicationIntake>
+        get() = when (this) {
+            is OneTime -> intakes
+            is Repetitive.CustomCycle -> cycleDays.flatMap { it.intakes }
+            is Repetitive.Daily -> intakes
+            is Repetitive.Interval -> intakes
+            is Repetitive.Weekly -> intakes
+        }
+
     /**
      * 一次性计划
      *

@@ -1,11 +1,11 @@
 package io.floriax.medschedule.core.data.local.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import io.floriax.medschedule.core.data.local.entity.MedicationPlanEntity
 import io.floriax.medschedule.core.data.local.relation.MedicationPlanWithDetails
+import kotlinx.coroutines.flow.Flow
 
 /**
  *
@@ -18,6 +18,6 @@ interface MedicationPlanDao : BaseDao<MedicationPlanEntity> {
 
     @Transaction
     @Query("SELECT * FROM medication_plan")
-    fun observePaged(): PagingSource<Int, MedicationPlanWithDetails>
+    fun observeAll(): Flow<List<MedicationPlanWithDetails>>
 
 }

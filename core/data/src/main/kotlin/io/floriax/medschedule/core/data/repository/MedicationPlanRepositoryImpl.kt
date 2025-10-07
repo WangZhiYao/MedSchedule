@@ -7,9 +7,12 @@ import io.floriax.medschedule.core.data.local.dao.MedicationIntakeDao
 import io.floriax.medschedule.core.data.local.dao.MedicationPlanDao
 import io.floriax.medschedule.core.data.local.dao.MedicationScheduleDao
 import io.floriax.medschedule.core.data.local.mapper.toEntity
+import io.floriax.medschedule.core.data.local.mapper.toModel
 import io.floriax.medschedule.core.domain.model.MedicationPlan
 import io.floriax.medschedule.core.domain.model.MedicationSchedule
 import io.floriax.medschedule.core.domain.repository.MedicationPlanRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -25,7 +28,12 @@ class MedicationPlanRepositoryImpl @Inject constructor(
     private val medicationDoseDao: MedicationDoseDao,
 ) : MedicationPlanRepository {
 
-    override suspend fun createMedicationPlan(plan: MedicationPlan) {
+    override fun observeAll(): Flow<List<MedicationPlan>> =
+        medicationPlanDao.observeAll().map { planWithDetails ->
+            planWithDetails.map { planWithDetail -> planWithDetail.toModel() }
+        }
+
+    override suspend fun create(plan: MedicationPlan) {
         appDatabase.withTransaction {
             val planId = medicationPlanDao.insert(plan.toEntity())
             val schedule = plan.schedule
@@ -44,10 +52,7 @@ class MedicationPlanRepositoryImpl @Inject constructor(
                     schedule.cycleDays.forEach { cycleDay ->
                         cycleDay.intakes.forEach { intake ->
                             val intakeId = medicationIntakeDao.insert(
-                                intake.toEntity(
-                                    scheduleId,
-                                    cycleDay.dayOfCycle
-                                )
+                                intake.toEntity(scheduleId, cycleDay.dayOfCycle)
                             )
                             val doseEntities = intake.medicationDoses.map { it.toEntity(intakeId) }
                             medicationDoseDao.insertBatch(doseEntities)

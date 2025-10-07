@@ -18,6 +18,12 @@ enum class MedicationScheduleType(val value: Int) {
 
     INTERVAL(4),
 
-    CUSTOM_CYCLE(5)
+    CUSTOM_CYCLE(5);
 
+    companion object {
+
+        fun fromValue(value: Int): MedicationScheduleType =
+            entries.find { it.value == value } ?: UNKNOWN
+
+    }
 }

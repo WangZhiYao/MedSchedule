@@ -1,6 +1,7 @@
 package io.floriax.medschedule.core.domain.repository
 
 import io.floriax.medschedule.core.domain.model.MedicationPlan
+import kotlinx.coroutines.flow.Flow
 
 /**
  *
@@ -9,5 +10,8 @@ import io.floriax.medschedule.core.domain.model.MedicationPlan
  */
 interface MedicationPlanRepository {
 
-    suspend fun createMedicationPlan(plan: MedicationPlan)
+    fun observeAll(): Flow<List<MedicationPlan>>
+
+    suspend fun create(plan: MedicationPlan)
+
 }
