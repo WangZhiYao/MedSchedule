@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.floriax.medschedule.core.common.di.qualifier.IODispatcher
 import io.floriax.medschedule.core.common.extension.isValidStock
 import io.floriax.medschedule.core.common.extension.logger
-import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.core.domain.usecase.GetMedicationByIdUseCase
 import io.floriax.medschedule.core.domain.usecase.UpdateMedicationUseCase
 import io.floriax.medschedule.feature.medication.navigation.EditMedicationRoute
@@ -96,15 +95,19 @@ class EditMedicationViewModel @Inject constructor(
 
     fun onSaveClick() {
         viewModelScope.launch {
+            val originalMedication = currentState.originalMedication
+            if (originalMedication == null) {
+                postSideEffect(MedicationNotFound)
+                return@launch
+            }
+
             if (!validateInputs()) {
                 return@launch
             }
 
             if (!currentState.hasContentChanged()) {
-                currentState.originalMedication?.let { medication ->
-                    postSideEffect(UpdateMedicationSuccess(medication))
-                    return@launch
-                }
+                postSideEffect(UpdateMedicationSuccess(originalMedication))
+                return@launch
             }
 
             val medicationName = currentState.medicationName
@@ -115,8 +118,7 @@ class EditMedicationViewModel @Inject constructor(
             runCatching {
                 withContext(ioDispatcher) {
                     updateMedicationUseCase(
-                        Medication(
-                            id = medicationId,
+                        originalMedication.copy(
                             name = medicationName,
                             stock = stock,
                             doseUnit = doseUnit,
