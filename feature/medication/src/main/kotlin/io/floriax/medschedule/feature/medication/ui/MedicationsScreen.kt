@@ -258,7 +258,6 @@ private fun MedicationCard(
                     color = MaterialTheme.colorScheme.outline,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
-                    minLines = 2,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
