@@ -16,6 +16,7 @@ import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.CalendarToday
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Error
@@ -23,7 +24,6 @@ import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.MedicalServices
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material.icons.rounded.RadioButtonUnchecked
 import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -38,6 +38,7 @@ import io.floriax.medschedule.shared.designsystem.R
  */
 object AppIcons {
 
+    // Navigation
     val Home = Icons.Rounded.Home
     val HomeBorder = Icons.Outlined.Home
 
@@ -54,33 +55,40 @@ object AppIcons {
     val History = Icons.Rounded.History
     val HistoryBorder = Icons.Outlined.History
 
+    // Actions
     val Add = Icons.Rounded.Add
-    val ArrowBack = Icons.AutoMirrored.Rounded.ArrowBack
-    val ArrowForward = Icons.AutoMirrored.Rounded.ArrowForward
-    val MoreVert = Icons.Rounded.MoreVert
     val Edit = Icons.Rounded.Edit
     val Delete = Icons.Rounded.Delete
+    val Check = Icons.Rounded.Check
+    val Close = Icons.Rounded.Close
+    val MoreVert = Icons.Rounded.MoreVert
+
+    // Arrows
+    val ArrowBack = Icons.AutoMirrored.Rounded.ArrowBack
+    val ArrowForward = Icons.AutoMirrored.Rounded.ArrowForward
     val ArrowDropDown = Icons.Rounded.ArrowDropDown
     val ArrowDropUp = Icons.Rounded.ArrowDropUp
 
+    // State & Feedback
+    val CheckCircle = Icons.Rounded.CheckCircle
+    val Error = Icons.Rounded.Error
+    val ErrorOutline = Icons.Outlined.ErrorOutline
+    val HelpOutline = Icons.AutoMirrored.Rounded.HelpOutline
+
+    // UI Elements
+    val RemoveCircle = Icons.Rounded.RemoveCircle
+    val CircleBorder = Icons.Outlined.Circle
+
+    // Date & Time
+    val CalendarToday = Icons.Rounded.CalendarToday
+    val AccessTime = Icons.Rounded.AccessTime
+
+    // Custom/Specific
     val MedicationSlimBorder
         @Composable
         get() = ImageVector.vectorResource(R.drawable.ic_medication_w200_24dp)
     val HistorySlimBorder
         @Composable
         get() = ImageVector.vectorResource(R.drawable.ic_history_w200_24dp)
-
-    val Check = Icons.Rounded.Check
-    val CheckCircle = Icons.Rounded.CheckCircle
-    val RemoveCircle = Icons.Rounded.RemoveCircle
-    val Error = Icons.Rounded.Error
-    val ErrorOutline = Icons.Outlined.ErrorOutline
-    val RadioButtonUnchecked = Icons.Rounded.RadioButtonUnchecked
-    val HelpOutline = Icons.AutoMirrored.Rounded.HelpOutline
-
-    val CalendarToday = Icons.Rounded.CalendarToday
-    val AccessTime = Icons.Rounded.AccessTime
-
-    val CircleBorder = Icons.Outlined.Circle
 
 }
