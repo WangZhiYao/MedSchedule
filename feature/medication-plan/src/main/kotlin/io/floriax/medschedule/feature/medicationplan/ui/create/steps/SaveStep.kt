@@ -187,9 +187,6 @@ fun SaveStep(
                             text = "${dose.dose} ${dose.medication?.doseUnit ?: ""}"
                         )
                     }
-                    if (index < intake.doses.lastIndex) {
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    }
                 }
             }
         }
