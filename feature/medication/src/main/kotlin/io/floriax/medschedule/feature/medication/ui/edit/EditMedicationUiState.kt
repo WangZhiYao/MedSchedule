@@ -1,7 +1,7 @@
 package io.floriax.medschedule.feature.medication.ui.edit
 
 import io.floriax.medschedule.core.domain.model.Medication
-import io.floriax.medschedule.shared.ui.base.UiState
+import io.floriax.medschedule.feature.medication.ui.form.MedicationFormUiState
 
 /**
  *
@@ -11,14 +11,14 @@ import io.floriax.medschedule.shared.ui.base.UiState
  */
 data class EditMedicationUiState(
     val originalMedication: Medication? = null,
-    val medicationName: String = "",
-    val medicationNameError: Boolean = false,
-    val stockString: String = "",
-    val stockError: Boolean = false,
-    val doseUnit: String = "",
-    val doseUnitError: Boolean = false,
-    val notes: String = ""
-) : UiState {
+    override val medicationName: String = "",
+    override val medicationNameError: Boolean = false,
+    override val stockString: String = "",
+    override val stockError: Boolean = false,
+    override val doseUnit: String = "",
+    override val doseUnitError: Boolean = false,
+    override val notes: String = ""
+) : MedicationFormUiState {
 
     fun hasContentChanged(): Boolean {
         if (originalMedication == null) {
