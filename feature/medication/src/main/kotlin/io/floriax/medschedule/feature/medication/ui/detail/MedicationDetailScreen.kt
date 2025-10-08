@@ -226,7 +226,7 @@ private fun MedicationDetailContent(
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
             InfoCard(
@@ -238,8 +238,9 @@ private fun MedicationDetailContent(
         item {
             Text(
                 text = stringResource(R.string.screen_medication_detail_medication_logs),
+                modifier = Modifier.padding(top = 8.dp),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
 
@@ -248,7 +249,7 @@ private fun MedicationDetailContent(
                 LoadingIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp)
+                        .padding(top = 8.dp)
                 )
             }
 
@@ -256,7 +257,7 @@ private fun MedicationDetailContent(
                 ErrorIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp)
+                        .padding(top = 8.dp)
                 )
             }
 
@@ -280,7 +281,12 @@ private fun MedicationDetailContent(
                             MedicationLogCard(
                                 medicationLog = medicationLog,
                                 medication = medication,
-                                onCardClick = { onMedicationLogClick(medicationLog.id) }
+                                onCardClick = { onMedicationLogClick(medicationLog.id) },
+                                modifier = if (index == 0) {
+                                    Modifier.padding(top = 8.dp)
+                                } else {
+                                    Modifier
+                                }
                             )
                         }
                     }
