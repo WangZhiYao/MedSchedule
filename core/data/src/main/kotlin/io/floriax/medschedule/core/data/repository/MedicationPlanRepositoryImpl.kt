@@ -33,7 +33,10 @@ class MedicationPlanRepositoryImpl @Inject constructor(
             planWithDetails.map { planWithDetail -> planWithDetail.toModel() }
         }
 
-    override suspend fun create(plan: MedicationPlan) {
+    override suspend fun getById(id: Long): MedicationPlan? =
+        medicationPlanDao.getById(id)?.toModel()
+
+    override suspend fun create(plan: MedicationPlan): MedicationPlan =
         appDatabase.withTransaction {
             val planId = medicationPlanDao.insert(plan.toEntity())
             val schedule = plan.schedule
@@ -74,6 +77,8 @@ class MedicationPlanRepositoryImpl @Inject constructor(
                     }
                 }
             }
+
+            plan.copy(id = planId)
         }
-    }
 }
+

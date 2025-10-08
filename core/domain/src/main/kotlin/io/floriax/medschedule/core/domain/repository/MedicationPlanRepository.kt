@@ -12,6 +12,8 @@ interface MedicationPlanRepository {
 
     fun observeAll(): Flow<List<MedicationPlan>>
 
-    suspend fun create(plan: MedicationPlan)
+    suspend fun getById(id: Long): MedicationPlan?
+
+    suspend fun create(plan: MedicationPlan): MedicationPlan
 
 }

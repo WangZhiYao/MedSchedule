@@ -60,81 +60,6 @@ class CreateMedicationPlanViewModel @Inject constructor(
         currentState.currentStep.next()?.let(::updateStep)
     }
 
-    private fun savePlan() {
-        viewModelScope.launch {
-            runCatching {
-                val schedule = mapToDomainSchedule(currentState)
-                val plan = MedicationPlan(
-                    name = currentState.name,
-                    notes = currentState.notes.takeIf { it.isNotBlank() },
-                    schedule = schedule
-                )
-                withContext(ioDispatcher) {
-                    createMedicationPlanUseCase(plan)
-                }
-            }.onSuccess {
-                postSideEffect(SavePlanSuccess)
-            }.onFailure {
-                postSideEffect(SavePlanFailure)
-            }
-        }
-    }
-
-    private fun mapToDomainSchedule(state: CreateMedicationPlanUiState): MedicationSchedule {
-        val intakes = state.intakes.map { intakeInput ->
-            MedicationIntake(
-                time = intakeInput.time,
-                medicationDoses = intakeInput.doses.map { doseInput ->
-                    MedicationDose(
-                        medication = doseInput.medication!!,
-                        dose = doseInput.dose.toBigDecimal()
-                    )
-                }
-            )
-        }
-
-        return when (state.selectedScheduleType) {
-            MedicationScheduleType.ONE_TIME -> MedicationSchedule.OneTime(
-                date = state.oneTimeScheduleDate,
-                intakes = intakes
-            )
-
-            MedicationScheduleType.DAILY -> MedicationSchedule.Repetitive.Daily(
-                startDate = state.startDate,
-                endDate = state.endDate,
-                intakes = intakes
-            )
-
-            MedicationScheduleType.WEEKLY -> MedicationSchedule.Repetitive.Weekly(
-                startDate = state.startDate,
-                endDate = state.endDate,
-                daysOfWeek = state.weeklySelectedDays,
-                intakes = intakes
-            )
-
-            MedicationScheduleType.INTERVAL -> MedicationSchedule.Repetitive.Interval(
-                startDate = state.startDate,
-                endDate = state.endDate,
-                intervalDays = state.intervalDays.toInt(),
-                intakes = intakes
-            )
-
-            MedicationScheduleType.CUSTOM_CYCLE -> MedicationSchedule.Repetitive.CustomCycle(
-                startDate = state.startDate,
-                endDate = state.endDate,
-                cycleLengthInDays = state.customCycleDaysOn.toInt() + state.customCycleDaysOff.toInt(),
-                cycleDays = (1..state.customCycleDaysOn.toInt()).map {
-                    MedicationSchedule.Repetitive.CustomCycle.CustomCycleDay(
-                        dayOfCycle = it,
-                        intakes = intakes
-                    )
-                }
-            )
-
-            else -> throw IllegalStateException("Unknown schedule type")
-        }
-    }
-
     private fun updateStep(step: CreateMedicationPlanStep) {
         reduce {
             copy(
@@ -417,6 +342,87 @@ class CreateMedicationPlanViewModel @Inject constructor(
                     }
                 )
             })
+        }
+    }
+
+    fun onNotificationPermissionDenied() {
+        viewModelScope.launch {
+            postSideEffect(NotificationPermissionDenied)
+        }
+    }
+
+    private fun mapToDomainSchedule(state: CreateMedicationPlanUiState): MedicationSchedule {
+        val intakes = state.intakes.map { intakeInput ->
+            MedicationIntake(
+                time = intakeInput.time,
+                medicationDoses = intakeInput.doses.map { doseInput ->
+                    MedicationDose(
+                        medication = doseInput.medication!!,
+                        dose = doseInput.dose.toBigDecimal()
+                    )
+                }
+            )
+        }
+
+        return when (state.selectedScheduleType) {
+            MedicationScheduleType.ONE_TIME -> MedicationSchedule.OneTime(
+                date = state.oneTimeScheduleDate,
+                intakes = intakes
+            )
+
+            MedicationScheduleType.DAILY -> MedicationSchedule.Repetitive.Daily(
+                startDate = state.startDate,
+                endDate = state.endDate,
+                intakes = intakes
+            )
+
+            MedicationScheduleType.WEEKLY -> MedicationSchedule.Repetitive.Weekly(
+                startDate = state.startDate,
+                endDate = state.endDate,
+                daysOfWeek = state.weeklySelectedDays,
+                intakes = intakes
+            )
+
+            MedicationScheduleType.INTERVAL -> MedicationSchedule.Repetitive.Interval(
+                startDate = state.startDate,
+                endDate = state.endDate,
+                intervalDays = state.intervalDays.toInt(),
+                intakes = intakes
+            )
+
+            MedicationScheduleType.CUSTOM_CYCLE -> MedicationSchedule.Repetitive.CustomCycle(
+                startDate = state.startDate,
+                endDate = state.endDate,
+                cycleLengthInDays = state.customCycleDaysOn.toInt() + state.customCycleDaysOff.toInt(),
+                cycleDays = (1..state.customCycleDaysOn.toInt()).map { dayOfCycle ->
+                    MedicationSchedule.Repetitive.CustomCycle.CustomCycleDay(
+                        dayOfCycle = dayOfCycle,
+                        intakes = intakes
+                    )
+                }
+            )
+
+            else -> throw IllegalStateException("Unknown schedule type")
+        }
+    }
+
+    private fun savePlan() {
+        viewModelScope.launch {
+            runCatching {
+                val schedule = mapToDomainSchedule(currentState)
+                val plan = MedicationPlan(
+                    name = currentState.name,
+                    notes = currentState.notes.takeIf { it.isNotBlank() },
+                    schedule = schedule
+                )
+                withContext(ioDispatcher) {
+                    createMedicationPlanUseCase(plan)
+                }
+            }.onSuccess { plan ->
+                postSideEffect(SavePlanSuccess)
+            }.onFailure {
+                postSideEffect(SavePlanFailure)
+            }
         }
     }
 }

@@ -11,3 +11,6 @@ sealed class CreateMedicationPlanSideEffect
 data object SavePlanSuccess : CreateMedicationPlanSideEffect()
 
 data object SavePlanFailure : CreateMedicationPlanSideEffect()
+
+data object NotificationPermissionDenied : CreateMedicationPlanSideEffect()
+

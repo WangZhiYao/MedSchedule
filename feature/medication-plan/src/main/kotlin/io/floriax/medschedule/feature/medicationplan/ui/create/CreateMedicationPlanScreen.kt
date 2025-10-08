@@ -1,5 +1,10 @@
 package io.floriax.medschedule.feature.medicationplan.ui.create
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
@@ -30,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -71,13 +77,39 @@ fun CreateMedicationPlanRoute(
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
+            SavePlanSuccess -> onBackClick()
+
             SavePlanFailure -> {
-                snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.screen_create_medication_plan_save_failure)
-                )
+                snackbarHostState.showSnackbar(message = context.getString(R.string.screen_create_medication_plan_save_failure))
             }
 
-            SavePlanSuccess -> onBackClick()
+            NotificationPermissionDenied -> {
+                snackbarHostState.showSnackbar(message = context.getString(R.string.screen_create_medication_plan_notification_permission_denied))
+            }
+        }
+    }
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            viewModel.onNextStepClick()
+        } else {
+            viewModel.onNotificationPermissionDenied()
+        }
+    }
+
+    val onNextClick: () -> Unit = {
+        val shouldRequestNotificationPermission = uiState.showSaveButton
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) != PackageManager.PERMISSION_GRANTED
+        if (shouldRequestNotificationPermission) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            viewModel.onNextStepClick()
         }
     }
 
@@ -87,7 +119,7 @@ fun CreateMedicationPlanRoute(
         snackbarHostState = snackbarHostState,
         onBackClick = onBackClick,
         onPreviousClick = viewModel::onPreviousStepClick,
-        onNextClick = viewModel::onNextStepClick,
+        onNextClick = onNextClick,
         onNameChange = viewModel::onNameChange,
         onNotesChange = viewModel::onNotesChange,
         onScheduleTypeChange = viewModel::onScheduleTypeChange,

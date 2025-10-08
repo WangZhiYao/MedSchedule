@@ -14,7 +14,7 @@ class CreateMedicationPlanUseCase @Inject constructor(
     private val medicationPlanRepository: MedicationPlanRepository
 ) : UseCase {
 
-    suspend operator fun invoke(plan: MedicationPlan) =
+    suspend operator fun invoke(plan: MedicationPlan): MedicationPlan =
         medicationPlanRepository.create(plan)
 
 }
