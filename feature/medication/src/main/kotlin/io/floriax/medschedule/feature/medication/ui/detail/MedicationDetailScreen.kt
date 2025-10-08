@@ -2,7 +2,6 @@ package io.floriax.medschedule.feature.medication.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,11 +28,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -44,25 +40,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import io.floriax.medschedule.core.common.extension.ifNullOrBlank
 import io.floriax.medschedule.core.common.extension.isValidStock
 import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.core.domain.model.MedicationLog
-import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
@@ -73,10 +66,9 @@ import io.floriax.medschedule.shared.ui.component.ErrorIndicator
 import io.floriax.medschedule.shared.ui.component.LoadingIndicator
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
-import io.floriax.medschedule.shared.ui.extension.formatFullLocalDateTime
+import io.floriax.medschedule.shared.ui.extension.formatLocalDateTime
 import kotlinx.coroutines.flow.flowOf
 import java.math.BigDecimal
-import java.time.Instant
 import io.floriax.medschedule.shared.ui.R as sharedUiR
 
 /**
@@ -184,7 +176,7 @@ private fun MedicationDetailScreen(
             when {
                 state.loading -> LoadingIndicator(modifier = Modifier.fillMaxSize())
                 state.error -> ErrorIndicator(modifier = Modifier.fillMaxSize())
-                state.medication != null -> MedicationLogList(
+                state.medication != null -> MedicationDetailContent(
                     medication = state.medication,
                     medicationLogs = medicationLogPagingItems,
                     onAddStockClick = onAddStockClick,
@@ -224,127 +216,7 @@ private fun MedicationDetailTopBar(
 }
 
 @Composable
-private fun Header(
-    medication: Medication,
-    onAddStockClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        StockCard(
-            stock = medication.stock,
-            doseUnit = medication.doseUnit,
-            onAddStockClick = onAddStockClick,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        NotesCard(
-            notes = medication.notes,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = stringResource(R.string.screen_medication_detail_medication_logs),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleMedium
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-    }
-}
-
-@Composable
-private fun StockCard(
-    stock: BigDecimal?,
-    doseUnit: String,
-    onAddStockClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surfaceVariant)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(R.string.screen_medication_detail_stock),
-                    style = MaterialTheme.typography.labelLarge
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                val value = if (stock == null) {
-                    stringResource(R.string.screen_medication_detail_stock_not_set)
-                } else {
-                    stock.toPlainString()
-                }
-                Row {
-                    Text(
-                        text = value,
-                        modifier = Modifier.alignBy(LastBaseline),
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.headlineLarge
-                    )
-                    if (stock != null) {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = doseUnit,
-                            modifier = Modifier.alignBy(LastBaseline)
-                        )
-                    }
-                }
-            }
-
-            val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
-
-            Box(
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(CircleShape)
-                    .background(onSurfaceVariant.copy(alpha = 0.1f))
-                    .border(1.dp, onSurfaceVariant, CircleShape)
-                    .clickable(onClick = onAddStockClick),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = AppIcons.Add,
-                    contentDescription = stringResource(R.string.screen_medication_detail_add_stock),
-                    tint = onSurfaceVariant
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun NotesCard(
-    notes: String?,
-    modifier: Modifier = Modifier
-) {
-    Card(modifier = modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = stringResource(R.string.screen_medication_detail_notes),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelLarge
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = notes.ifNullOrBlank { stringResource(R.string.screen_medication_detail_no_notes) },
-                color = if (notes.isNullOrBlank()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurface,
-            )
-        }
-    }
-}
-
-@Composable
-private fun MedicationLogList(
+private fun MedicationDetailContent(
     medication: Medication,
     medicationLogs: LazyPagingItems<MedicationLog>,
     onAddStockClick: () -> Unit,
@@ -353,12 +225,21 @@ private fun MedicationLogList(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(bottom = 8.dp),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            Header(
+            InfoCard(
                 medication = medication,
-                onAddStockClick = onAddStockClick,
+                onAddStockClick = onAddStockClick
+            )
+        }
+
+        item {
+            Text(
+                text = stringResource(R.string.screen_medication_detail_medication_logs),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -384,31 +265,23 @@ private fun MedicationLogList(
                     item {
                         Text(
                             text = stringResource(R.string.screen_medication_detail_no_medication_logs),
-                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                            modifier = Modifier.padding(top = 8.dp),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 } else {
-                    items(medicationLogs.itemCount) { index ->
+                    items(
+                        count = medicationLogs.itemCount,
+                        key = medicationLogs.itemKey { item -> item.id }
+                    ) { index ->
                         val medicationLog = medicationLogs[index]
                         if (medicationLog != null) {
-                            val takenMedication =
-                                medicationLog.takenMedications.firstOrNull { takenMedication ->
-                                    takenMedication.medication.id == medication.id
-                                }
-                            if (takenMedication != null) {
-                                MedicationLogItem(
-                                    firstItem = index == 0,
-                                    lastItem = index == medicationLogs.itemCount - 1,
-                                    medicationTime = medicationLog.medicationTime,
-                                    takenMedication = takenMedication,
-                                    notes = medicationLog.notes,
-                                    onMedicationLogClick = {
-                                        onMedicationLogClick(medicationLog.id)
-                                    }
-                                )
-                            }
+                            MedicationLogCard(
+                                medicationLog = medicationLog,
+                                medication = medication,
+                                onCardClick = { onMedicationLogClick(medicationLog.id) }
+                            )
                         }
                     }
                 }
@@ -418,118 +291,118 @@ private fun MedicationLogList(
 }
 
 @Composable
-private fun MedicationLogItem(
-    firstItem: Boolean,
-    lastItem: Boolean,
-    medicationTime: Instant,
-    takenMedication: TakenMedication,
-    notes: String?,
-    onMedicationLogClick: () -> Unit,
+private fun InfoCard(
+    medication: Medication,
+    onAddStockClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ConstraintLayout(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onMedicationLogClick() },
-    ) {
-        val (
-            topDividerRef,
-            iconRef,
-            bottomDividerRef,
-            timeTextRef,
-            doseTextRef,
-            notesSurfaceRef
-        ) = createRefs()
-
-        TimelineDivider(
-            visible = !firstItem,
-            modifier = Modifier.constrainAs(topDividerRef) {
-                height = Dimension.value(16.dp)
-                top.linkTo(iconRef.bottom)
-                bottom.linkTo(iconRef.top)
-                centerHorizontallyTo(iconRef)
-            }
-        )
-
-        Icon(
-            imageVector = AppIcons.CircleBorder,
-            contentDescription = null,
-            modifier = Modifier.constrainAs(iconRef) {
-                start.linkTo(parent.start, margin = 16.dp)
-                top.linkTo(topDividerRef.bottom)
-            },
-            tint = MaterialTheme.colorScheme.primary
-        )
-
-        TimelineDivider(
-            visible = !lastItem,
-            modifier = Modifier.constrainAs(bottomDividerRef) {
-                height = if (!notes.isNullOrBlank()) {
-                    Dimension.fillToConstraints
-                } else {
-                    Dimension.value(16.dp)
-                }
-                top.linkTo(iconRef.bottom)
-                bottom.linkTo(parent.bottom)
-                centerHorizontallyTo(iconRef)
-            }
-        )
-
-        Text(
-            text = medicationTime.formatFullLocalDateTime(),
-            modifier = Modifier
-                .constrainAs(timeTextRef) {
-                    start.linkTo(iconRef.end, margin = 8.dp)
-                    end.linkTo(doseTextRef.start, margin = 8.dp)
-                    centerVerticallyTo(iconRef)
-                    width = Dimension.fillToConstraints
-                }
-                .basicMarquee(),
-        )
-
-        Text(
-            text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}",
-            modifier = Modifier.constrainAs(doseTextRef) {
-                baseline.linkTo(timeTextRef.baseline)
-                end.linkTo(parent.end, margin = 16.dp)
-            },
-            fontWeight = FontWeight.Bold
-        )
-
-        if (!notes.isNullOrBlank()) {
-            Surface(
-                modifier = Modifier
-                    .constrainAs(notesSurfaceRef) {
-                        start.linkTo(timeTextRef.start)
-                        top.linkTo(timeTextRef.bottom, margin = 4.dp)
-                        end.linkTo(doseTextRef.end)
-                        bottom.linkTo(parent.bottom, margin = 8.dp)
-                        width = Dimension.fillToConstraints
-                    },
-                color = MaterialTheme.colorScheme.surfaceContainer,
-                shape = MaterialTheme.shapes.extraSmall
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
-                    Text(text = notes, overflow = TextOverflow.Ellipsis, maxLines = 2)
+                Text(
+                    text = stringResource(R.string.screen_medication_detail_stock),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .clickable(onClick = onAddStockClick),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = AppIcons.Add,
+                        contentDescription = stringResource(R.string.screen_medication_detail_add_stock),
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
                 }
             }
+            Spacer(modifier = Modifier.height(4.dp))
+            Row {
+                val stock = medication.stock
+                val stockText = stock?.toPlainString()
+                    ?: stringResource(R.string.screen_medication_detail_stock_not_set)
+                Text(
+                    text = stockText,
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                if (stock != null) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = medication.doseUnit,
+                        modifier = Modifier.align(Alignment.Bottom),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = stringResource(R.string.screen_medication_detail_notes),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = medication.notes.ifNullOrBlank { stringResource(R.string.screen_medication_detail_no_notes) },
+                color = if (medication.notes.isNullOrBlank()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurface,
+            )
         }
     }
 }
 
 @Composable
-private fun TimelineDivider(
-    visible: Boolean,
-    modifier: Modifier = Modifier,
+private fun MedicationLogCard(
+    medicationLog: MedicationLog,
+    medication: Medication,
+    onCardClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    if (visible) {
-        VerticalDivider(
-            modifier = modifier,
-            thickness = 2.dp,
-            color = MaterialTheme.colorScheme.outline
-        )
-    } else {
-        Spacer(modifier = modifier)
+    Card(
+        onClick = onCardClick,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = medicationLog.medicationTime.formatLocalDateTime(),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+                medicationLog.takenMedications.firstOrNull { takenMedication ->
+                    takenMedication.medication.id == medication.id
+                }?.let { takenMedication ->
+                    Text(
+                        text = "${takenMedication.dose.toPlainString()}${medication.doseUnit}",
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+            }
+            val notes = medicationLog.notes
+            if (!notes.isNullOrBlank()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = notes,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
     }
 }
 
@@ -643,8 +516,9 @@ private fun MedicationDetailScreenPreview() {
                 loading = false,
                 error = false,
                 medication = Medication(
+                    id = 0,
                     name = "Ibuprofen",
-                    stock = "10".toBigDecimal(),
+                    stock = BigDecimal("10"),
                     doseUnit = "tablets",
                     notes = "Take with food",
                 )
