@@ -10,11 +10,9 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +22,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -215,77 +215,97 @@ private fun MedicationLogCard(
     onMedicationLogClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    val stateVisuals = getVisualsForState(medicationLog.state)
-
-    ElevatedCard(
+    Card(
         onClick = onMedicationLogClick,
         modifier = modifier.fillMaxWidth()
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .width(6.dp)
-                    .fillMaxHeight()
-                    .background(stateVisuals.color)
-            )
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = medicationLog.medicationTime.formatLocalDateTime(),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                        if (medicationLog.type == MedicationLogType.MANUAL) {
-                            ManualTag()
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                        medicationLog.takenMedications.forEach { takenMedication ->
-                            TakenMedicationItem(takenMedication)
-                        }
-                    }
-                    val notes = medicationLog.notes
-                    if (!notes.isNullOrBlank()) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        NotesSection(notes = notes)
-                    }
+                Text(
+                    text = medicationLog.medicationTime.formatLocalDateTime(),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                if (medicationLog.type == MedicationLogType.MANUAL) {
+                    ManualTag()
                 }
+            }
+
+            StatusIndicator(medicationLog.state)
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                medicationLog.takenMedications.forEach { takenMedication ->
+                    TakenMedicationItem(takenMedication)
+                }
+            }
+
+            val notes = medicationLog.notes
+            if (!notes.isNullOrBlank()) {
+                NotesSection(notes = notes)
             }
         }
     }
 }
 
 @Composable
-private fun getVisualsForState(state: MedicationState): StateVisuals =
-    when (state) {
-        MedicationState.PENDING -> StateVisuals(MaterialTheme.colorScheme.tertiary)
-        MedicationState.TAKEN -> StateVisuals(MaterialTheme.colorScheme.primary)
-        MedicationState.SKIPPED -> StateVisuals(MaterialTheme.colorScheme.onSurfaceVariant)
-        MedicationState.MISSED -> StateVisuals(MaterialTheme.colorScheme.error)
-        else -> StateVisuals(MaterialTheme.colorScheme.outline)
+private fun StatusIndicator(state: MedicationState) {
+    val stateVisuals = getVisualsForState(state)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .size(8.dp)
+                .clip(CircleShape)
+                .background(stateVisuals.color)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stateVisuals.text,
+            style = MaterialTheme.typography.labelLarge,
+            color = stateVisuals.color
+        )
     }
+}
 
-data class StateVisuals(val color: Color)
+@Composable
+private fun getVisualsForState(state: MedicationState): StateVisuals {
+    return when (state) {
+        MedicationState.PENDING -> StateVisuals(
+            MaterialTheme.colorScheme.tertiary,
+            stringResource(R.string.medication_state_pending)
+        )
+
+        MedicationState.TAKEN -> StateVisuals(
+            MaterialTheme.colorScheme.primary,
+            stringResource(R.string.medication_state_taken)
+        )
+
+        MedicationState.SKIPPED -> StateVisuals(
+            MaterialTheme.colorScheme.onSurfaceVariant,
+            stringResource(R.string.medication_state_skipped)
+        )
+
+        MedicationState.MISSED -> StateVisuals(
+            MaterialTheme.colorScheme.error,
+            stringResource(R.string.medication_state_missed)
+        )
+
+        else -> StateVisuals(
+            MaterialTheme.colorScheme.outline,
+            stringResource(R.string.medication_state_unknown)
+        )
+    }
+}
+
+data class StateVisuals(val color: Color, val text: String)
 
 @Composable
 private fun TakenMedicationItem(
@@ -293,18 +313,21 @@ private fun TakenMedicationItem(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = takenMedication.medication.name,
             modifier = Modifier
                 .weight(1f)
+                .padding(end = 8.dp)
                 .basicMarquee(),
+            style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}",
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

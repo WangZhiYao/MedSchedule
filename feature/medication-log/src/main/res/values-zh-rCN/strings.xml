@@ -39,4 +39,11 @@
     <string name="dialog_delete_medication_log_confirmation_content">此操作将永久删除该条用药记录，无法恢复。你确定要继续吗？</string>
     <string name="dialog_delete_medication_log_confirmation_restore_medication_stock">恢复药品库存</string>
 
+    <string name="medication_state_unknown">未知</string>
+    <string name="medication_state_pending">待定</string>
+    <string name="medication_state_taken">已服用</string>
+    <string name="medication_state_skipped">已跳过</string>
+    <string name="medication_state_missed">已错过</string>
+    <string name="medication_state_canceled">已取消</string>
+
 </resources>

@@ -39,4 +39,11 @@
     <string name="dialog_delete_medication_log_confirmation_content">This action will permanently delete the medication log and cannot be undone. Are you sure you want to continue?</string>
     <string name="dialog_delete_medication_log_confirmation_restore_medication_stock">Restore Medication Stock</string>
 
+    <string name="medication_state_unknown">Unknown</string>
+    <string name="medication_state_pending">Pending</string>
+    <string name="medication_state_taken">Taken</string>
+    <string name="medication_state_skipped">Skipped</string>
+    <string name="medication_state_missed">Missed</string>
+    <string name="medication_state_canceled">Canceled</string>
+
 </resources>
