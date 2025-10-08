@@ -71,7 +71,7 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 fun MedicationLogRoute(
     onCreateMedicationLogClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
     viewModel: MedicationLogViewModel = hiltViewModel()
 ) {
 
@@ -88,7 +88,7 @@ fun MedicationLogRoute(
 private fun MedicationLogScreen(
     medicationLogPagingItems: LazyPagingItems<MedicationLog>,
     onCreateMedicationLogClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -185,7 +185,7 @@ private fun EmptyMedicationLogList(
 private fun MedicationLogList(
     listState: LazyListState,
     medicationLogPagingItems: LazyPagingItems<MedicationLog>,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -202,7 +202,7 @@ private fun MedicationLogList(
             if (item != null) {
                 MedicationLogCard(
                     medicationLog = item,
-                    onMedicationLogClick = { onMedicationLogClick(item) },
+                    onMedicationLogClick = { onMedicationLogClick(item.id) },
                 )
             }
         }

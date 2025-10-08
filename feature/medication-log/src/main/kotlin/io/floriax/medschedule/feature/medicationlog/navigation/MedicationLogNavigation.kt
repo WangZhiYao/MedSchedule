@@ -4,7 +4,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.feature.medicationlog.ui.MedicationLogRoute
 import io.floriax.medschedule.feature.medicationlog.ui.create.CreateMedicationLogRoute
 import io.floriax.medschedule.feature.medicationlog.ui.detail.MedicationLogDetailRoute
@@ -36,7 +35,7 @@ fun NavController.navigateToMedicationLogDetail(medicationLogId: Long) =
 
 fun NavGraphBuilder.medicationLogScreen(
     onCreateMedicationLogClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit
+    onMedicationLogClick: (Long) -> Unit
 ) {
     composable<MedicationLogRoute> {
         MedicationLogRoute(

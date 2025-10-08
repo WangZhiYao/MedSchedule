@@ -88,8 +88,8 @@ import io.floriax.medschedule.shared.ui.R as sharedUiR
 @Composable
 fun MedicationDetailRoute(
     onBackClick: () -> Unit,
-    onEditClick: (Medication) -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onEditClick: (Long) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
     viewModel: MedicationDetailViewModel = hiltViewModel()
 ) {
 
@@ -158,10 +158,10 @@ private fun MedicationDetailScreen(
     snackbarHostState: SnackbarHostState,
     medicationLogPagingItems: LazyPagingItems<MedicationLog>,
     onBackClick: () -> Unit,
-    onEditClick: (Medication) -> Unit,
+    onEditClick: (Long) -> Unit,
     onDeleteClick: () -> Unit,
     onAddStockClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -201,7 +201,7 @@ private fun MedicationDetailScreen(
 private fun MedicationDetailTopBar(
     medication: Medication?,
     onBackClick: () -> Unit,
-    onEditClick: (Medication) -> Unit,
+    onEditClick: (Long) -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -216,7 +216,7 @@ private fun MedicationDetailTopBar(
         },
         actions = {
             if (medication != null) {
-                EditButton(onClick = { onEditClick(medication) })
+                EditButton(onClick = { onEditClick(medication.id) })
                 DeleteButton(onClick = onDeleteClick)
             }
         }
@@ -348,7 +348,7 @@ private fun MedicationLogList(
     medication: Medication,
     medicationLogs: LazyPagingItems<MedicationLog>,
     onAddStockClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -405,7 +405,7 @@ private fun MedicationLogList(
                                     takenMedication = takenMedication,
                                     notes = medicationLog.notes,
                                     onMedicationLogClick = {
-                                        onMedicationLogClick(medicationLog)
+                                        onMedicationLogClick(medicationLog.id)
                                     }
                                 )
                             }

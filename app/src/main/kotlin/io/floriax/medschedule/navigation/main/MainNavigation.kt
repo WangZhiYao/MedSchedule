@@ -4,8 +4,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import io.floriax.medschedule.core.domain.model.Medication
-import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.ui.main.MainRoute
 import io.floriax.medschedule.ui.main.rememberMainScreenState
 import kotlinx.serialization.Serializable
@@ -25,9 +23,9 @@ fun NavController.navigateToMain(navOptions: NavOptions) =
 fun NavGraphBuilder.mainScreen(
     onCreateMedicationPlanClick: () -> Unit,
     onAddMedicationClick: () -> Unit,
-    onMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Long) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
 ) {
     composable<MainRoute> {
         val mainScreenState = rememberMainScreenState()

@@ -9,8 +9,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import io.floriax.medschedule.core.domain.model.Medication
-import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.ext.isRouteInHierarchy
 import io.floriax.medschedule.feature.home.navigation.HomeRoute
 import io.floriax.medschedule.feature.home.navigation.homeScreen
@@ -31,9 +29,9 @@ fun MainRoute(
     mainScreenState: MainScreenState,
     onCreateMedicationPlanClick: () -> Unit,
     onAddMedicationClick: () -> Unit,
-    onMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Long) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
 ) {
 
     MainScreen(
@@ -51,9 +49,9 @@ private fun MainScreen(
     mainScreenState: MainScreenState,
     onCreateMedicationPlanClick: () -> Unit,
     onAddMedicationClick: () -> Unit,
-    onMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Long) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -100,9 +98,9 @@ private fun MainNavHost(
     navController: NavHostController,
     onCreateMedicationPlanClick: () -> Unit,
     onAddMedicationClick: () -> Unit,
-    onMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Long) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavHost(

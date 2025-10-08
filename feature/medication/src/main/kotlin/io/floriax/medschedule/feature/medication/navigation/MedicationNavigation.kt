@@ -4,8 +4,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import io.floriax.medschedule.core.domain.model.Medication
-import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.feature.medication.ui.MedicationsRoute
 import io.floriax.medschedule.feature.medication.ui.add.AddMedicationRoute
 import io.floriax.medschedule.feature.medication.ui.detail.MedicationDetailRoute
@@ -36,15 +34,15 @@ fun NavController.navigateToMedications(navOptions: NavOptions) =
 fun NavController.navigateToAddMedication() =
     navigate(route = AddMedicationRoute)
 
-fun NavController.navigateToMedicationDetail(medication: Medication) =
-    navigate(route = MedicationDetailRoute(medication.id))
+fun NavController.navigateToMedicationDetail(medicationId: Long) =
+    navigate(route = MedicationDetailRoute(medicationId))
 
-fun NavController.navigateToEditMedication(medication: Medication) =
-    navigate(route = EditMedicationRoute(medication.id))
+fun NavController.navigateToEditMedication(medicationId: Long) =
+    navigate(route = EditMedicationRoute(medicationId))
 
 fun NavGraphBuilder.medicationsScreen(
     onAddMedicationClick: () -> Unit,
-    onMedicationClick: (Medication) -> Unit,
+    onMedicationClick: (Long) -> Unit,
 ) {
     composable<MedicationsRoute> {
         MedicationsRoute(
@@ -64,8 +62,8 @@ fun NavGraphBuilder.addMedicationScreen(
 
 fun NavGraphBuilder.medicationDetailScreen(
     onBackClick: () -> Unit,
-    onEditClick: (Medication) -> Unit,
-    onMedicationLogClick: (MedicationLog) -> Unit,
+    onEditClick: (Long) -> Unit,
+    onMedicationLogClick: (Long) -> Unit,
 ) {
     composable<MedicationDetailRoute> {
         MedicationDetailRoute(
