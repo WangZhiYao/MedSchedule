@@ -22,6 +22,7 @@ fun NavController.navigateToMain(navOptions: NavOptions) =
 
 fun NavGraphBuilder.mainScreen(
     onCreateMedicationPlanClick: () -> Unit,
+    onMedicationPlanClick: (Long) -> Unit,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Long) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
@@ -32,6 +33,7 @@ fun NavGraphBuilder.mainScreen(
         MainRoute(
             mainScreenState = mainScreenState,
             onCreateMedicationPlanClick = onCreateMedicationPlanClick,
+            onMedicationPlanClick = onMedicationPlanClick,
             onAddMedicationClick = onAddMedicationClick,
             onMedicationClick = onMedicationClick,
             onCreateMedicationLogClick = onCreateMedicationLogClick,

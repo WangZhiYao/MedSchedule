@@ -48,6 +48,7 @@ import java.util.Locale
 @Composable
 fun MedicationPlanRoute(
     onCreateMedicationPlanClick: () -> Unit,
+    onMedicationPlanClick: (Long) -> Unit,
     viewModel: MedicationPlanViewModel = hiltViewModel()
 ) {
 
@@ -55,7 +56,8 @@ fun MedicationPlanRoute(
 
     MedicationPlanScreen(
         uiState = uiState,
-        onCreateMedicationPlanClick = onCreateMedicationPlanClick
+        onCreateMedicationPlanClick = onCreateMedicationPlanClick,
+        onMedicationPlanClick = onMedicationPlanClick
     )
 }
 
@@ -64,6 +66,7 @@ fun MedicationPlanRoute(
 private fun MedicationPlanScreen(
     uiState: MedicationPlanUiState,
     onCreateMedicationPlanClick: () -> Unit,
+    onMedicationPlanClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -104,7 +107,10 @@ private fun MedicationPlanScreen(
                         items = uiState.activePlans,
                         key = { plan -> plan.id }
                     ) { plan ->
-                        MedicationPlanCard(plan = plan, isInactive = false)
+                        MedicationPlanCard(
+                            plan = plan,
+                            onClick = { onMedicationPlanClick(plan.id) },
+                        )
                     }
                 }
 
@@ -116,7 +122,10 @@ private fun MedicationPlanScreen(
                         items = uiState.inactivePlans,
                         key = { plan -> plan.id }
                     ) { plan ->
-                        MedicationPlanCard(plan = plan, isInactive = true)
+                        MedicationPlanCard(
+                            plan = plan,
+                            onClick = { onMedicationPlanClick(plan.id) },
+                        )
                     }
                 }
             }
@@ -177,10 +186,13 @@ private fun EmptyMedicationPlanList(
 @Composable
 private fun MedicationPlanCard(
     plan: MedicationPlan,
-    isInactive: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(modifier = modifier.fillMaxWidth()) {
+    Card(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth()
+    ) {
         Box {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(

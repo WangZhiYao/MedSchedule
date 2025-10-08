@@ -14,7 +14,9 @@ import io.floriax.medschedule.feature.medicationlog.navigation.medicationLogDeta
 import io.floriax.medschedule.feature.medicationlog.navigation.navigateToCreateMedicationLog
 import io.floriax.medschedule.feature.medicationlog.navigation.navigateToMedicationLogDetail
 import io.floriax.medschedule.feature.medicationplan.navigation.createMedicationPlanScreen
+import io.floriax.medschedule.feature.medicationplan.navigation.medicationPlanDetailScreen
 import io.floriax.medschedule.feature.medicationplan.navigation.navigateToCreateMedicationPlan
+import io.floriax.medschedule.feature.medicationplan.navigation.navigateToMedicationPlanDetail
 import io.floriax.medschedule.navigation.main.MainRoute
 import io.floriax.medschedule.navigation.main.mainScreen
 
@@ -39,6 +41,7 @@ fun MedScheduleNavHost(
     ) {
         mainScreen(
             onCreateMedicationPlanClick = navController::navigateToCreateMedicationPlan,
+            onMedicationPlanClick = navController::navigateToMedicationPlanDetail,
             onAddMedicationClick = navController::navigateToAddMedication,
             onMedicationClick = navController::navigateToMedicationDetail,
             onCreateMedicationLogClick = navController::navigateToCreateMedicationLog,
@@ -47,6 +50,13 @@ fun MedScheduleNavHost(
 
         createMedicationPlanScreen(
             onBackClick = navController::popBackStack
+        )
+
+        medicationPlanDetailScreen(
+            onBackClick = navController::popBackStack,
+            onEditClick = {
+                // TODO
+            }
         )
 
         addMedicationScreen(

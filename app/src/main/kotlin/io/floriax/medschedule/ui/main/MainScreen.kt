@@ -28,6 +28,7 @@ import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 fun MainRoute(
     mainScreenState: MainScreenState,
     onCreateMedicationPlanClick: () -> Unit,
+    onMedicationPlanClick: (Long) -> Unit,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Long) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
@@ -37,6 +38,7 @@ fun MainRoute(
     MainScreen(
         mainScreenState = mainScreenState,
         onCreateMedicationPlanClick = onCreateMedicationPlanClick,
+        onMedicationPlanClick = onMedicationPlanClick,
         onAddMedicationClick = onAddMedicationClick,
         onMedicationClick = onMedicationClick,
         onCreateMedicationLogClick = onCreateMedicationLogClick,
@@ -48,6 +50,7 @@ fun MainRoute(
 private fun MainScreen(
     mainScreenState: MainScreenState,
     onCreateMedicationPlanClick: () -> Unit,
+    onMedicationPlanClick: (Long) -> Unit,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Long) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
@@ -85,6 +88,7 @@ private fun MainScreen(
         MainNavHost(
             navController = mainScreenState.navController,
             onCreateMedicationPlanClick = onCreateMedicationPlanClick,
+            onMedicationPlanClick = onMedicationPlanClick,
             onAddMedicationClick = onAddMedicationClick,
             onMedicationClick = onMedicationClick,
             onCreateMedicationLogClick = onCreateMedicationLogClick,
@@ -97,6 +101,7 @@ private fun MainScreen(
 private fun MainNavHost(
     navController: NavHostController,
     onCreateMedicationPlanClick: () -> Unit,
+    onMedicationPlanClick: (Long) -> Unit,
     onAddMedicationClick: () -> Unit,
     onMedicationClick: (Long) -> Unit,
     onCreateMedicationLogClick: () -> Unit,
@@ -111,7 +116,8 @@ private fun MainNavHost(
         homeScreen()
 
         medicationPlanScreen(
-            onCreateMedicationPlanClick = onCreateMedicationPlanClick
+            onCreateMedicationPlanClick = onCreateMedicationPlanClick,
+            onMedicationPlanClick = onMedicationPlanClick
         )
 
         medicationsScreen(
@@ -133,6 +139,7 @@ fun MainScreenPreview() {
         MainScreen(
             mainScreenState = rememberMainScreenState(),
             onCreateMedicationPlanClick = {},
+            onMedicationPlanClick = {},
             onAddMedicationClick = {},
             onMedicationClick = {},
             onCreateMedicationLogClick = {},

@@ -61,4 +61,16 @@
     <string name="screen_medication_plan_summary_interval">Every %d days</string>
     <string name="screen_medication_plan_summary_custom_cycle">%d-day cycle</string>
 
+    <string name="screen_medication_plan_detail_title">Plan Detail</string>
+    <string name="screen_medication_plan_detail_status">Enable Plan</string>
+    <string name="screen_medication_plan_detail_schedule_title">Schedule Details</string>
+    <string name="screen_medication_plan_detail_intakes_title">Intake Schedule</string>
+    <string name="screen_medication_plan_detail_notes_title">Notes</string>
+    <string name="screen_medication_plan_detail_range_format">From %1$s to %2$s</string>
+    <string name="screen_medication_plan_detail_range_end_forever">Forever</string>
+    <string name="screen_medication_plan_summary_one_time_title">One-time</string>
+
+    <string name="screen_medication_plan_detail_delete_failure">Failed to delete plan</string>
+    <string name="screen_medication_plan_detail_delete_dialog_title">Delete Plan?</string>
+    <string name="screen_medication_plan_detail_delete_dialog_text">Are you sure you want to delete \"%s\"? This will permanently delete the plan and all its associated data.</string>
 </resources>

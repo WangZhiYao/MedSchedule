@@ -80,5 +80,12 @@ class MedicationPlanRepositoryImpl @Inject constructor(
 
             plan.copy(id = planId)
         }
+
+    override suspend fun update(plan: MedicationPlan): Boolean =
+        medicationPlanDao.update(plan.toEntity()) > 0
+
+    override suspend fun delete(plan: MedicationPlan): Boolean =
+        medicationPlanDao.delete(plan.toEntity()) > 0
+
 }
 

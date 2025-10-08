@@ -16,4 +16,7 @@ interface MedicationPlanRepository {
 
     suspend fun create(plan: MedicationPlan): MedicationPlan
 
+    suspend fun update(plan: MedicationPlan): Boolean
+
+    suspend fun delete(plan: MedicationPlan): Boolean
 }
