@@ -20,4 +20,8 @@ interface MedicationPlanDao : BaseDao<MedicationPlanEntity> {
     @Query("SELECT * FROM medication_plan")
     fun observeAll(): Flow<List<MedicationPlanWithDetails>>
 
+    @Transaction
+    @Query("SELECT * FROM medication_plan WHERE id = :id")
+    suspend fun getById(id: Long): MedicationPlanWithDetails?
+
 }
