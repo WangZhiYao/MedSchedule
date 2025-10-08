@@ -23,6 +23,7 @@ import androidx.compose.material.icons.rounded.Error
 import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.MedicalServices
+import androidx.compose.material.icons.rounded.Medication
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.runtime.Composable
@@ -90,5 +91,6 @@ object AppIcons {
     val HistorySlimBorder
         @Composable
         get() = ImageVector.vectorResource(R.drawable.ic_history_w200_24dp)
+    val Medication = Icons.Rounded.Medication
 
 }

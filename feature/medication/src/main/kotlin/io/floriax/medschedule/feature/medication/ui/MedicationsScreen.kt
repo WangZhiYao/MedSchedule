@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,16 +15,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -33,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -56,6 +54,7 @@ import io.floriax.medschedule.shared.ui.component.LoadingIndicator
 import io.floriax.medschedule.shared.ui.component.MedScheduleTopAppBar
 import io.floriax.medschedule.shared.ui.extension.collectState
 import kotlinx.coroutines.flow.flowOf
+import java.math.BigDecimal
 
 /**
  *
@@ -234,74 +233,50 @@ private fun MedicationCard(
     onMedicationClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(
+    Card(
         onClick = onMedicationClick,
         modifier = modifier.fillMaxWidth(),
     ) {
-        Column {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = medication.name,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .basicMarquee(),
-                    fontWeight = FontWeight.SemiBold,
-                    style = MaterialTheme.typography.titleMedium
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = medication.name,
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            val notes = medication.notes
+            Text(
+                text = notes.ifNullOrBlank { stringResource(R.string.screen_medications_no_notes) },
+                color = if (notes.isNullOrBlank()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = AppIcons.Medication,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = medication.notes.ifNullOrBlank {
-                        stringResource(R.string.screen_medications_no_notes)
-                    },
-                    color = MaterialTheme.colorScheme.outline,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-
-            Surface(
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxSize(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    val stock = medication.stock
-                    if (stock != null) {
-                        Row {
-                            Text(
-                                text = stock.toPlainString(),
-                                modifier = Modifier.alignBy(LastBaseline),
-                                fontWeight = FontWeight.SemiBold,
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                            Spacer(modifier = Modifier.size(4.dp))
-                            Text(
-                                text = medication.doseUnit,
-                                modifier = Modifier.alignBy(LastBaseline)
-                            )
-                        }
-                    } else {
-                        Text(
-                            text = stringResource(R.string.screen_medications_stock_not_set),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                    Icon(
-                        imageVector = AppIcons.ArrowForward,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                Spacer(modifier = Modifier.width(8.dp))
+                val stock = medication.stock
+                val stockText = if (stock != null) {
+                    "${stock.toPlainString()} ${medication.doseUnit}"
+                } else {
+                    stringResource(R.string.screen_medications_stock_not_set)
                 }
+                Text(
+                    text = stockText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
@@ -321,8 +296,9 @@ private fun MedicationCardPreview() {
     AppTheme {
         MedicationCard(
             medication = Medication(
+                id = 0,
                 name = "Aspirin",
-                stock = "10".toBigDecimal(),
+                stock = BigDecimal("10"),
                 doseUnit = "mg",
                 notes = "Take with food"
             ),
