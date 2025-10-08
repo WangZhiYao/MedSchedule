@@ -10,10 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -28,8 +27,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +42,8 @@ import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.core.domain.model.MedicationLog
 import io.floriax.medschedule.core.domain.model.TakenMedication
 import io.floriax.medschedule.feature.medicationlog.R
+import io.floriax.medschedule.feature.medicationlog.ui.component.StatusIndicator
+import io.floriax.medschedule.feature.medicationlog.ui.component.TakenMedicationItem
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
 import io.floriax.medschedule.shared.ui.component.DeleteButton
@@ -136,7 +137,7 @@ private fun MedicationLogDetailScreen(
                 state.loading -> LoadingIndicator(modifier = Modifier.fillMaxSize())
                 state.error -> ErrorIndicator(modifier = Modifier.fillMaxSize())
                 state.medicationLog != null -> MedicationLogDetailContent(
-                    state.medicationLog
+                    medicationLog = state.medicationLog
                 )
             }
         }
@@ -177,80 +178,56 @@ private fun MedicationLogDetailContent(
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
-            MedicationLogDetailHeader(
-                medicationTime = medicationLog.medicationTime,
-                medicationLogType = medicationLog.type,
-            )
+            InfoCard(medicationLog)
         }
 
-        item {
-            TakenMedicationList(
-                takenMedications = medicationLog.takenMedications,
-            )
-        }
-
-        item {
-            NotesSection(notes = medicationLog.notes)
+        if (!medicationLog.notes.isNullOrBlank()) {
+            item {
+                NotesCard(notes = medicationLog.notes)
+            }
         }
     }
 }
 
 @Composable
-private fun MedicationLogDetailHeader(
-    medicationTime: Instant,
-    medicationLogType: MedicationLogType,
-    modifier: Modifier = Modifier
-) {
-    ElevatedCard(modifier = modifier.fillMaxWidth()) {
-        Row(
+private fun InfoCard(log: MedicationLog, modifier: Modifier = Modifier) {
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(
             modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = medicationTime.formatFullLocalDateTime(),
+                    text = log.medicationTime.formatFullLocalDateTime(),
                     fontWeight = FontWeight.SemiBold,
                     style = MaterialTheme.typography.titleMedium
                 )
+                if (log.type == MedicationLogType.MANUAL) {
+                    ManualTag()
+                }
             }
-            if (medicationLogType == MedicationLogType.MANUAL) {
-                ManualTag()
-            }
-        }
-    }
-}
 
-@Composable
-private fun TakenMedicationList(
-    takenMedications: List<TakenMedication>,
-    modifier: Modifier = Modifier
-) {
-    ElevatedCard(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-        ) {
+            StatusIndicator(log.state)
+
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+
             Text(
                 text = stringResource(R.string.screen_medication_log_detail_medications_header),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            takenMedications.forEachIndexed { index, takenMedication ->
-                TakenMedicationItem(takenMedication = takenMedication)
-                Spacer(modifier = Modifier.height(8.dp))
-                if (index < takenMedications.lastIndex) {
-                    HorizontalDivider()
-                    Spacer(modifier = Modifier.height(8.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                log.takenMedications.forEach { takenMedication ->
+                    TakenMedicationItem(takenMedication = takenMedication)
                 }
             }
         }
@@ -258,50 +235,25 @@ private fun TakenMedicationList(
 }
 
 @Composable
-private fun TakenMedicationItem(
-    takenMedication: TakenMedication,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = takenMedication.medication.name,
-            modifier = Modifier
-                .weight(1f)
-                .basicMarquee()
-                .alignBy(LastBaseline),
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Text(
-            text = "${takenMedication.dose.toPlainString()} ${takenMedication.medication.doseUnit}",
-            modifier = Modifier.alignBy(LastBaseline),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-    }
-}
-
-@Composable
-private fun NotesSection(
+private fun NotesCard(
     notes: String?,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(
+    Card(
         modifier = modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(R.string.screen_medication_log_detail_notes_header),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = notes.ifNullOrBlank {
                     stringResource(R.string.screen_medication_log_detail_notes_blank)
-                }
+                },
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }
@@ -360,6 +312,7 @@ private fun MedicationLogDetailScreenPreview() {
     val takenMedications = listOf(
         TakenMedication(
             medication = Medication(
+                id = 1,
                 name = "Ibuprofen",
                 stock = "10".toBigDecimal(),
                 doseUnit = "tablets",
@@ -370,6 +323,7 @@ private fun MedicationLogDetailScreenPreview() {
         ),
         TakenMedication(
             medication = Medication(
+                id = 2,
                 name = "Aspirin",
                 stock = "10".toBigDecimal(),
                 doseUnit = "tablets",
@@ -381,6 +335,7 @@ private fun MedicationLogDetailScreenPreview() {
     )
 
     val medicationLog = MedicationLog(
+        id = 1,
         medicationTime = Instant.now(),
         takenMedications = takenMedications,
         state = MedicationState.TAKEN,
