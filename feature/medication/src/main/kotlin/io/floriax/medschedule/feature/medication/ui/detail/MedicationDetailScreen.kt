@@ -1,10 +1,7 @@
 package io.floriax.medschedule.feature.medication.ui.detail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -14,13 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -39,7 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -166,7 +161,17 @@ private fun MedicationDetailScreen(
                 onDeleteClick = onDeleteClick
             )
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        floatingActionButton = {
+            if (state.medication != null) {
+                FloatingActionButton(onClick = onAddStockClick) {
+                    Icon(
+                        imageVector = AppIcons.Add,
+                        contentDescription = stringResource(R.string.screen_medication_detail_add_stock)
+                    )
+                }
+            }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -179,7 +184,6 @@ private fun MedicationDetailScreen(
                 state.medication != null -> MedicationDetailContent(
                     medication = state.medication,
                     medicationLogs = medicationLogPagingItems,
-                    onAddStockClick = onAddStockClick,
                     onMedicationLogClick = onMedicationLogClick,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -219,7 +223,6 @@ private fun MedicationDetailTopBar(
 private fun MedicationDetailContent(
     medication: Medication,
     medicationLogs: LazyPagingItems<MedicationLog>,
-    onAddStockClick: () -> Unit,
     onMedicationLogClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -229,10 +232,11 @@ private fun MedicationDetailContent(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
-            InfoCard(
-                medication = medication,
-                onAddStockClick = onAddStockClick
-            )
+            StockCard(medication = medication)
+        }
+
+        item {
+            NotesCard(notes = medication.notes)
         }
 
         item {
@@ -268,7 +272,6 @@ private fun MedicationDetailContent(
                             text = stringResource(R.string.screen_medication_detail_no_medication_logs),
                             modifier = Modifier.padding(top = 8.dp),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 } else {
@@ -297,70 +300,57 @@ private fun MedicationDetailContent(
 }
 
 @Composable
-private fun InfoCard(
+private fun StockCard(
     medication: Medication,
-    onAddStockClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.screen_medication_detail_stock),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.secondaryContainer)
-                        .clickable(onClick = onAddStockClick),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = AppIcons.Add,
-                        contentDescription = stringResource(R.string.screen_medication_detail_add_stock),
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Row {
+            Text(
+                text = stringResource(R.string.screen_medication_detail_stock),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(verticalAlignment = Alignment.Bottom) {
                 val stock = medication.stock
                 val stockText = stock?.toPlainString()
                     ?: stringResource(R.string.screen_medication_detail_stock_not_set)
                 Text(
                     text = stockText,
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
                 if (stock != null) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = medication.doseUnit,
-                        modifier = Modifier.align(Alignment.Bottom),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.height(16.dp))
-
+@Composable
+private fun NotesCard(
+    notes: String?,
+    modifier: Modifier = Modifier
+) {
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(R.string.screen_medication_detail_notes),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = medication.notes.ifNullOrBlank { stringResource(R.string.screen_medication_detail_no_notes) },
-                color = if (medication.notes.isNullOrBlank()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurface,
+                text = notes.ifNullOrBlank { stringResource(R.string.screen_medication_detail_no_notes) },
+                color = if (notes.isNullOrBlank()) MaterialTheme.colorScheme.outline else MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyLarge
             )
         }
     }
