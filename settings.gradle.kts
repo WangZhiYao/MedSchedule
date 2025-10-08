@@ -23,9 +23,9 @@ dependencyResolutionManagement {
 rootProject.name = "MedSchedule"
 include(":app")
 
+include(":core:common")
 include(":core:data")
 include(":core:domain")
-include(":core:common")
 
 include(":shared:designsystem")
 include(":shared:ui")
