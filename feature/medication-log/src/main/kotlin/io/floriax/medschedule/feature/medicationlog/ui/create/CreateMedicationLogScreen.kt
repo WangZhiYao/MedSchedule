@@ -13,18 +13,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -67,8 +65,6 @@ import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
 import io.floriax.medschedule.shared.ui.extension.formatLocalized
 import io.floriax.medschedule.shared.ui.util.UpToTodaySelectableDates
-import java.time.LocalDate
-import java.time.LocalTime
 import io.floriax.medschedule.shared.ui.R as sharedUiR
 
 /**
@@ -194,27 +190,83 @@ private fun CreateMedicationLogScreen(
         topBar = {
             CreateMedicationLogTopBar(onBackClick = onBackClick)
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = onSaveClick,
+                icon = { Icon(AppIcons.Check, contentDescription = null) },
+                text = { Text(text = stringResource(sharedUiR.string.shared_ui_save)) }
+            )
+        }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier.padding(paddingValues),
             contentPadding = PaddingValues(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            dateTimeRow(
-                selectedDate = state.selectedDate,
-                selectedTime = state.selectedTime,
-                onSelectDateClick = onSelectDateClick,
-                onSelectTimeClick = onSelectTimeClick
-            )
+            item {
+                SectionHeader(text = stringResource(R.string.screen_create_medication_log_section_datetime))
+            }
 
-            medicationListHeader()
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = state.selectedDate.formatLocalized(),
+                        onValueChange = {},
+                        modifier = Modifier.fillMaxWidth(),
+                        readOnly = true,
+                        label = {
+                            Text(
+                                text = stringResource(R.string.screen_create_medication_log_date),
+                                modifier = Modifier.basicMarquee()
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = onSelectDateClick) {
+                                Icon(
+                                    imageVector = AppIcons.CalendarToday,
+                                    contentDescription = stringResource(R.string.screen_create_medication_log_select_date)
+                                )
+                            }
+                        },
+                        singleLine = true
+                    )
+
+                    OutlinedTextField(
+                        value = state.selectedTime.formatLocalized(),
+                        onValueChange = {},
+                        modifier = Modifier.fillMaxWidth(),
+                        readOnly = true,
+                        label = {
+                            Text(
+                                text = stringResource(R.string.screen_create_medication_log_time),
+                                modifier = Modifier.basicMarquee()
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = onSelectTimeClick) {
+                                Icon(
+                                    imageVector = AppIcons.AccessTime,
+                                    contentDescription = stringResource(R.string.screen_create_medication_log_select_time)
+                                )
+                            }
+                        },
+                        singleLine = true
+                    )
+                }
+            }
+
+            item {
+                SectionHeader(text = stringResource(R.string.screen_create_medication_log_medication_list_header))
+            }
 
             if (state.takenMedicationInputs.isEmpty()) {
                 item {
                     Text(
                         text = stringResource(R.string.screen_create_medication_log_medication_list_empty),
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -222,9 +274,9 @@ private fun CreateMedicationLogScreen(
             } else {
                 itemsIndexed(
                     items = state.takenMedicationInputs,
-                    key = { index, takenMedication -> takenMedication.medication.id }
+                    key = { _, takenMedication -> takenMedication.medication.id }
                 ) { index, takenMedication ->
-                    TakenMedicationCard(
+                    TakenMedicationItem(
                         takenMedication = takenMedication,
                         onDoseChange = { doseString -> onDoseChange(index, doseString) },
                         onDeductFromStockCheckedChange = { deductFromStock ->
@@ -240,8 +292,14 @@ private fun CreateMedicationLogScreen(
                     onClick = onAddMedicationClick,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    Icon(AppIcons.Add, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(text = stringResource(R.string.screen_create_medication_log_select_medication))
                 }
+            }
+
+            item {
+                SectionHeader(text = stringResource(R.string.screen_create_medication_log_notes))
             }
 
             item {
@@ -253,23 +311,26 @@ private fun CreateMedicationLogScreen(
                         Text(text = stringResource(R.string.screen_create_medication_log_notes))
                     },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    maxLines = 3,
-                    minLines = 3
+                    maxLines = 4,
+                    minLines = 4
                 )
             }
 
             item {
-                Button(
-                    onClick = onSaveClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 48.dp)
-                ) {
-                    Text(text = stringResource(sharedUiR.string.shared_ui_save))
-                }
+                Spacer(modifier = Modifier.height(64.dp)) // Spacer for FAB
             }
         }
     }
+}
+
+@Composable
+private fun SectionHeader(text: String, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.SemiBold,
+        modifier = modifier
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -287,153 +348,74 @@ private fun CreateMedicationLogTopBar(
     )
 }
 
-private fun LazyListScope.dateTimeRow(
-    selectedDate: LocalDate,
-    selectedTime: LocalTime,
-    onSelectDateClick: () -> Unit,
-    onSelectTimeClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    item {
-        Column(
-            modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            OutlinedTextField(
-                value = selectedDate.formatLocalized(),
-                onValueChange = {},
-                modifier = Modifier.fillMaxWidth(),
-                readOnly = true,
-                label = {
-                    Text(
-                        text = stringResource(R.string.screen_create_medication_log_date),
-                        modifier = Modifier.basicMarquee()
-                    )
-                },
-                trailingIcon = {
-                    IconButton(onClick = onSelectDateClick) {
-                        Icon(
-                            imageVector = AppIcons.CalendarToday,
-                            contentDescription = stringResource(R.string.screen_create_medication_log_select_date)
-                        )
-                    }
-                },
-                singleLine = true
-            )
-
-            OutlinedTextField(
-                value = selectedTime.formatLocalized(),
-                onValueChange = {},
-                modifier = Modifier.fillMaxWidth(),
-                readOnly = true,
-                label = {
-                    Text(
-                        text = stringResource(R.string.screen_create_medication_log_time),
-                        modifier = Modifier.basicMarquee()
-                    )
-                },
-                trailingIcon = {
-                    IconButton(onClick = onSelectTimeClick) {
-                        Icon(
-                            imageVector = AppIcons.AccessTime,
-                            contentDescription = stringResource(R.string.screen_create_medication_log_select_time)
-                        )
-                    }
-                },
-                singleLine = true
-            )
-        }
-    }
-}
-
-private fun LazyListScope.medicationListHeader(
-    modifier: Modifier = Modifier
-) {
-    item {
-        Column(
-            modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.screen_create_medication_log_medication_list_header),
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-        }
-    }
-}
-
 @Composable
-private fun TakenMedicationCard(
+private fun TakenMedicationItem(
     takenMedication: TakenMedicationInput,
     onDoseChange: (String) -> Unit,
     onDeductFromStockCheckedChange: (Boolean) -> Unit,
     onRemoveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(modifier = modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = takenMedication.medication.name,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .basicMarquee(),
-                style = MaterialTheme.typography.titleMedium
-            )
-            OutlinedTextField(
-                value = takenMedication.doseString,
-                onValueChange = onDoseChange,
-                modifier = Modifier.fillMaxWidth(),
-                label = {
-                    Text(text = stringResource(R.string.screen_create_medication_log_dose))
-                },
-                suffix = {
-                    Text(text = takenMedication.medication.doseUnit)
-                },
-                supportingText = {
-                    val stock = takenMedication.medication.stock
-                    val text = if (stock == null) {
-                        stringResource(R.string.screen_create_medication_log_medication_stock_not_set)
-                    } else {
-                        stringResource(
-                            R.string.screen_create_medication_log_medication_stock_format,
-                            stock.toPlainString()
-                        )
-                    }
-                    Text(text = text)
-                },
-                isError = takenMedication.isMarkedAsError,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Next
-                ),
-                singleLine = true
-            )
-            Row {
-                Box(modifier = Modifier.weight(1f)) {
-                    if (takenMedication.deductFromStockEnabled) {
-                        LabeledCheckbox(
-                            label = {
-                                Text(text = stringResource(R.string.screen_create_medication_log_deduct_from_stock))
-                            },
-                            checked = takenMedication.deductFromStock,
-                            onCheckedChange = onDeductFromStockCheckedChange,
-                        )
-                    }
-                }
-                TextButton(
-                    onClick = onRemoveClick,
-                ) {
-                    Text(
-                        text = stringResource(sharedUiR.string.shared_ui_delete),
-                        color = MaterialTheme.colorScheme.error
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = takenMedication.medication.name,
+            modifier = Modifier
+                .fillMaxWidth()
+                .basicMarquee(),
+        )
+        OutlinedTextField(
+            value = takenMedication.doseString,
+            onValueChange = onDoseChange,
+            modifier = Modifier.fillMaxWidth(),
+            label = {
+                Text(text = stringResource(R.string.screen_create_medication_log_dose))
+            },
+            suffix = {
+                Text(text = takenMedication.medication.doseUnit)
+            },
+            supportingText = {
+                val stock = takenMedication.medication.stock
+                val text = if (stock == null) {
+                    stringResource(R.string.screen_create_medication_log_medication_stock_not_set)
+                } else {
+                    stringResource(
+                        R.string.screen_create_medication_log_medication_stock_format,
+                        stock.toPlainString()
                     )
                 }
+                Text(text = text)
+            },
+            isError = takenMedication.isMarkedAsError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Next
+            ),
+            singleLine = true
+        )
+        Row {
+            Box(modifier = Modifier.weight(1f)) {
+                if (takenMedication.deductFromStockEnabled) {
+                    LabeledCheckbox(
+                        label = {
+                            Text(text = stringResource(R.string.screen_create_medication_log_deduct_from_stock))
+                        },
+                        checked = takenMedication.deductFromStock,
+                        onCheckedChange = onDeductFromStockCheckedChange,
+                    )
+                }
+            }
+            TextButton(
+                onClick = onRemoveClick,
+            ) {
+                Text(
+                    text = stringResource(sharedUiR.string.shared_ui_delete),
+                    color = MaterialTheme.colorScheme.error
+                )
             }
         }
     }
@@ -495,7 +477,7 @@ private fun SelectMedicationBottomSheetDialog(
                     .fillMaxWidth()
                     .weight(1f),
             ) {
-                items(count = medicationPageItems.itemCount) {
+                items(medicationPageItems.itemCount) {
                     val item = medicationPageItems[it]
                     if (item != null) {
                         MedicationItem(
@@ -584,7 +566,7 @@ private fun MedicationItemPreview() {
 @Composable
 private fun TakenMedicationItemPreview() {
     AppTheme {
-        TakenMedicationCard(
+        TakenMedicationItem(
             takenMedication = TakenMedicationInput(
                 medication = Medication(
                     name = "Aspirin",
@@ -602,7 +584,6 @@ private fun TakenMedicationItemPreview() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 private fun CreateMedicationLogScreenPreview() {
@@ -614,8 +595,8 @@ private fun CreateMedicationLogScreenPreview() {
             onSelectDateClick = {},
             onSelectTimeClick = {},
             onAddMedicationClick = {},
-            onDoseChange = { index, doseString -> },
-            onDeductFromStockCheckedChange = { index, deductFromStock -> },
+            onDoseChange = { _, _ -> },
+            onDeductFromStockCheckedChange = { _, _ -> },
             onRemoveTakenMedicationClick = {},
             onNotesChange = {},
             onSaveClick = {}

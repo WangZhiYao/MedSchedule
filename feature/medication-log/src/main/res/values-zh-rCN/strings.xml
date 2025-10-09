@@ -13,6 +13,7 @@
     <string name="screen_create_medication_log_title">创建用药记录</string>
     <string name="screen_create_medication_log_date">日期</string>
     <string name="screen_create_medication_log_time">时间</string>
+    <string name="screen_create_medication_log_section_datetime">日期和时间</string>
     <string name="screen_create_medication_log_select_date">选择日期</string>
     <string name="screen_create_medication_log_select_time">选择时间</string>
     <string name="screen_create_medication_log_medication_list_header">药物列表</string>
