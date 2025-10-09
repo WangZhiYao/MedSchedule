@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -179,6 +180,13 @@ private fun EmptyMedicationPlanList(
             text = stringResource(R.string.screen_medication_plan_empty),
             color = MaterialTheme.colorScheme.outline,
             style = MaterialTheme.typography.titleMedium,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = stringResource(R.string.screen_medication_plan_click_to_add),
+            color = MaterialTheme.colorScheme.outline,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
