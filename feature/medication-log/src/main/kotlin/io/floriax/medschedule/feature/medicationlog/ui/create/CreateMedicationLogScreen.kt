@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -296,14 +295,14 @@ private fun LazyListScope.dateTimeRow(
     modifier: Modifier = Modifier
 ) {
     item {
-        Row(
+        Column(
             modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             OutlinedTextField(
                 value = selectedDate.formatLocalized(),
                 onValueChange = {},
-                modifier = Modifier.weight(1.4f),
+                modifier = Modifier.fillMaxWidth(),
                 readOnly = true,
                 label = {
                     Text(
@@ -322,12 +321,10 @@ private fun LazyListScope.dateTimeRow(
                 singleLine = true
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
-
             OutlinedTextField(
                 value = selectedTime.formatLocalized(),
                 onValueChange = {},
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.fillMaxWidth(),
                 readOnly = true,
                 label = {
                     Text(
