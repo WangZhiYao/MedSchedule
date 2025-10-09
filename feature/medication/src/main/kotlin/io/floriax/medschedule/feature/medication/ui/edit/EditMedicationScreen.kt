@@ -3,6 +3,8 @@ package io.floriax.medschedule.feature.medication.ui.edit
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -19,10 +21,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import io.floriax.medschedule.feature.medication.R
 import io.floriax.medschedule.feature.medication.ui.form.MedicationForm
+import io.floriax.medschedule.shared.designsystem.icon.AppIcons
 import io.floriax.medschedule.shared.designsystem.theme.AppTheme
 import io.floriax.medschedule.shared.ui.component.BackButton
 import io.floriax.medschedule.shared.ui.extension.collectSideEffect
 import io.floriax.medschedule.shared.ui.extension.collectState
+import io.floriax.medschedule.shared.ui.R as sharedUiR
 
 /**
  *
@@ -119,7 +123,15 @@ private fun EditMedicationScreen(
         topBar = {
             EditMedicationTopBar(onBackClick = onBackClick)
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onSaveClick) {
+                Icon(
+                    imageVector = AppIcons.Check,
+                    contentDescription = stringResource(sharedUiR.string.shared_ui_save)
+                )
+            }
+        }
     ) { paddingValues ->
         MedicationForm(
             state = state,
@@ -130,7 +142,6 @@ private fun EditMedicationScreen(
             onStockStringChange = onStockStringChange,
             onDoseUnitChange = onDoseUnitChange,
             onNotesChange = onNotesChange,
-            onSaveClick = onSaveClick,
             modifier = Modifier.padding(paddingValues)
         )
     }
