@@ -92,5 +92,8 @@ object AppIcons {
         @Composable
         get() = ImageVector.vectorResource(R.drawable.ic_history_w200_24dp)
     val Medication = Icons.Rounded.Medication
+    val CalendarClockSlimBorder
+        @Composable
+        get() = ImageVector.vectorResource(R.drawable.ic_calendar_clock_w200_24dp)
 
 }

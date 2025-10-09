@@ -169,7 +169,7 @@ private fun EmptyMedicationPlanList(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            imageVector = AppIcons.CalendarClockBorder,
+            imageVector = AppIcons.CalendarClockSlimBorder,
             contentDescription = null,
             modifier = Modifier.size(96.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
