@@ -1,6 +1,5 @@
 package io.floriax.medschedule.feature.medication.ui.form
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,10 +36,7 @@ fun MedicationForm(
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
+    Column(modifier = modifier.padding(horizontal = 16.dp)) {
         OutlinedTextField(
             value = state.medicationName,
             onValueChange = onMedicationNameChange,
@@ -50,7 +46,9 @@ fun MedicationForm(
             label = { Text(text = stringResource(R.string.screen_add_medication_medication_name_label)) },
             placeholder = { Text(text = stringResource(R.string.screen_add_medication_medication_name_placeholder)) },
             supportingText = {
-                Text(text = if (state.medicationNameError) stringResource(R.string.screen_add_medication_error_name_empty) else "")
+                if (state.medicationNameError) {
+                    Text(text = stringResource(R.string.screen_add_medication_error_name_empty))
+                }
             },
             isError = state.medicationNameError,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -66,7 +64,9 @@ fun MedicationForm(
             label = { Text(text = stringResource(R.string.screen_add_medication_stock_label)) },
             placeholder = { Text(text = stringResource(R.string.screen_add_medication_stock_placeholder)) },
             supportingText = {
-                Text(text = if (state.stockError) stringResource(R.string.screen_add_medication_error_stock_invalid) else "")
+                if (state.stockError) {
+                    Text(text = stringResource(R.string.screen_add_medication_error_stock_invalid))
+                }
             },
             isError = state.stockError,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -82,7 +82,9 @@ fun MedicationForm(
             label = { Text(text = stringResource(R.string.screen_add_medication_dose_unit_label)) },
             placeholder = { Text(text = stringResource(R.string.screen_add_medication_dose_unit_placeholder)) },
             supportingText = {
-                Text(text = if (state.doseUnitError) stringResource(R.string.screen_add_medication_error_dose_unit_empty) else "")
+                if (state.doseUnitError) {
+                    Text(text = stringResource(R.string.screen_add_medication_error_dose_unit_empty))
+                }
             },
             isError = state.doseUnitError,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
