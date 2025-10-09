@@ -6,6 +6,7 @@
     <string name="screen_medication_log_subtitle">View all your medication history</string>
     <string name="screen_medication_log_add_medication_log">Add Medication Log</string>
     <string name="screen_medication_log_empty">No medication logs</string>
+    <string name="screen_medication_log_click_to_add">Click the "+" button to add your first medication log.</string>
     <string name="screen_medication_log_card_tag_manual">Manual</string>
     <string name="screen_medication_log_card_notes_prefix">Notes: </string>
 
