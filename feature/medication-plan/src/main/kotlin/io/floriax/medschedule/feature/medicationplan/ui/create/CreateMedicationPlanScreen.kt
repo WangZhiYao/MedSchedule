@@ -133,10 +133,9 @@ fun CreateMedicationPlanRoute(
         onAddIntakeClick = viewModel::onAddIntakeClick,
         onRemoveIntakeClick = viewModel::onRemoveIntakeClick,
         onTimeChange = viewModel::onTimeChange,
-        onAddDoseClick = viewModel::onAddDoseClick,
         onRemoveDoseClick = viewModel::onRemoveDoseClick,
-        onDoseMedicationSelected = viewModel::onDoseMedicationSelected,
-        onDoseAmountChange = viewModel::onDoseAmountChange
+        onDoseAmountChange = viewModel::onDoseAmountChange,
+        onMedicationSelectionChanged = viewModel::onMedicationSelectionChanged,
     )
 }
 
@@ -160,11 +159,10 @@ private fun CreateMedicationPlanScreen(
     onCustomCycleDaysOffChange: (String) -> Unit,
     onAddIntakeClick: () -> Unit,
     onRemoveIntakeClick: (IntakeInput) -> Unit,
-    onTimeChange: (IntakeInput, LocalTime) -> Unit,
-    onAddDoseClick: (IntakeInput) -> Unit,
-    onRemoveDoseClick: (IntakeInput, DoseInput) -> Unit,
-    onDoseMedicationSelected: (IntakeInput, DoseInput, Medication) -> Unit,
-    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
+    onTimeChange: (String, LocalTime) -> Unit,
+    onRemoveDoseClick: (String, String) -> Unit,
+    onDoseAmountChange: (String, String, String) -> Unit,
+    onMedicationSelectionChanged: (String, Medication, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -197,10 +195,9 @@ private fun CreateMedicationPlanScreen(
             onAddIntakeClick = onAddIntakeClick,
             onRemoveIntakeClick = onRemoveIntakeClick,
             onTimeChange = onTimeChange,
-            onAddDoseClick = onAddDoseClick,
             onRemoveDoseClick = onRemoveDoseClick,
-            onDoseMedicationSelected = onDoseMedicationSelected,
             onDoseAmountChange = onDoseAmountChange,
+            onMedicationSelectionChanged = onMedicationSelectionChanged,
             modifier = Modifier.padding(paddingValues)
         )
     }
@@ -239,11 +236,10 @@ private fun CreateMedicationPlanContent(
     onCustomCycleDaysOffChange: (String) -> Unit,
     onAddIntakeClick: () -> Unit,
     onRemoveIntakeClick: (IntakeInput) -> Unit,
-    onTimeChange: (IntakeInput, LocalTime) -> Unit,
-    onAddDoseClick: (IntakeInput) -> Unit,
-    onRemoveDoseClick: (IntakeInput, DoseInput) -> Unit,
-    onDoseMedicationSelected: (IntakeInput, DoseInput, Medication) -> Unit,
-    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
+    onTimeChange: (String, LocalTime) -> Unit,
+    onRemoveDoseClick: (String, String) -> Unit,
+    onDoseAmountChange: (String, String, String) -> Unit,
+    onMedicationSelectionChanged: (String, Medication, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val progress =
@@ -310,10 +306,9 @@ private fun CreateMedicationPlanContent(
                     onAddIntakeClick = onAddIntakeClick,
                     onRemoveIntakeClick = onRemoveIntakeClick,
                     onTimeChange = onTimeChange,
-                    onAddDoseClick = onAddDoseClick,
                     onRemoveDoseClick = onRemoveDoseClick,
-                    onDoseMedicationSelected = onDoseMedicationSelected,
-                    onDoseAmountChange = onDoseAmountChange
+                    onDoseAmountChange = onDoseAmountChange,
+                    onMedicationSelectionChanged = onMedicationSelectionChanged,
                 )
 
                 CreateMedicationPlanStep.SAVE -> SaveStep(
@@ -383,10 +378,9 @@ private fun CreateMedicationPlanPreview() {
             onAddIntakeClick = {},
             onRemoveIntakeClick = {},
             onTimeChange = { _, _ -> },
-            onAddDoseClick = {},
             onRemoveDoseClick = { _, _ -> },
             onDoseAmountChange = { _, _, _ -> },
-            onDoseMedicationSelected = { _, _, _ -> },
+            onMedicationSelectionChanged = { _, _, _ -> },
         )
     }
 }

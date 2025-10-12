@@ -47,7 +47,7 @@ data class DoseInput(
 data class IntakeInput(
     val id: String = UUID.randomUUID().toString(),
     val time: LocalTime = LocalTime.now(),
-    val doses: List<DoseInput> = listOf(DoseInput()),
+    val doses: List<DoseInput> = listOf(),
     val dosesError: DosesError? = null,
     val timeError: TimeError? = null,
 ) {

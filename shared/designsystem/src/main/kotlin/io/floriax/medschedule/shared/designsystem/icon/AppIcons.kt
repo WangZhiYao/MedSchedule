@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MedicalServices
+import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowDropDown
@@ -92,6 +93,7 @@ object AppIcons {
         @Composable
         get() = ImageVector.vectorResource(R.drawable.ic_history_w200_24dp)
     val Medication = Icons.Rounded.Medication
+    val MedicationBorder = Icons.Outlined.Medication
     val CalendarClockSlimBorder
         @Composable
         get() = ImageVector.vectorResource(R.drawable.ic_calendar_clock_w200_24dp)

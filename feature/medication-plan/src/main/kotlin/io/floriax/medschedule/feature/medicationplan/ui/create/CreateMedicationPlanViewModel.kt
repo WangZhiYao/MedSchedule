@@ -270,67 +270,66 @@ class CreateMedicationPlanViewModel @Inject constructor(
         }
     }
 
-    fun onTimeChange(intake: IntakeInput, time: LocalTime) {
+    fun onTimeChange(intakeId: String, time: LocalTime) {
         reduce {
-            copy(intakes = intakes.mapAt(intakes.indexOf(intake)) { currentIntake ->
+            val intakeIndex = intakes.indexOfFirst { it.id == intakeId }
+            if (intakeIndex == -1) return@reduce this
+            copy(intakes = intakes.mapAt(intakeIndex) { currentIntake ->
                 currentIntake.copy(time = time, timeError = null)
             })
         }
     }
 
-    fun onAddDoseClick(intake: IntakeInput) {
+    fun onRemoveDoseClick(intakeId: String, doseId: String) {
         reduce {
-            copy(intakes = intakes.mapAt(intakes.indexOf(intake)) { currentIntake ->
-                currentIntake.copy(
-                    doses = currentIntake.doses + DoseInput(),
-                    dosesError = null
-                )
-            })
-        }
-    }
-
-    fun onRemoveDoseClick(intake: IntakeInput, dose: DoseInput) {
-        reduce {
-            copy(intakes = intakes.mapAt(intakes.indexOf(intake)) { currentIntake ->
-                currentIntake.copy(
-                    doses = currentIntake.doses.filterNot { currentDose ->
-                        currentDose.id == dose.id
-                    }
-                )
-            })
-        }
-    }
-
-    fun onDoseMedicationSelected(intake: IntakeInput, dose: DoseInput, medication: Medication) {
-        reduce {
-            val intakeIndex = intakes.indexOfFirst { it.id == intake.id }
-            if (intakeIndex == -1) {
-                return@reduce this
-            }
-
-            val doseIndex = intakes[intakeIndex].doses.indexOfFirst { it.id == dose.id }
-            if (doseIndex == -1) {
-                return@reduce this
-            }
-
+            val intakeIndex = intakes.indexOfFirst { it.id == intakeId }
+            if (intakeIndex == -1) return@reduce this
             copy(intakes = intakes.mapAt(intakeIndex) { currentIntake ->
                 currentIntake.copy(
-                    doses = currentIntake.doses.mapAt(doseIndex) { currentDose ->
-                        currentDose.copy(medication = medication, doseError = null)
+                    doses = currentIntake.doses.filterNot { currentDose ->
+                        currentDose.id == doseId
                     }
                 )
             })
         }
     }
 
-    fun onDoseAmountChange(intake: IntakeInput, dose: DoseInput, amount: String) {
+    fun onMedicationSelectionChanged(
+        intakeId: String,
+        medication: Medication,
+        selected: Boolean
+    ) {
         reduce {
-            val intakeIndex = intakes.indexOf(intake)
+            val intakeIndex = intakes.indexOfFirst { it.id == intakeId }
+            if (intakeIndex == -1) return@reduce this
+
+            if (selected) {
+                copy(intakes = intakes.mapAt(intakeIndex) { currentIntake ->
+                    currentIntake.copy(
+                        doses = currentIntake.doses + DoseInput(medication = medication),
+                        dosesError = null
+                    )
+                })
+            } else {
+                copy(intakes = intakes.mapAt(intakeIndex) { currentIntake ->
+                    currentIntake.copy(
+                        doses = currentIntake.doses.filterNot { currentDose ->
+                            currentDose.medication?.id == medication.id
+                        }
+                    )
+                })
+            }
+        }
+    }
+
+    fun onDoseAmountChange(intakeId: String, doseId: String, amount: String) {
+        reduce {
+            val intakeIndex = intakes.indexOfFirst { it.id == intakeId }
             if (intakeIndex == -1) {
                 return@reduce this
             }
 
-            val doseIndex = intakes[intakeIndex].doses.indexOf(dose)
+            val doseIndex = intakes[intakeIndex].doses.indexOfFirst { it.id == doseId }
             if (doseIndex == -1) {
                 return@reduce this
             }

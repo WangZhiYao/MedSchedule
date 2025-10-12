@@ -1,30 +1,40 @@
 package io.floriax.medschedule.feature.medicationplan.ui.create.steps
 
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuAnchorType
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,14 +44,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import io.floriax.medschedule.core.domain.model.Medication
 import io.floriax.medschedule.feature.medicationplan.R
 import io.floriax.medschedule.feature.medicationplan.ui.create.DoseError
@@ -71,55 +82,67 @@ fun DosageStep(
     intakesError: IntakesError?,
     onAddIntakeClick: () -> Unit,
     onRemoveIntakeClick: (IntakeInput) -> Unit,
-    onTimeChange: (IntakeInput, LocalTime) -> Unit,
-    onAddDoseClick: (IntakeInput) -> Unit,
-    onRemoveDoseClick: (IntakeInput, DoseInput) -> Unit,
-    onDoseMedicationSelected: (IntakeInput, DoseInput, Medication) -> Unit,
-    onDoseAmountChange: (IntakeInput, DoseInput, String) -> Unit,
+    onTimeChange: (String, LocalTime) -> Unit,
+    onRemoveDoseClick: (String, String) -> Unit,
+    onDoseAmountChange: (String, String, String) -> Unit,
+    onMedicationSelectionChanged: (String, Medication, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var editingIntakeId by remember { mutableStateOf<String?>(null) }
+
+    val editingIntake = editingIntakeId?.let { id -> intakes.find { it.id == id } }
+
+    editingIntake?.let { intake ->
+        SelectMedicationBottomSheet(
+            medications = medications,
+            currentDoses = intake.doses,
+            onDismissRequest = { editingIntakeId = null },
+            onMedicationCheckedChange = { medication, isChecked ->
+                onMedicationSelectionChanged(intake.id, medication, isChecked)
+            }
+        )
+    }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
             Text(
                 text = stringResource(R.string.screen_create_medication_plan_dosage_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp)
             )
             if (intakesError is IntakesError.Empty) {
                 Text(
                     text = stringResource(R.string.screen_create_medication_plan_error_intakes_empty),
+                    modifier = Modifier.padding(top = 8.dp),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(top = 8.dp)
                 )
             }
         }
 
-        itemsIndexed(items = intakes, key = { _, intake -> intake.id }) { index, intake ->
+        items(items = intakes, key = { intake -> intake.id }) { intake ->
             IntakeBlock(
-                medications = medications,
                 intake = intake,
                 onRemoveIntakeClick = { onRemoveIntakeClick(intake) },
-                onTimeChange = { newTime -> onTimeChange(intake, newTime) },
-                onAddDoseClick = { onAddDoseClick(intake) },
-                onRemoveDoseClick = { dose -> onRemoveDoseClick(intake, dose) },
-                onDoseMedicationSelected = { dose, medication ->
-                    onDoseMedicationSelected(intake, dose, medication)
-                },
-                onDoseAmountChange = { dose, amount -> onDoseAmountChange(intake, dose, amount) }
+                onTimeChange = { newTime -> onTimeChange(intake.id, newTime) },
+                onSelectMedicationsClick = { editingIntakeId = intake.id },
+                onRemoveDoseClick = { dose -> onRemoveDoseClick(intake.id, dose.id) },
+                onDoseAmountChange = { dose, amount ->
+                    onDoseAmountChange(
+                        intake.id,
+                        dose.id,
+                        amount
+                    )
+                }
             )
-            if (index < intakes.size - 1) {
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-            }
         }
 
         item {
-            Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = onAddIntakeClick,
                 modifier = Modifier.fillMaxWidth()
@@ -133,13 +156,11 @@ fun DosageStep(
 
 @Composable
 private fun IntakeBlock(
-    medications: LazyPagingItems<Medication>,
     intake: IntakeInput,
     onRemoveIntakeClick: () -> Unit,
     onTimeChange: (LocalTime) -> Unit,
-    onAddDoseClick: () -> Unit,
+    onSelectMedicationsClick: () -> Unit,
     onRemoveDoseClick: (DoseInput) -> Unit,
-    onDoseMedicationSelected: (DoseInput, Medication) -> Unit,
     onDoseAmountChange: (DoseInput, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -156,75 +177,131 @@ private fun IntakeBlock(
         )
     }
 
-    Column(modifier = modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            IconButton(
-                onClick = { showTimePicker = true },
-            ) {
-                Icon(imageVector = AppIcons.CalendarClock, contentDescription = null)
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = intake.time.formatLocalized(),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (intake.timeError != null) MaterialTheme.colorScheme.error else Color.Unspecified
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = AppIcons.AccessTime,
+                    contentDescription = stringResource(R.string.screen_create_medication_plan_dosage_intake_time)
                 )
-                if (intake.timeError is TimeError.Duplicate) {
+                Spacer(modifier = Modifier.width(8.dp))
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(R.string.screen_create_medication_plan_error_intake_time_duplicate),
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall
+                        text = intake.time.formatLocalized(),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (intake.timeError != null) MaterialTheme.colorScheme.error else Color.Unspecified
+                    )
+                    if (intake.timeError is TimeError.Duplicate) {
+                        Text(
+                            text = stringResource(R.string.screen_create_medication_plan_error_intake_time_duplicate),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+                IconButton(onClick = { showTimePicker = true }) {
+                    Icon(
+                        imageVector = AppIcons.Edit,
+                        contentDescription = stringResource(R.string.screen_create_medication_plan_dosage_edit_intake_time)
+                    )
+                }
+                IconButton(onClick = onRemoveIntakeClick) {
+                    Icon(
+                        imageVector = AppIcons.Delete,
+                        contentDescription = stringResource(R.string.screen_create_medication_plan_dosage_remove_intake_time),
                     )
                 }
             }
-            IconButton(onClick = onRemoveIntakeClick) {
-                Icon(
-                    imageVector = AppIcons.Delete,
-                    contentDescription = stringResource(R.string.screen_create_medication_plan_dosage_remove_intake_time),
-                    tint = MaterialTheme.colorScheme.error
-                )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (intake.dosesError is DosesError.Empty) {
+                    Text(
+                        text = stringResource(R.string.screen_create_medication_plan_error_doses_empty),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                intake.doses.forEach { dose ->
+                    DoseItem(
+                        dose = dose,
+                        onRemoveClick = { onRemoveDoseClick(dose) },
+                        onAmountChange = { amount -> onDoseAmountChange(dose, amount) }
+                    )
+                }
+                val label =
+                    stringResource(R.string.screen_create_medication_plan_dosage_add_medication)
+                FilledTonalButton(
+                    onClick = onSelectMedicationsClick,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(imageVector = AppIcons.Add, contentDescription = label)
+                    Text(text = label)
+                }
             }
         }
+    }
+}
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (intake.dosesError is DosesError.Empty) {
-                Text(
-                    text = stringResource(R.string.screen_create_medication_plan_error_doses_empty),
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-
-            val selectedMedicationIds = intake.doses.mapNotNull { it.medication?.id }.toSet()
-            val allMedications = medications.itemSnapshotList.items
-
-            intake.doses.forEach { dose ->
-                val availableMedications = allMedications.filter {
-                    it.id !in selectedMedicationIds || it.id == dose.medication?.id
-                }
-                DoseItem(
-                    availableMedications = availableMedications,
-                    dose = dose,
-                    onRemoveClick = { onRemoveDoseClick(dose) },
-                    onMedicationSelected = { medication ->
-                        onDoseMedicationSelected(dose, medication)
-                    },
-                    onAmountChange = { amount -> onDoseAmountChange(dose, amount) }
-                )
-            }
-
-            val label = stringResource(R.string.screen_create_medication_plan_dosage_add_medication)
-            TextButton(
-                onClick = onAddDoseClick,
-                modifier = Modifier.fillMaxWidth()
+@Composable
+private fun DoseItem(
+    dose: DoseInput,
+    onRemoveClick: () -> Unit,
+    onAmountChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(imageVector = AppIcons.Add, contentDescription = label)
-                Text(text = label)
+                Icon(
+                    imageVector = AppIcons.MedicationBorder,
+                    contentDescription = stringResource(R.string.screen_create_medication_plan_dosage_medication)
+                )
+                Text(
+                    text = dose.medication?.name ?: "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .basicMarquee(),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                OutlinedTextField(
+                    value = dose.dose,
+                    onValueChange = onAmountChange,
+                    modifier = Modifier.weight(1f),
+                    label = { Text(text = stringResource(R.string.screen_create_medication_plan_dosage_dose)) },
+                    suffix = { Text(text = dose.medication?.doseUnit ?: "") },
+                    supportingText = {
+                        if (dose.doseError != null) {
+                            val text = when (dose.doseError) {
+                                DoseError.Empty -> stringResource(R.string.screen_create_medication_plan_error_dose_empty)
+                                DoseError.Invalid -> stringResource(R.string.screen_create_medication_plan_error_dose_invalid)
+                            }
+                            Text(text = text)
+                        }
+                    },
+                    isError = dose.doseError != null,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+                IconButton(onClick = onRemoveClick) {
+                    Icon(
+                        imageVector = AppIcons.Close,
+                        contentDescription = stringResource(R.string.screen_create_medication_plan_dosage_remove_medication),
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
             }
         }
     }
@@ -232,90 +309,112 @@ private fun IntakeBlock(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DoseItem(
-    availableMedications: List<Medication>,
-    dose: DoseInput,
-    onRemoveClick: () -> Unit,
-    onMedicationSelected: (Medication) -> Unit,
-    onAmountChange: (String) -> Unit,
+private fun SelectMedicationBottomSheet(
+    medications: LazyPagingItems<Medication>,
+    currentDoses: List<DoseInput>,
+    onDismissRequest: () -> Unit,
+    onMedicationCheckedChange: (Medication, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var searchQuery by remember { mutableStateOf("") }
 
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ModalBottomSheet(
+        onDismissRequest = onDismissRequest,
+        sheetState = sheetState,
+        modifier = modifier
     ) {
         Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.9f)
+                .navigationBarsPadding()
         ) {
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = !expanded }
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                label = { Text(stringResource(R.string.screen_create_medication_plan_dosage_search_medications)) },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                singleLine = true,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
             ) {
-                OutlinedTextField(
-                    value = dose.medication?.name ?: "",
-                    onValueChange = {},
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-                    readOnly = true,
-                    label = { Text(text = stringResource(R.string.screen_create_medication_plan_dosage_select_medication)) },
-                    trailingIcon = {
-                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                    },
-                    isError = dose.doseError != null,
-                    singleLine = true
-                )
-                ExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
-                ) {
-                    availableMedications.forEach { medication ->
-                        DropdownMenuItem(
-                            text = { Text(medication.name) },
-                            onClick = {
-                                onMedicationSelected(medication)
-                                expanded = false
-                            }
-                        )
+                items(
+                    count = medications.itemCount,
+                    key = medications.itemKey { it.id }
+                ) { index ->
+                    val medication = medications[index]
+                    if (medication != null) {
+                        if (searchQuery.isBlank() || medication.name.contains(
+                                searchQuery,
+                                ignoreCase = true
+                            )
+                        ) {
+                            val isChecked = currentDoses.any { it.medication?.id == medication.id }
+                            MedicationSelectionItem(
+                                medication = medication,
+                                checked = isChecked,
+                                onCheckedChange = { onMedicationCheckedChange(medication, it) }
+                            )
+                        }
                     }
                 }
             }
-
-            OutlinedTextField(
-                value = dose.dose,
-                onValueChange = onAmountChange,
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text(text = stringResource(R.string.screen_create_medication_plan_dosage_dose)) },
-                suffix = { Text(text = dose.medication?.doseUnit ?: "") },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Done
-                ),
-                isError = dose.doseError != null,
-                supportingText = {
-                    if (dose.doseError != null) {
-                        val message = when (dose.doseError) {
-                            DoseError.Empty -> stringResource(R.string.screen_create_medication_plan_error_dose_empty)
-                            DoseError.Invalid -> stringResource(R.string.screen_create_medication_plan_error_dose_invalid)
-                        }
-                        Text(text = message)
-                    }
-                },
-                singleLine = true
-            )
-        }
-
-        IconButton(onClick = onRemoveClick) {
-            Icon(
-                imageVector = AppIcons.RemoveCircle,
-                contentDescription = stringResource(R.string.screen_create_medication_plan_dosage_remove_medication)
-            )
+            TextButton(
+                onClick = onDismissRequest,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(16.dp)
+            ) {
+                Text(text = stringResource(io.floriax.medschedule.shared.ui.R.string.shared_ui_confirm))
+            }
         }
     }
+}
+
+@Composable
+private fun MedicationSelectionItem(
+    medication: Medication,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ListItem(
+        headlineContent = { Text(medication.name) },
+        modifier = modifier.toggleable(
+            value = checked,
+            role = Role.Checkbox,
+            onValueChange = onCheckedChange
+        ),
+        leadingContent = {
+            Checkbox(
+                checked = checked,
+                onCheckedChange = null
+            )
+        },
+        supportingContent = {
+            val stock = medication.stock
+            val text = if (stock == null) {
+                stringResource(R.string.screen_create_medication_plan_dosage_stock_not_set)
+            } else {
+                stringResource(
+                    R.string.screen_create_medication_plan_dosage_stock_format,
+                    stock.toPlainString()
+                )
+            }
+            Text(text = text)
+        },
+        trailingContent = { Text(text = medication.doseUnit) },
+        colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
+    )
 }
 
 @Preview(showBackground = true)
@@ -376,10 +475,9 @@ private fun DosageStepPreview() {
             onAddIntakeClick = {},
             onRemoveIntakeClick = {},
             onTimeChange = { _, _ -> },
-            onAddDoseClick = {},
             onRemoveDoseClick = { _, _ -> },
             onDoseAmountChange = { _, _, _ -> },
-            onDoseMedicationSelected = { _, _, _ -> }
+            onMedicationSelectionChanged = { _, _, _ -> }
         )
     }
 }
