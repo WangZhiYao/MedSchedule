@@ -11,34 +11,24 @@
     <string name="screen_medications_stock_not_set">Stock not set</string>
 
     <string name="screen_add_medication_title">Add Medication</string>
-    <string name="screen_add_medication_medication_name_label">Medication name</string>
-    <string name="screen_add_medication_medication_name_placeholder">e.g., Emergen-C</string>
-    <string name="screen_add_medication_error_name_empty">Medication name cannot be empty</string>
-    <string name="screen_add_medication_stock_label">Stock (Optional)</string>
-    <string name="screen_add_medication_stock_placeholder">e.g., 10.5</string>
-    <string name="screen_add_medication_error_stock_invalid">Please enter a valid number</string>
-    <string name="screen_add_medication_dose_unit_label">Unit</string>
-    <string name="screen_add_medication_dose_unit_placeholder">e.g., mg, ml, tablets</string>
-    <string name="screen_add_medication_error_dose_unit_empty">Dose unit cannot be empty</string>
-    <string name="screen_add_medication_notes_label">Notes (Optional)</string>
-    <string name="screen_add_medication_notes_placeholder">e.g., after eating, before sleeping</string>
     <string name="screen_add_medication_error_add_failed">Failed to add medication</string>
 
     <string name="screen_edit_medication_title">Update Medication</string>
-    <string name="screen_edit_medication_medication_name_label">Medication name</string>
-    <string name="screen_edit_medication_medication_name_placeholder">e.g., Emergen-C</string>
-    <string name="screen_edit_medication_error_name_empty">Medication name cannot be empty</string>
-    <string name="screen_edit_medication_stock_label">Stock (Optional)</string>
-    <string name="screen_edit_medication_stock_placeholder">e.g., 10.5</string>
-    <string name="screen_edit_medication_error_stock_invalid">Please enter a valid number</string>
-    <string name="screen_edit_medication_dose_unit_label">Unit</string>
-    <string name="screen_edit_medication_dose_unit_placeholder">e.g., mg, ml, tablets</string>
-    <string name="screen_edit_medication_error_dose_unit_empty">Dose unit cannot be empty</string>
-    <string name="screen_edit_medication_notes_label">Notes (Optional)</string>
-    <string name="screen_edit_medication_notes_placeholder">e.g., after eating, before sleeping</string>
     <string name="screen_edit_medication_error_medication_not_found">Medication not found</string>
     <string name="screen_edit_medication_error_get_medication_failed">Get medication failed</string>
     <string name="screen_edit_medication_error_update_failed">Failed to update medication</string>
+
+    <string name="medication_form_medication_name_label">Medication name</string>
+    <string name="medication_form_medication_name_placeholder">e.g., Emergen-C</string>
+    <string name="medication_form_error_name_empty">Medication name cannot be empty</string>
+    <string name="medication_form_stock_label">Stock (Optional)</string>
+    <string name="medication_form_stock_placeholder">e.g., 10.5</string>
+    <string name="medication_form_error_stock_invalid">Please enter a valid number</string>
+    <string name="medication_form_dose_unit_label">Unit</string>
+    <string name="medication_form_dose_unit_placeholder">e.g., mg, ml, tablets</string>
+    <string name="medication_form_error_dose_unit_empty">Dose unit cannot be empty</string>
+    <string name="medication_form_notes_label">Notes (Optional)</string>
+    <string name="medication_form_notes_placeholder">e.g., after eating, before sleeping</string>
 
     <string name="screen_medication_detail_delete_medication_failure">Failed to delete medication</string>
     <string name="screen_medication_detail_stock">Stock</string>
@@ -49,7 +39,6 @@
     <string name="screen_medication_detail_error_stock_invalid">Please enter a valid number</string>
     <string name="screen_medication_detail_add_stock_success">Stock added successfully</string>
     <string name="screen_medication_detail_add_stock_failure">Failed to add stock</string>
-    <string name="screen_medication_detail_dose_unit">Dose Unit</string>
     <string name="screen_medication_detail_notes">Notes</string>
     <string name="screen_medication_detail_no_notes">No notes</string>
     <string name="screen_medication_detail_medication_logs">Medication Logs</string>
