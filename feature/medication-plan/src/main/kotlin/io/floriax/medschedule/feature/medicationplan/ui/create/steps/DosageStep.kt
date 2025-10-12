@@ -147,8 +147,10 @@ fun DosageStep(
                 onClick = onAddIntakeClick,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(imageVector = AppIcons.Add, contentDescription = null)
-                Text(text = stringResource(R.string.screen_create_medication_plan_dosage_add_intake_time))
+                val text =
+                    stringResource(R.string.screen_create_medication_plan_dosage_add_intake_time)
+                Icon(imageVector = AppIcons.AccessAlarm, contentDescription = text)
+                Text(text = text)
             }
         }
     }

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.MedicalServices
 import androidx.compose.material.icons.outlined.Medication
+import androidx.compose.material.icons.rounded.AccessAlarm
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowDropDown
@@ -84,6 +85,7 @@ object AppIcons {
     // Date & Time
     val CalendarToday = Icons.Rounded.CalendarToday
     val AccessTime = Icons.Rounded.AccessTime
+    val AccessAlarm = Icons.Rounded.AccessAlarm
 
     // Custom/Specific
     val MedicationSlimBorder
